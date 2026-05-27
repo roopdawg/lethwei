@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "prisma migrate deploy && next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
@@ -29,6 +36,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
+    "tsx": "^4.22.3",
     "typescript": "^5"
   }
 }
