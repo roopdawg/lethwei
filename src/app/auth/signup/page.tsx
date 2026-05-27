@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 
-export default function SignUpPage() {
+function SignUpForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/forum";
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -33,18 +36,22 @@ export default function SignUpPage() {
       return;
     }
 
-    // Auto sign-in after registration
     await signIn("credentials", { email, password, redirect: false });
-    router.push("/forum");
+    router.push(callbackUrl);
   }
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4" style={{ background: "var(--bg)" }}>
       <div className="w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--text)" }}>Create Account</h1>
+        {callbackUrl !== "/forum" && (
+          <p className="text-sm mb-2" style={{ color: "var(--gold)" }}>
+            Create an account to post your thread.
+          </p>
+        )}
         <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
           Already have one?{" "}
-          <Link href="/auth/signin" style={{ color: "var(--gold)" }}>Sign in</Link>
+          <Link href={`/auth/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`} style={{ color: "var(--gold)" }}>Sign in</Link>
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -85,5 +92,13 @@ export default function SignUpPage() {
         </form>
       </div>
     </main>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense>
+      <SignUpForm />
+    </Suspense>
   );
 }

@@ -19,8 +19,8 @@ function NewThreadForm() {
   const searchParams = useSearchParams();
   const defaultCategory = searchParams.get("category") || "";
 
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [title, setTitle] = useState(searchParams.get("title") || "");
+  const [body, setBody] = useState(searchParams.get("body") || "");
   const [categorySlug, setCategorySlug] = useState(defaultCategory);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,6 +37,14 @@ function NewThreadForm() {
     });
 
     setLoading(false);
+    if (res.status === 401) {
+      // Not signed in — send them to signup, preserve their draft in URL
+      const params = new URLSearchParams({
+        callbackUrl: `/forum/new-thread?category=${categorySlug}&title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`,
+      });
+      router.push(`/auth/signup?${params}`);
+      return;
+    }
     if (!res.ok) {
       const data = await res.json();
       setError(data.error || "Failed to post thread.");

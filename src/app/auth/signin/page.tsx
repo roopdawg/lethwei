@@ -1,12 +1,15 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function SignInPage() {
+function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/forum";
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +29,7 @@ export default function SignInPage() {
     if (result?.error) {
       setError("Invalid email or password.");
     } else {
-      router.push("/forum");
+      router.push(callbackUrl);
     }
   }
 
@@ -36,7 +39,9 @@ export default function SignInPage() {
         <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--text)" }}>Sign In</h1>
         <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
           New here?{" "}
-          <Link href="/auth/signup" style={{ color: "var(--gold)" }}>Create an account</Link>
+          <Link href={`/auth/signup?callbackUrl=${encodeURIComponent(callbackUrl)}`} style={{ color: "var(--gold)" }}>
+            Create an account
+          </Link>
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -68,5 +73,13 @@ export default function SignInPage() {
         </form>
       </div>
     </main>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense>
+      <SignInForm />
+    </Suspense>
   );
 }
