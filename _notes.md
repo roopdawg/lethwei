@@ -62,9 +62,9 @@ A Lethwei martial arts community + commerce site. Lethwei is a Burmese full-cont
 
 ---
 
-## Tanner's Domain Portfolio (Squarespace)
+## Dean's Domain Portfolio (Squarespace)
 
-Tanner owns 33 martial arts sites — all active, all Squarespace. Covers muay thai + BJJ city domains across the US (ashland, bc, brazil, charlotte, dallas, denver, las vegas, maui, mexico, new orleans, oakland, pennsylvania, puerto rico, san francisco, twin cities, vegas, virginia, washington DC, etc.).
+Dean owns 33 martial arts sites — all active, all Squarespace. Covers muay thai + BJJ city domains across the US (ashland, bc, brazil, charlotte, dallas, denver, las vegas, maui, mexico, new orleans, oakland, pennsylvania, puerto rico, san francisco, twin cities, vegas, virginia, washington DC, etc.).
 
 These are all potential apparel/drop-ship plays using the same model as lethwei.com. Once lethwei proves the model, these could all run on AI automation.
 
@@ -74,7 +74,7 @@ Reference site for design/UX: **www.santamonicastriking.com** (built by Tanner)
 
 ## lethwei.org — Current State
 
-Already live on Squarespace, managed by Tanner. Will eventually become the nonprofit arm. Needs coordination between Tanner (Squarespace) and Roopa's Next.js build on lethwei.com.
+Already live on Squarespace, managed by Dean. Will eventually become the nonprofit arm. Needs coordination between Dean (Squarespace) and Roopa's Next.js build on lethwei.com.
 
 ---
 
@@ -89,7 +89,7 @@ Already live on Squarespace, managed by Tanner. Will eventually become the nonpr
 
 ## Background — Prateek (Previous Contractor)
 
-Paid $500 upfront to a longtime associate (Prateek, India-based, usually charges $250/site) to build the site, set up an India bank account, and run drop ship + accounting. He never went live, made repeated excuses, eventually claimed the hosting company deleted everything. Roopa has already built an independent Next.js version. Waiting a couple days before fully moving on.
+Paid $500 upfront to a longtime associate (Prateek, India-based, usually charges $250/site) to build the site, set up an India bank account, and run drop ship + accounting. He never went live, made repeated excuses, eventually claimed the hosting company deleted everything. Roopa has already built an independent Next.js version. We are ready to fully move on. 
 
 ---
 
@@ -106,7 +106,7 @@ Paid $500 upfront to a longtime associate (Prateek, India-based, usually charges
 | Roopa | Site (Next.js), product decisions | Claude Code |
 | Tanner | Paid ads, campaign creative briefs | Claude / ChatGPT for copy |
 | Gabe | Designs for merch + one-off ads | Midjourney / Adobe Firefly / Canva AI |
-| Dean | Community feedback, forum seeding | — |
+| Dean | Community feedback, forum seeding , in person promotion  
 
 ---
 
