@@ -5,6 +5,39 @@ export const metadata = {
   description: "Represent Lethwei. Shop official t-shirts, hoodies, and hats.",
 };
 
+const products = [
+  {
+    id: "skull-tee",
+    name: "Skull Tee",
+    subtitle: "The Art of Nine Limbs",
+    description: "Acid wash heavyweight tee. Anatomical skull on the front, 'the art of nine limbs' in gothic script across the back. The flagship design.",
+    colorway: "Acid Wash Black",
+    frontImage: "/skull-tee-front.jpg",
+    backImage: "/skull-tee-back.jpg",
+    tag: "Drop 01",
+  },
+  {
+    id: "weapons-tee-black",
+    name: "Weapons Tee",
+    subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
+    description: "Five weapons. One back. Stacked in bold caps on a clean black tee. Lethwei branded on the sleeve. No front graphic — just the list.",
+    colorway: "Black",
+    frontImage: "/weapons-tee-black.png",
+    backImage: "/weapons-tee-black.png",
+    tag: "Drop 01",
+  },
+  {
+    id: "weapons-tee-blue",
+    name: "Weapons Tee",
+    subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
+    description: "Same clean weapons stack, washed-out white on powder blue. The contrast colorway for when you want to run it light.",
+    colorway: "Light Blue",
+    frontImage: "/weapons-tee-blue.png",
+    backImage: "/weapons-tee-blue.png",
+    tag: "Drop 01",
+  },
+];
+
 export default function ShopPage() {
   return (
     <>
@@ -13,7 +46,7 @@ export default function ShopPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#110000] to-[#0A0A0A]" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-            Represent
+            Drop 01 — Now Available
           </span>
           <h1 className="font-[family-name:var(--font-oswald)] text-6xl md:text-8xl font-bold leading-none mb-6">
             WEAR THE<br />
@@ -21,57 +54,83 @@ export default function ShopPage() {
           </h1>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
           <p className="text-[#888888] text-lg max-w-xl leading-relaxed">
-            Official Lethwei gear. T-shirts, hoodies, and hats built for warriors.
-            Carry the spirit of the Art of 9 Limbs wherever you go.
+            Designed by Gabe Schnider. Acid wash, heavyweight, and built to last.
+            DM <a href="https://instagram.com/lethweiofficial" target="_blank" rel="noopener noreferrer" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a> to order while the online shop is being built.
           </p>
         </div>
       </section>
 
-      {/* Shopify Buy Button embed placeholder */}
-      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="border border-[#2A2A2A] bg-[#111111] p-12 text-center">
-          <div className="font-[family-name:var(--font-oswald)] text-[#555555] text-2xl mb-4">
-            SHOPIFY STORE LOADING
-          </div>
-          <p className="text-[#555555] text-sm mb-8">
-            Connect your Shopify store to display products here.
-            Add your Shopify Buy Button script below.
-          </p>
-
-          {/*
-            TO INTEGRATE SHOPIFY:
-            1. Create a Shopify store at shopify.com
-            2. Go to Sales Channels → Buy Button
-            3. Create a collection embed for your products
-            4. Replace this placeholder with the generated <script> tag
-
-            The embed will look like:
-            <div id="collection-component-xxx"></div>
-            <script>...</script>
-          */}
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
-            {["T-Shirt", "Hoodie", "Hat"].map((item) => (
-              <div key={item} className="border border-[#2A2A2A] bg-[#0A0A0A] aspect-square flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-[#C41E1E]/30 font-[family-name:var(--font-oswald)] text-5xl mb-2">
-                    {item === "T-Shirt" ? "👕" : item === "Hoodie" ? "🧥" : "🧢"}
-                  </div>
-                  <p className="font-[family-name:var(--font-oswald)] text-[#555555] tracking-widest uppercase text-sm">
-                    {item}
-                  </p>
-                  <p className="text-[#333333] text-xs mt-1">Coming soon</p>
-                </div>
+      {/* Product Grid */}
+      <section className="pb-24 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
+          {products.map((product) => (
+            <div key={product.id} className="bg-[#111111] group">
+              {/* Image */}
+              <div className="relative aspect-square overflow-hidden bg-[#0A0A0A]">
+                <img
+                  src={product.frontImage}
+                  alt={product.name}
+                  className="w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0 absolute inset-0"
+                />
+                <img
+                  src={product.backImage}
+                  alt={`${product.name} — back`}
+                  className="w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100 absolute inset-0"
+                />
               </div>
-            ))}
-          </div>
 
-          <p className="text-[#555555] text-xs mt-8">
-            Products will appear here once the Shopify store is connected.
+              {/* Details */}
+              <div className="p-6 border-t border-[#2A2A2A]">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">
+                    {product.tag}
+                  </span>
+                  <span className="font-[family-name:var(--font-oswald)] text-[#555555] text-xs tracking-widest uppercase">
+                    {product.colorway}
+                  </span>
+                </div>
+                <h2 className="font-[family-name:var(--font-oswald)] text-2xl font-bold text-[#F5F0E8] mb-1">
+                  {product.name}
+                </h2>
+                <p className="text-[#D4A017] text-xs tracking-widest uppercase mb-3">
+                  {product.subtitle}
+                </p>
+                <p className="text-[#888888] text-sm leading-relaxed mb-6">
+                  {product.description}
+                </p>
+                <a
+                  href="https://instagram.com/lethweiofficial"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-6 py-3 transition-colors inline-block w-full text-center"
+                >
+                  DM to Order
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="border border-[#2A2A2A] bg-[#111111] mt-px p-8 text-center">
+          <p className="text-[#555555] text-sm mb-2">
+            Online ordering via Printful coming soon.
+          </p>
+          <p className="text-[#888888] text-sm">
+            For now — DM{" "}
+            <a
+              href="https://instagram.com/lethweiofficial"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#D4A017] hover:text-[#F0C040] transition-colors"
+            >
+              @lethweiofficial
+            </a>{" "}
+            or pick one up at <span className="text-[#F5F0E8]">Santa Monica Striking</span>.
           </p>
         </div>
       </section>
 
+      {/* Bottom CTA */}
       <section className="py-16 bg-[#111111] border-t border-[#2A2A2A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="font-[family-name:var(--font-oswald)] text-3xl font-bold mb-4">

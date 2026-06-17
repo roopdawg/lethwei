@@ -53,6 +53,12 @@ export default function Home() {
               Discover Lethwei
             </Link>
             <Link
+              href="/shop"
+              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base bg-[#D4A017] hover:bg-[#F0C040] text-black px-8 py-4 transition-colors w-full sm:w-auto text-center"
+            >
+              Shop Now
+            </Link>
+            <Link
               href="/forum"
               className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base border border-[#2A2A2A] hover:border-[#D4A017] hover:text-[#D4A017] text-[#888888] px-8 py-4 transition-colors w-full sm:w-auto text-center"
             >
@@ -78,6 +84,60 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FEATURED GEAR ── */}
+      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="relative order-2 md:order-1">
+            <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
+              <img
+                src="/skull-tee-front.jpg"
+                alt="Lethwei Skull Tee — Drop 01"
+                className="absolute inset-0 w-full h-full object-contain"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">
+                  Available Now
+                </span>
+              </div>
+            </div>
+            <div className="absolute -top-2 -right-2 w-12 h-12 border-t-2 border-r-2 border-[#C41E1E]" />
+            <div className="absolute -bottom-2 -left-2 w-12 h-12 border-b-2 border-l-2 border-[#C41E1E]" />
+          </div>
+
+          <div className="order-1 md:order-2">
+            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
+              Official Gear
+            </span>
+            <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none mb-6">
+              WEAR THE<br />
+              <span className="text-[#C41E1E]">FEDERATION</span>
+            </h2>
+            <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
+            <p className="text-[#888888] leading-relaxed mb-4">
+              Acid wash heavyweight tee. Anatomical skull on the front, &ldquo;the art of nine limbs&rdquo; in gothic script across the back. Designed by Gabe Schnider — simple, dark, and built for people who know what Lethwei is.
+            </p>
+            <p className="text-[#888888] leading-relaxed mb-8">
+              Also available: the Weapons Tee — KNEE / ELBOW / KNUCKLE / SHIN / SKULL stacked across the back in black and light blue. Three colorways, one drop.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/shop"
+                className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors text-center"
+              >
+                Shop Now
+              </Link>
+              <Link
+                href="/shop"
+                className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#D4A017] hover:text-[#D4A017] text-[#888888] px-8 py-4 transition-colors text-center"
+              >
+                View All Gear
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -177,6 +237,85 @@ export default function Home() {
               See All Techniques
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* ── DESIGN DROPS ── */}
+      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-16">
+          <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
+            Now Available
+          </span>
+          <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none">
+            DROP <span className="text-[#C41E1E]">01</span>
+          </h2>
+          <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
+          <p className="text-[#888888] mt-6 max-w-xl mx-auto text-sm leading-relaxed">
+            Designed by Gabe Schnider. Hover to see the back. DM{" "}
+            <a href="https://instagram.com/lethweiofficial" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a>{" "}
+            to order — online shop coming soon.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
+          {[
+            {
+              name: "Skull Tee",
+              colorway: "Acid Wash Black",
+              image: "/skull-tee-front.jpg",
+              hoverImage: "/skull-tee-back.jpg",
+              tag: "Drop 01",
+            },
+            {
+              name: "Weapons Tee",
+              colorway: "Black",
+              image: "/weapons-tee-black.png",
+              hoverImage: "/weapons-tee-black.png",
+              tag: "Drop 01",
+            },
+            {
+              name: "Weapons Tee",
+              colorway: "Light Blue",
+              image: "/weapons-tee-blue.png",
+              hoverImage: "/weapons-tee-blue.png",
+              tag: "Drop 01",
+            },
+          ].map((item, i) => (
+            <div key={i} className="bg-[#111111] group relative overflow-hidden">
+              <div className="aspect-square relative bg-[#0A0A0A]">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0"
+                />
+                <img
+                  src={item.hoverImage}
+                  alt={`${item.name} back`}
+                  className="absolute inset-0 w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                />
+              </div>
+              <div className="p-5 border-t border-[#2A2A2A]">
+                <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">
+                  {item.tag}
+                </span>
+                <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#F5F0E8] mt-1">
+                  {item.name}
+                </h3>
+                <p className="text-[#555555] text-xs tracking-widest uppercase mt-0.5">
+                  {item.colorway}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <Link
+            href="/shop"
+            className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-10 py-4 transition-colors inline-block"
+          >
+            Shop All Gear
+          </Link>
         </div>
       </section>
 
