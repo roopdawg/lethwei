@@ -17,12 +17,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Lethwei — The Art of 9 Limbs",
+  title: "LETHWEI™ Bare Knuckle Martial Arts — The Art of 9 Limbs",
   description:
-    "The fastest growing combat sport in the world. Bare-knuckle. No mercy. Pure warrior tradition. Discover Lethwei, find gyms, and join the community.",
-  keywords: ["lethwei", "burmese boxing", "martial arts", "bare knuckle", "combat sports"],
+    "The fastest growing combat sport in the world. Bare-knuckle. No mercy. Pure warrior tradition. Explore LETHWEI™ martial arts, find gyms, and join the community.",
   openGraph: {
-    title: "Lethwei — The Art of 9 Limbs",
+    title: "LETHWEI™ Bare Knuckle Martial Arts — The Art of 9 Limbs",
     description: "The fastest growing combat sport in the world.",
     type: "website",
   },

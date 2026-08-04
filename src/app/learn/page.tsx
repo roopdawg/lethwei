@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "What is Lethwei — The Art of 9 Limbs | History, Rules & Techniques",
-  description: "Learn everything about Lethwei — Myanmar's ancient bareknuckle martial art. History, rules, the 9 weapons, and how it compares to Muay Thai.",
+  title: "LETHWEI™ Martial Arts — The Art of 9 Limbs | History, Rules & Techniques",
+  description: "LETHWEI™ martial arts: the history, rules and technique of Myanmar's ancient bareknuckle sport. The 9 weapons, and how the ruleset compares to Muay Thai.",
 };
 
 const timeline = [
@@ -12,7 +12,7 @@ const timeline = [
   { year: "1996", event: "Myanmar Traditional Lethwei Federation introduces tournament rules and the Golden Belt Championship." },
   { year: "2001", event: "First American fighters compete in Myanmar. International expansion begins." },
   { year: "2015", event: "ONE Championship hosts the first caged Lethwei match. The world takes notice." },
-  { year: "2016", event: "Dave Leduc becomes the first non-Burmese Golden Belt Champion. Lethwei goes global." },
+  { year: "2016", event: "Dave Leduc becomes the first non-Burmese Golden Belt Champion. The sport goes global." },
   { year: "2019", event: "World Lethwei Championship broadcasts on UFC Fight Pass. Mainstream breakthrough." },
 ];
 
@@ -52,11 +52,11 @@ export default function LearnPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#110000] to-[#0A0A0A]" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-            Education
+            LETHWEI™ Martial Arts
           </span>
           <h1 className="font-[family-name:var(--font-oswald)] text-6xl md:text-8xl font-bold leading-none mb-6">
-            WHAT IS<br />
-            <span className="text-[#C41E1E]">LETHWEI?</span>
+            THE ART OF<br />
+            <span className="text-[#C41E1E]">9 LIMBS</span>
           </h1>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
           <p className="text-[#888888] text-lg max-w-2xl leading-relaxed">
@@ -77,7 +77,7 @@ export default function LearnPage() {
             ].map((row) => (
               <div key={row.label} className="bg-[#111111] p-6">
                 <p className="text-[#555555] text-xs tracking-widest uppercase mb-3">{row.label}</p>
-                <p className="font-[family-name:var(--font-oswald)] text-xl text-[#C41E1E] mb-1">Lethwei: {row.lethwei}</p>
+                <p className="font-[family-name:var(--font-oswald)] text-xl text-[#C41E1E] mb-1">LETHWEI™ Ruleset: {row.lethwei}</p>
                 <p className="font-[family-name:var(--font-oswald)] text-xl text-[#555555]">Muay Thai: {row.muaythai}</p>
               </div>
             ))}

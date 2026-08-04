@@ -1,14 +1,14 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Shop — Lethwei Gear | T-Shirts, Hoodies & Hats",
-  description: "Represent Lethwei. Shop official t-shirts, hoodies, and hats.",
+  title: "Shop — LETHWEI™ Gear | T-Shirts, Hoodies & Hats",
+  description: "Shop official LETHWEI™ t-shirts, hoodies and hats.",
 };
 
 const products = [
   {
     id: "skull-tee",
-    name: "Skull Tee",
+    name: "LETHWEI™ Skull Tee",
     subtitle: "The Art of Nine Limbs",
     description: "Acid wash heavyweight tee. Anatomical skull on the front, 'the art of nine limbs' in gothic script across the back. The flagship design.",
     colorway: "Acid Wash Black",
@@ -18,9 +18,9 @@ const products = [
   },
   {
     id: "weapons-tee-black",
-    name: "Weapons Tee",
+    name: "LETHWEI™ Weapons Tee",
     subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
-    description: "Five weapons. One back. Stacked in bold caps on a clean black tee. Lethwei branded on the sleeve. No front graphic — just the list.",
+    description: "Five weapons. One back. Stacked in bold caps on a clean black tee. LETHWEI™ label at the neck. No front graphic — just the list.",
     colorway: "Black",
     frontImage: "/weapons-tee-black.png",
     backImage: "/weapons-tee-black.png",
@@ -28,7 +28,7 @@ const products = [
   },
   {
     id: "weapons-tee-blue",
-    name: "Weapons Tee",
+    name: "LETHWEI™ Weapons Tee",
     subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
     description: "Same clean weapons stack, washed-out white on powder blue. The contrast colorway for when you want to run it light.",
     colorway: "Light Blue",
@@ -62,6 +62,16 @@ export default function ShopPage() {
 
       {/* Product Grid */}
       <section className="pb-24 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="mb-10">
+          <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-3 block">
+            Official Gear
+          </span>
+          <h2 className="font-[family-name:var(--font-oswald)] text-4xl md:text-5xl font-bold leading-none text-[#F5F0E8]">
+            LETHWEI<sup className="text-[0.4em] tracking-normal">™</sup> T-SHIRTS
+          </h2>
+          <span className="block w-16 h-[3px] bg-[#C41E1E] mt-5" />
+        </div>
+
         <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
           {products.map((product) => (
             <div key={product.id} className="bg-[#111111] group">
@@ -125,7 +135,7 @@ export default function ShopPage() {
             >
               @lethweiofficial
             </a>{" "}
-            or pick one up at <span className="text-[#F5F0E8]">Santa Monica Striking</span>.
+            or pick up our tees at <span className="text-[#F5F0E8]">Santa Monica Striking</span>.
           </p>
         </div>
       </section>
@@ -138,7 +148,7 @@ export default function ShopPage() {
           </h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
             <Link href="/learn" className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#D4A017] hover:text-[#D4A017] text-[#888888] px-8 py-4 transition-colors">
-              Learn Lethwei
+              Learn the Art of 9 Limbs
             </Link>
             <Link href="/forum" className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors">
               Join the Community

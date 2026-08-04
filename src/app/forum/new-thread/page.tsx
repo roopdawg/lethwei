@@ -11,7 +11,7 @@ const CATEGORIES = [
   { slug: "events", name: "Events & Fights" },
   { slug: "general", name: "General Discussion" },
   { slug: "find-training", name: "Find Training Partners" },
-  { slug: "beginners", name: "New to Lethwei" },
+  { slug: "beginners", name: "New to the Art of 9 Limbs" },
 ];
 
 function NewThreadForm() {

@@ -63,7 +63,7 @@ export default function SubmitGymPage() {
         Submit a Gym
       </h1>
       <p className="text-sm mb-8" style={{ color: "var(--text-muted)" }}>
-        Know a gym that trains Lethwei? Add it to the directory. All submissions are reviewed before listing.
+        Know a gym that trains the art of 9 limbs? Add it to the directory. All submissions are reviewed before listing.
       </p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
