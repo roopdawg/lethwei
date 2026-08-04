@@ -12,7 +12,7 @@ export default function Footer() {
                 L
               </div>
               <span className="font-[family-name:var(--font-oswald)] font-bold text-xl tracking-[0.12em] uppercase">
-                Lethwei
+                Lethwei<sup className="text-[0.5em] tracking-normal">™</sup>
               </span>
             </div>
             <p className="text-[var(--text-muted)] text-sm leading-relaxed max-w-xs">
@@ -29,7 +29,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               {[
-                { href: "/learn", label: "What is Lethwei" },
+                { href: "/learn", label: "The Art of 9 Limbs" },
                 { href: "/learn#history", label: "History" },
                 { href: "/learn#rules", label: "Rules" },
                 { href: "/learn#techniques", label: "The 9 Limbs" },
@@ -72,9 +72,20 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[var(--border)] mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-2">
-          <p className="text-[var(--text-dim)] text-xs">
-            © {new Date().getFullYear()} Lethwei. All rights reserved.
-          </p>
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <p className="text-[var(--text-dim)] text-xs">
+              © {new Date().getFullYear()} Lethwei. All rights reserved.
+            </p>
+            <p className="text-[var(--text-dim)] text-xs">
+              LETHWEI™ is a trademark.{" "}
+              <Link
+                href="/trademark"
+                className="underline underline-offset-2 hover:text-[var(--text-muted)] transition-colors"
+              >
+                Trademark policy
+              </Link>
+            </p>
+          </div>
           <p className="text-[var(--text-dim)] text-xs">
             The Art of 9 Limbs — Bare Knuckle. Warrior Spirit.
           </p>

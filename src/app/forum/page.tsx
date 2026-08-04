@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Forum — Lethwei Community | Training, Technique & Events",
-  description: "The Lethwei community forum. Discuss training, technique, events, and connect with warriors worldwide.",
+  title: "Forum — LETHWEI™ Community | Training, Technique & Events",
+  description: "The LETHWEI™ community forum. Discuss training, technique, events, and connect with warriors worldwide.",
 };
 
 const categories = [
@@ -31,7 +31,7 @@ const categories = [
     slug: "general",
     name: "General Discussion",
     icon: "💬",
-    description: "Anything Lethwei. Culture, history, gear, and community.",
+    description: "Culture, history, gear, and community — everything else.",
     color: "#D4A017",
   },
   {
@@ -43,7 +43,7 @@ const categories = [
   },
   {
     slug: "beginners",
-    name: "New to Lethwei",
+    name: "New to the Art of 9 Limbs",
     icon: "🌱",
     description: "Just discovered the Art of 9 Limbs? Start here.",
     color: "#D4A017",
@@ -61,13 +61,13 @@ export default function ForumPage() {
             Community
           </span>
           <h1 className="font-[family-name:var(--font-oswald)] text-6xl md:text-8xl font-bold leading-none mb-6">
-            THE WARRIORS<br />
+            THE LETHWEI<sup className="text-[0.35em] tracking-normal">™</sup><br />
             <span className="text-[#C41E1E]">FORUM</span>
           </h1>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
           <p className="text-[#888888] text-lg max-w-2xl leading-relaxed">
             Talk training. Break down techniques. Discuss fights. Find sparring partners.
-            This is the home of the Lethwei community.
+            This is the home of the LETHWEI™ community.
           </p>
           <div className="mt-8 flex gap-4">
             <Link
@@ -132,6 +132,18 @@ export default function ForumPage() {
               Create Account
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Service mark notice */}
+      <section className="bg-[#111111] border-t border-[#2A2A2A] py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <p className="text-[#555555] text-xs text-center">
+            The LETHWEI™ Forum is an online community service provided under the LETHWEI™ mark.{" "}
+            <Link href="/trademark" className="underline underline-offset-2 hover:text-[#888888] transition-colors">
+              Trademark policy
+            </Link>
+          </p>
         </div>
       </section>
     </>

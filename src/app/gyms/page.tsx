@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Find a Lethwei Gym Near You | Gym Directory",
-  description: "Find Lethwei gyms across the United States. Train bareknuckle. Learn the Art of 9 Limbs.",
+  title: "Find a LETHWEI™ Gym Near You | Gym Directory",
+  description: "Find LETHWEI™ gyms across the United States. Train bareknuckle. Learn the Art of 9 Limbs.",
 };
 
 // Static gym data to start — will be replaced with DB queries
@@ -12,7 +12,7 @@ const gyms = [
     name: "Wyoming Lethwei Association",
     city: "Cheyenne",
     state: "WY",
-    description: "One of the few US states where Lethwei is fully sanctioned. Home base for US competition.",
+    description: "One of the few US states where bare knuckle is fully sanctioned. Home base for US competition.",
     website: "https://uslethwei.com",
   },
 ];
@@ -33,7 +33,7 @@ export default function GymsPage() {
           </h1>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
           <p className="text-[#888888] text-lg max-w-2xl leading-relaxed">
-            Lethwei gyms across the United States. Find where to train, compete, and connect with other warriors.
+            LETHWEI™ gyms across the United States. Find where to train, compete, and connect with other warriors.
           </p>
           <div className="mt-8">
             <Link
@@ -50,7 +50,7 @@ export default function GymsPage() {
       <section className="bg-[#111111] border-y border-[#2A2A2A] py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <p className="text-[#555555] text-xs text-center">
-            ⚠ Note: Lethwei is legally sanctioned in Wyoming, and select other US states. Always verify local regulations before training or competing.
+            ⚠ Note: Bare knuckle is legally sanctioned in Wyoming, and select other US states. Always verify local regulations before training or competing.
           </p>
         </div>
       </section>
@@ -61,7 +61,7 @@ export default function GymsPage() {
           <div className="border border-[#2A2A2A] bg-[#111111] p-16 text-center">
             <div className="font-[family-name:var(--font-oswald)] text-5xl text-[#2A2A2A] mb-4">🥊</div>
             <h3 className="font-[family-name:var(--font-oswald)] text-2xl text-[#555555] mb-2">No Gyms Listed Yet</h3>
-            <p className="text-[#555555] text-sm mb-6">Be the first to list your Lethwei gym.</p>
+            <p className="text-[#555555] text-sm mb-6">Be the first to list your LETHWEI™ gym.</p>
             <Link href="/gyms/submit" className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-3 transition-colors inline-block">
               List Your Gym
             </Link>
@@ -102,11 +102,11 @@ export default function GymsPage() {
       <section className="py-16 bg-[#111111] border-t border-[#2A2A2A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="font-[family-name:var(--font-oswald)] text-3xl font-bold mb-4">
-            TRAIN LETHWEI?<br />
+            TEACH LETHWEI™ MARTIAL ARTS?<br />
             <span className="text-[#D4A017]">GET LISTED.</span>
           </h2>
           <p className="text-[#888888] mb-8 max-w-md mx-auto text-sm">
-            If your gym offers Lethwei training, get listed here and connect with the growing US community.
+            If your gym offers LETHWEI™ training, get listed here and connect with the growing US community.
           </p>
           <Link
             href="/gyms/submit"

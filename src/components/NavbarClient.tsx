@@ -6,7 +6,7 @@ import { signOut } from "next-auth/react";
 import { Menu, X } from "lucide-react";
 
 const links = [
-  { href: "/learn", label: "What is Lethwei" },
+  { href: "/learn", label: "The Art of 9 Limbs" },
   { href: "/gyms", label: "Find a Gym" },
   { href: "/shop", label: "Shop" },
   { href: "/forum", label: "Forum" },
@@ -26,7 +26,7 @@ export default function NavbarClient({ user }: { user: User }) {
             L
           </div>
           <span className="font-[family-name:var(--font-oswald)] font-700 text-xl tracking-[0.12em] uppercase text-[var(--text)] group-hover:text-[var(--gold)] transition-colors">
-            Lethwei
+            Lethwei<sup className="text-[0.5em] tracking-normal">™</sup>
           </span>
         </Link>
 

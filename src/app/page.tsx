@@ -3,9 +3,9 @@ import Link from "next/link";
 const nineWeapons = [
   { number: "01", name: "Punches", burmese: "Let Thee", description: "Jabs, crosses, hooks, uppercuts, spinning backfists — the fists are honed for maximum damage and blood." },
   { number: "02", name: "Elbows", burmese: "Tel Daung", description: "Horizontal, upward, flying, and spinning elbows. Devastating at close range — bones break." },
-  { number: "03", name: "Knees", burmese: "Doo", description: "Straight, spear, jumping, and double flying knees. The engine of Lethwei's brutal clinch game." },
+  { number: "03", name: "Knees", burmese: "Doo", description: "Straight, spear, jumping, and double flying knees. The engine of the brutal clinch game." },
   { number: "04", name: "Kicks", burmese: "Kan", description: "Roundhouses, hook kicks, axe kicks, spinning back kicks. Full-power leg strikes with no mercy." },
-  { number: "05", name: "Headbutts", burmese: "Gowl Tite", description: "The weapon that sets Lethwei apart from every other art. The ninth limb — and the most feared." },
+  { number: "05", name: "Headbutts", burmese: "Gowl Tite", description: "The weapon that sets the art of 9 limbs apart from every other striking discipline. The ninth limb — and the most feared." },
 ];
 
 const stats = [
@@ -42,7 +42,7 @@ export default function Home() {
 
           <p className="text-[#888888] text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
             Myanmar&apos;s ancient bareknuckle art. Two warriors. No gloves. One falls.
-            Welcome to Lethwei — the most brutal and beautiful combat sport on earth.
+            LETHWEI™ bare knuckle — the most brutal and beautiful combat sport on earth.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -50,7 +50,7 @@ export default function Home() {
               href="/learn"
               className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors w-full sm:w-auto text-center"
             >
-              Discover Lethwei
+              Discover the Art of 9 Limbs
             </Link>
             <Link
               href="/shop"
@@ -95,7 +95,7 @@ export default function Home() {
             <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
               <img
                 src="/skull-tee-front.jpg"
-                alt="Lethwei Skull Tee — Drop 01"
+                alt="LETHWEI™ Skull Tee — Drop 01"
                 className="absolute inset-0 w-full h-full object-contain"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 to-transparent" />
@@ -119,7 +119,7 @@ export default function Home() {
             </h2>
             <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
             <p className="text-[#888888] leading-relaxed mb-4">
-              Acid wash heavyweight tee. Anatomical skull on the front, &ldquo;the art of nine limbs&rdquo; in gothic script across the back. Designed by Gabe Schnider — simple, dark, and built for people who know what Lethwei is.
+              Acid wash heavyweight tee. Anatomical skull on the front, &ldquo;the art of nine limbs&rdquo; in gothic script across the back. Designed by Gabe Schnider — simple, dark, and built for people who know the art of 9 limbs.
             </p>
             <p className="text-[#888888] leading-relaxed mb-8">
               Also available: the Weapons Tee — KNEE / ELBOW / KNUCKLE / SHIN / SKULL stacked across the back in black and light blue. Three colorways, one drop.
@@ -155,10 +155,10 @@ export default function Home() {
             </h2>
             <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
             <p className="text-[#888888] leading-relaxed mb-4">
-              Lethwei traces its roots to the 12th-century Pagan Kingdom of Burma — over 2,000 years of warrior tradition. Ancient matches were held in sand pits, fought without protective gear, continuing until one man could not stand.
+              The art of 9 limbs traces its roots to the 12th-century Pagan Kingdom of Burma — over 2,000 years of warrior tradition. Ancient matches were held in sand pits, fought without protective gear, continuing until one man could not stand.
             </p>
             <p className="text-[#888888] leading-relaxed mb-8">
-              Unlike any other striking art, Lethwei permits headbutts, making it the most complete and devastating standing combat system ever developed. In traditional rules, only a knockout wins. A draw is a warrior&apos;s fate.
+              Unlike any other striking art, it permits headbutts, making it the most complete and devastating standing combat system ever developed. In traditional rules, only a knockout wins. A draw is a warrior&apos;s fate.
             </p>
             <Link
               href="/learn"
@@ -224,7 +224,7 @@ export default function Home() {
               </h3>
               <p className="text-[#D4A017] text-xs tracking-widest uppercase mb-3">No other art allows this</p>
               <p className="text-[#888888] text-sm leading-relaxed">
-                Every other striking art bans the headbutt. Lethwei doesn&apos;t. That single rule changes everything about how you fight, defend, and survive.
+                Every other striking art bans the headbutt. The art of 9 limbs doesn&apos;t. That single rule changes everything about how you fight, defend, and survive.
               </p>
             </div>
           </div>
@@ -260,21 +260,21 @@ export default function Home() {
         <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
           {[
             {
-              name: "Skull Tee",
+              name: "LETHWEI™ Skull Tee",
               colorway: "Acid Wash Black",
               image: "/skull-tee-front.jpg",
               hoverImage: "/skull-tee-back.jpg",
               tag: "Drop 01",
             },
             {
-              name: "Weapons Tee",
+              name: "LETHWEI™ Weapons Tee",
               colorway: "Black",
               image: "/weapons-tee-black.png",
               hoverImage: "/weapons-tee-black.png",
               tag: "Drop 01",
             },
             {
-              name: "Weapons Tee",
+              name: "LETHWEI™ Weapons Tee",
               colorway: "Light Blue",
               image: "/weapons-tee-blue.png",
               hoverImage: "/weapons-tee-blue.png",
@@ -332,7 +332,7 @@ export default function Home() {
             </h3>
             <p className="text-[#888888] text-sm leading-relaxed mb-8">
               Train talk. Technique breakdowns. Event discussions. Find training partners.
-              The Lethwei community is here.
+              The LETHWEI™ community is here.
             </p>
             <Link
               href="/forum"
@@ -352,7 +352,7 @@ export default function Home() {
             </h3>
             <p className="text-[#888888] text-sm leading-relaxed mb-8">
               T-shirts, hoodies, and hats. Carry the warrior spirit wherever you go.
-              Lethwei gear built for those who know.
+              LETHWEI™ gear built for those who know.
             </p>
             <Link
               href="/shop"
@@ -372,7 +372,7 @@ export default function Home() {
             <span className="text-[#C41E1E]">START TRAINING.</span>
           </h2>
           <p className="text-[#888888] max-w-xl mx-auto mb-8">
-            Lethwei is growing across the United States. Find a gym near you or list your own.
+            Bare knuckle is growing across the United States. Find a gym near you or list your own.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
