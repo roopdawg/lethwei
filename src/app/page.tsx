@@ -181,10 +181,10 @@ export default function Home() {
               />
               <div className="absolute bottom-0 left-0 right-0 p-6 text-center bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/75 to-transparent">
                 <div className="font-[family-name:var(--font-oswald)] text-xl tracking-widest uppercase text-[#F5F0E8]">
-                  9 Weapons. One Warrior.
+                  9 Weapons. <span className="text-[#C41E1E]">One Warrior.</span>
                 </div>
-                <div className="mt-1 text-sm text-[#888888]">
-                  Fists · Elbows · Knees · Kicks · <span className="text-[#C41E1E]">Headbutts</span>
+                <div className="mt-1 text-sm text-[#D4A017]">
+                  Fists · Elbows · Knees · Kicks · <span className="text-[#F0C040]">Headbutts</span>
                 </div>
               </div>
             </div>
@@ -265,37 +265,56 @@ export default function Home() {
             {
               name: "LETHWEI™ Skull Tee",
               colorway: "Acid Wash Black",
-              image: "/skull-tee-front.jpg",
-              hoverImage: "/skull-tee-back.jpg",
+              views: [
+                { src: "/skull-tee-front.jpg", label: "Front" },
+                { src: "/skull-tee-back.jpg", label: "Back" },
+              ],
               tag: "Drop 01",
             },
             {
+              // Back only — no front photograph of the Weapons Tee exists yet.
               name: "LETHWEI™ Weapons Tee",
               colorway: "Black",
-              image: "/weapons-tee-black.png",
-              hoverImage: "/weapons-tee-black.png",
+              views: [{ src: "/weapons-tee-black.png", label: "Back" }],
               tag: "Drop 01",
             },
             {
               name: "LETHWEI™ Weapons Tee",
               colorway: "Light Blue",
-              image: "/weapons-tee-blue.png",
-              hoverImage: "/weapons-tee-blue.png",
+              views: [{ src: "/weapons-tee-blue.png", label: "Back" }],
               tag: "Drop 01",
             },
           ].map((item, i) => (
             <div key={i} className="bg-[#111111] group relative overflow-hidden">
               <div className="aspect-square relative bg-[#0A0A0A]">
                 <img
-                  src={item.image}
-                  alt={item.name}
-                  className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0"
+                  src={item.views[0].src}
+                  alt={`${item.name} — ${item.views[0].label.toLowerCase()}`}
+                  className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ${
+                    item.views.length > 1 ? "group-hover:opacity-0" : ""
+                  }`}
                 />
-                <img
-                  src={item.hoverImage}
-                  alt={`${item.name} back`}
-                  className="absolute inset-0 w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                />
+                {item.views[1] && (
+                  <img
+                    src={item.views[1].src}
+                    alt={`${item.name} — ${item.views[1].label.toLowerCase()}`}
+                    className="absolute inset-0 w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  />
+                )}
+                <div className="absolute top-3 left-3">
+                  <span
+                    className={`font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 block transition-opacity duration-500 ${
+                      item.views.length > 1 ? "group-hover:opacity-0" : ""
+                    }`}
+                  >
+                    {item.views[0].label}
+                  </span>
+                  {item.views[1] && (
+                    <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      {item.views[1].label}
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="p-5 border-t border-[#2A2A2A]">
                 <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">

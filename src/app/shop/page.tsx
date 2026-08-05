@@ -5,6 +5,13 @@ export const metadata = {
   description: "Shop official LETHWEI™ t-shirts, hoodies and hats.",
 };
 
+// `views` is ordered: the first entry is what shows at rest, the second (if
+// present) on hover. Every view is labelled so nobody has to guess whether
+// they are looking at the front or the back.
+//
+// The Weapons Tee has BACK only — there is no front photograph of it yet.
+// Add `{ src: "/weapons-tee-black-front.png", label: "Front" }` as the FIRST
+// entry once one exists and the hover swap starts working automatically.
 const products = [
   {
     id: "skull-tee",
@@ -12,18 +19,19 @@ const products = [
     subtitle: "The Art of Nine Limbs",
     description: "Acid wash heavyweight tee. Anatomical skull on the front, 'the art of nine limbs' in gothic script across the back. The flagship design.",
     colorway: "Acid Wash Black",
-    frontImage: "/skull-tee-front.jpg",
-    backImage: "/skull-tee-back.jpg",
+    views: [
+      { src: "/skull-tee-front.jpg", label: "Front" },
+      { src: "/skull-tee-back.jpg", label: "Back" },
+    ],
     tag: "Drop 01",
   },
   {
     id: "weapons-tee-black",
     name: "LETHWEI™ Weapons Tee",
     subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
-    description: "Five weapons. One back. Stacked in bold caps on a clean black tee. LETHWEI™ label at the neck. No front graphic — just the list.",
+    description: "Five weapons stacked in bold caps across the back of a clean black tee. LETHWEI™ label at the neck, sleeve print on the left arm. No front graphic — just the list.",
     colorway: "Black",
-    frontImage: "/weapons-tee-black.png",
-    backImage: "/weapons-tee-black.png",
+    views: [{ src: "/weapons-tee-black.png", label: "Back" }],
     tag: "Drop 01",
   },
   {
@@ -32,8 +40,7 @@ const products = [
     subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
     description: "Same clean weapons stack, washed-out white on powder blue. The contrast colorway for when you want to run it light.",
     colorway: "Light Blue",
-    frontImage: "/weapons-tee-blue.png",
-    backImage: "/weapons-tee-blue.png",
+    views: [{ src: "/weapons-tee-blue.png", label: "Back" }],
     tag: "Drop 01",
   },
 ];
@@ -81,18 +88,44 @@ export default function ShopPage() {
         <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
           {products.map((product) => (
             <div key={product.id} className="bg-[#111111] group">
-              {/* Image */}
+              {/* Image — first view at rest, second (if any) on hover */}
               <div className="relative aspect-square overflow-hidden bg-[#0A0A0A]">
                 <img
-                  src={product.frontImage}
-                  alt={product.name}
-                  className="w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-0 absolute inset-0"
+                  src={product.views[0].src}
+                  alt={`${product.name} — ${product.views[0].label.toLowerCase()}`}
+                  className={`w-full h-full object-contain absolute inset-0 transition-opacity duration-500 ${
+                    product.views.length > 1 ? "group-hover:opacity-0" : ""
+                  }`}
                 />
-                <img
-                  src={product.backImage}
-                  alt={`${product.name} — back`}
-                  className="w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100 absolute inset-0"
-                />
+                {product.views[1] && (
+                  <img
+                    src={product.views[1].src}
+                    alt={`${product.name} — ${product.views[1].label.toLowerCase()}`}
+                    className="w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100 absolute inset-0"
+                  />
+                )}
+
+                {/* Which side am I looking at? */}
+                <div className="absolute top-3 left-3 flex items-center gap-2">
+                  <span
+                    className={`font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 transition-opacity duration-500 ${
+                      product.views.length > 1 ? "group-hover:opacity-0" : ""
+                    }`}
+                  >
+                    {product.views[0].label}
+                  </span>
+                  {product.views[1] && (
+                    <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 absolute left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      {product.views[1].label}
+                    </span>
+                  )}
+                </div>
+
+                {product.views.length > 1 && (
+                  <span className="absolute bottom-3 right-3 text-[#555555] text-[10px] tracking-widest uppercase group-hover:opacity-0 transition-opacity duration-500">
+                    Hover for back
+                  </span>
+                )}
               </div>
 
               {/* Details */}
