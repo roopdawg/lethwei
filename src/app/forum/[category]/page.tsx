@@ -6,7 +6,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   const { category } = await params;
   const cat = await prisma.category.findUnique({ where: { slug: category } });
   if (!cat) return {};
-  return { title: `${cat.name} — LETHWEI™ Forum` };
+  return { title: `${cat.name} — The LETHWEI® Forum` };
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {

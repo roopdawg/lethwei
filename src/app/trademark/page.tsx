@@ -1,9 +1,29 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Trademark Policy — LETHWEI™",
-  description: "How the LETHWEI™ mark may and may not be used. Permitted uses, prohibited uses, and how to request permission.",
+  title: "Trademark Policy — LETHWEI®",
+  description: "How the LETHWEI® mark may and may not be used. Registrations, permitted uses, prohibited uses, and how to request permission.",
 };
+
+// U.S. Reg. No. 6667578 (Class 025) covers exactly four items. The ® symbol is
+// lawful for these and for the on-line forum under Reg. No. 6661546 (Class 038).
+// Everything else on this site — gyms, training, coaching, events, editorial —
+// falls outside both registrations and uses ™.
+const registrations = [
+  {
+    reg: "6667578",
+    cls: "Class 025",
+    register: "Principal Register",
+    covers: "Apparel, namely, shirts, hats, hoodies, and jackets",
+  },
+  {
+    reg: "6661546",
+    cls: "Class 038",
+    register: "Supplemental Register",
+    covers:
+      "Broadcasting and streaming of audio and video, webcasting, electronic transmission of messages and data, and providing on-line forums — all in the field of martial arts",
+  },
+];
 
 const permitted = [
   "Referring to the sport of bare knuckle martial arts by its ordinary name, in lowercase, in ordinary descriptive text.",
@@ -13,7 +33,7 @@ const permitted = [
 ];
 
 const prohibited = [
-  "Using LETHWEI™ as the name of your own goods — apparel, headwear, or any other merchandise.",
+  "Using LETHWEI® as the name of your own shirts, hats, hoodies or jackets — these are covered by U.S. Reg. No. 6667578.",
   "Using LETHWEI™ in a business name, domain name, social media handle, or logo in a way that suggests you are us, or that we endorse, sponsor, or are affiliated with you.",
   "Applying the mark to a tag, label, or any other source-identifying part of a product you sell.",
   "Altering the mark — no abbreviations, no combining it with other words to form a new mark, no redrawing the logo.",
@@ -22,7 +42,7 @@ const prohibited = [
 const usage = [
   {
     rule: "Always an adjective, never a noun",
-    right: "LETHWEI™ martial arts · LETHWEI™ gear · LETHWEI™ gyms",
+    right: "LETHWEI® shirts · LETHWEI™ martial arts · LETHWEI™ gyms",
     wrong: "Discover Lethwei · Train Lethwei · Lethwei is a sport",
   },
   {
@@ -31,9 +51,9 @@ const usage = [
     wrong: "Lethweis · Lethwei's rules",
   },
   {
-    rule: "Always with the ™ symbol on first use",
-    right: "LETHWEI™ bare knuckle",
-    wrong: "lethwei bare knuckle",
+    rule: "® for registered goods and services, ™ for everything else",
+    right: "LETHWEI® Skull Tee · the LETHWEI® Forum · LETHWEI™ gyms",
+    wrong: "LETHWEI® gyms · LETHWEI® seminars · lethwei bare knuckle",
   },
 ];
 
@@ -59,8 +79,9 @@ export default function TrademarkPage() {
           </h1>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
           <p className="text-[#888888] text-lg leading-relaxed">
-            LETHWEI™ is a trademark. This page explains how the mark may and may not be used,
-            so that everyone gets fair and reasonable notice of where the line sits.
+            LETHWEI® is a registered trademark of Dean Perry Rosenwald. This page explains what
+            the registrations cover and how the mark may and may not be used, so that everyone
+            gets fair and reasonable notice of where the line sits.
           </p>
         </div>
       </section>
@@ -77,9 +98,43 @@ export default function TrademarkPage() {
             use of its name.
           </p>
           <p className="text-[#888888] leading-relaxed">
-            LETHWEI™ is different. It is a brand: a source identifier that tells you goods and
+            LETHWEI® is different. It is a brand: a source identifier that tells you goods and
             services come from us and not from someone else. This policy is about the brand.
           </p>
+        </div>
+      </section>
+
+      {/* What is actually registered */}
+      <section className="py-16 max-w-4xl mx-auto px-4 sm:px-6">
+        <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
+          On the register
+        </span>
+        <h2 className="font-[family-name:var(--font-oswald)] text-3xl font-bold mb-6">
+          WHAT THE MARK <span className="text-[#C41E1E]">COVERS</span>
+        </h2>
+        <p className="text-[#888888] leading-relaxed mb-8">
+          Two live U.S. registrations, both owned by Dean Perry Rosenwald. The ® symbol is used
+          only for the goods and services these cover. Everywhere else on this site the mark
+          appears as ™.
+        </p>
+
+        <div className="space-y-px bg-[#2A2A2A] border border-[#2A2A2A]">
+          {registrations.map((r) => (
+            <div key={r.reg} className="bg-[#111111] p-6">
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-3">
+                <span className="font-[family-name:var(--font-oswald)] text-xl uppercase tracking-wide text-[#F5F0E8]">
+                  U.S. Reg. No. {r.reg}
+                </span>
+                <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1">
+                  {r.cls}
+                </span>
+                <span className="text-[#555555] text-xs tracking-widest uppercase">
+                  {r.register}
+                </span>
+              </div>
+              <p className="text-[#888888] text-sm leading-relaxed">{r.covers}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -153,8 +208,9 @@ export default function TrademarkPage() {
           OFFICIAL <span className="text-[#C41E1E]">GEAR</span>
         </h2>
         <p className="text-[#888888] leading-relaxed mb-6">
-          Official LETHWEI™ apparel carries the LETHWEI™ label. If a garment does not carry
+          Official LETHWEI® apparel carries the LETHWEI® label. If a garment does not carry
           that label, it did not come from us — whatever the print on the front says.
+          Shirts, hats, hoodies and jackets are covered by U.S. Reg. No. 6667578.
         </p>
         <Link
           href="/shop"

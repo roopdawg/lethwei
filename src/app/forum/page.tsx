@@ -2,8 +2,8 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 
 export const metadata = {
-  title: "Forum — LETHWEI™ Community | Training, Technique & Events",
-  description: "The LETHWEI™ community forum. Discuss training, technique, events, and connect with warriors worldwide.",
+  title: "The LETHWEI® Forum | Training, Technique & Events",
+  description: "The LETHWEI® online forum. Discuss training, technique, events, and connect with warriors worldwide.",
 };
 
 const categories = [
@@ -71,7 +71,7 @@ export default async function ForumPage() {
             Community
           </span>
           <h1 className="font-[family-name:var(--font-oswald)] text-6xl md:text-8xl font-bold leading-none mb-6">
-            THE LETHWEI<sup className="text-[0.35em] tracking-normal">™</sup><br />
+            THE LETHWEI<sup className="text-[0.35em] tracking-normal">®</sup><br />
             <span className="text-[#C41E1E]">FORUM</span>
           </h1>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
@@ -170,7 +170,9 @@ export default async function ForumPage() {
       <section className="bg-[#111111] border-t border-[#2A2A2A] py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <p className="text-[#555555] text-xs text-center">
-            The LETHWEI™ Forum is an online community service provided under the LETHWEI™ mark.{" "}
+            The LETHWEI® Forum is provided under U.S. Reg. No. 6661546, which covers providing
+            on-line forums for transmission of messages among computer users in the field of
+            martial arts.{" "}
             <Link href="/trademark" className="underline underline-offset-2 hover:text-[#888888] transition-colors">
               Trademark policy
             </Link>
