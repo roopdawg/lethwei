@@ -56,6 +56,12 @@ export default function ForumPage() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0A0011] to-[#0A0A0A]" />
+        <img
+          src="/ghost-forum.webp"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none select-none absolute right-[-8%] top-1/2 -translate-y-1/2 h-[130%] w-auto max-w-none opacity-60 hidden lg:block"
+        />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
             Community

@@ -22,6 +22,8 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-[#110000] to-[#0A0A0A]" />
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#C41E1E]/10 rounded-full blur-[120px] pointer-events-none" />
+        {/* No ghost backdrop here: unlike the other heroes this one is centred,
+            so there is no empty half for it to occupy without fighting the type. */}
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-3 mb-8">
@@ -172,16 +174,17 @@ export default function Home() {
           <div className="relative">
             <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-[#C41E1E]/20 to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="font-[family-name:var(--font-oswald)] text-8xl font-bold text-[#C41E1E]/30 mb-4">9</div>
-                  <div className="font-[family-name:var(--font-oswald)] text-2xl tracking-widest uppercase text-[#555555]">
-                    Weapons.<br />One Warrior.
-                  </div>
-                  <div className="mt-6 space-y-1 text-sm text-[#888888]">
-                    <p>Fists · Elbows · Knees</p>
-                    <p>Kicks · <span className="text-[#C41E1E]">Headbutts</span></p>
-                  </div>
+              <img
+                src="/emblem.webp"
+                alt="Nine weapons radiating from a single core — the art of 9 limbs"
+                className="absolute inset-0 w-full h-full object-contain p-5"
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-center bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/75 to-transparent">
+                <div className="font-[family-name:var(--font-oswald)] text-xl tracking-widest uppercase text-[#F5F0E8]">
+                  9 Weapons. One Warrior.
+                </div>
+                <div className="mt-1 text-sm text-[#888888]">
+                  Fists · Elbows · Knees · Kicks · <span className="text-[#C41E1E]">Headbutts</span>
                 </div>
               </div>
             </div>

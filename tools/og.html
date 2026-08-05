@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:1200px; height:630px; overflow:hidden; }
+  body {
+    background:#0A0A0A;
+    font-family:'Oswald','Helvetica Neue Condensed',Impact,sans-serif;
+    position:relative;
+  }
+  /* red bloom, mirrors the site's hero treatment */
+  .bloom {
+    position:absolute; top:-140px; left:52%; width:760px; height:760px;
+    background:rgba(196,30,30,0.13); border-radius:50%; filter:blur(110px);
+  }
+  .mark {
+    position:absolute; right:-70px; top:50%; transform:translateY(-50%);
+    width:660px; height:660px; object-fit:contain;
+  }
+  .wrap {
+    position:absolute; left:72px; top:50%; transform:translateY(-50%);
+    z-index:2;
+  }
+  .kicker {
+    color:#D4A017; font-size:21px; font-weight:500;
+    letter-spacing:0.3em; text-transform:uppercase; margin-bottom:22px;
+  }
+  h1 {
+    font-size:104px; font-weight:700; line-height:0.92;
+    color:#F5F0E8; text-transform:uppercase; letter-spacing:0.02em;
+  }
+  h1 sup { font-size:0.28em; vertical-align:super; letter-spacing:0; }
+  h1 .r { color:#C41E1E; }
+  .rule { width:96px; height:4px; background:#C41E1E; margin:30px 0 26px; }
+  .sub {
+    color:#888888; font-family:-apple-system,'Segoe UI',sans-serif;
+    font-size:25px; line-height:1.45; max-width:520px;
+  }
+</style>
+</head>
+<body>
+  <div class="bloom"></div>
+  <img class="mark" src="out/emblem.png" alt="">
+  <div class="wrap">
+    <div class="kicker">Bare Knuckle · Myanmar</div>
+    <h1>LETHWEI<sup>&trade;</sup><br><span class="r">9 LIMBS</span></h1>
+    <div class="rule"></div>
+    <div class="sub">The fastest growing combat sport in the world.<br>No gloves. No mercy.</div>
+  </div>
+</body>
+</html>
