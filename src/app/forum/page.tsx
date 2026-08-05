@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { auth } from "@/lib/auth";
 
 export const metadata = {
   title: "Forum — LETHWEI™ Community | Training, Technique & Events",
@@ -50,7 +51,10 @@ const categories = [
   },
 ];
 
-export default function ForumPage() {
+export default async function ForumPage() {
+  const session = await auth();
+  const signedIn = Boolean(session?.user);
+
   return (
     <>
       {/* Hero */}
@@ -82,12 +86,14 @@ export default function ForumPage() {
             >
               + New Thread
             </Link>
-            <Link
-              href="/auth/signin"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#888888] text-[#888888] hover:text-[#F5F0E8] px-6 py-3 transition-colors inline-block"
-            >
-              Sign In
-            </Link>
+            {!signedIn && (
+              <Link
+                href="/auth/signin"
+                className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#888888] text-[#888888] hover:text-[#F5F0E8] px-6 py-3 transition-colors inline-block"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       </section>
@@ -125,18 +131,37 @@ export default function ForumPage() {
       <section className="py-12 bg-[#111111] border-t border-[#2A2A2A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="border border-[#D4A017]/30 bg-[#D4A017]/5 p-8 text-center">
-            <h3 className="font-[family-name:var(--font-oswald)] text-2xl mb-2">
-              JOIN THE CONVERSATION
-            </h3>
-            <p className="text-[#888888] text-sm mb-6">
-              Create a free account to post threads, reply, and connect with the community.
-            </p>
-            <Link
-              href="/auth/signin"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#D4A017] hover:bg-[#F0C040] text-black px-8 py-3 transition-colors inline-block"
-            >
-              Create Account
-            </Link>
+            {signedIn ? (
+              <>
+                <h3 className="font-[family-name:var(--font-oswald)] text-2xl mb-2">
+                  GOT SOMETHING TO SAY?
+                </h3>
+                <p className="text-[#888888] text-sm mb-6">
+                  Start a thread, break down a technique, or find someone to train with.
+                </p>
+                <Link
+                  href="/forum/new-thread"
+                  className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#D4A017] hover:bg-[#F0C040] text-black px-8 py-3 transition-colors inline-block"
+                >
+                  Start a Thread
+                </Link>
+              </>
+            ) : (
+              <>
+                <h3 className="font-[family-name:var(--font-oswald)] text-2xl mb-2">
+                  JOIN THE CONVERSATION
+                </h3>
+                <p className="text-[#888888] text-sm mb-6">
+                  Create a free account to post threads, reply, and connect with the community.
+                </p>
+                <Link
+                  href="/auth/signup"
+                  className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#D4A017] hover:bg-[#F0C040] text-black px-8 py-3 transition-colors inline-block"
+                >
+                  Create Account
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </section>
