@@ -86,3 +86,23 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--gold);
   display: block;
 }
+
+/* Slowly rotating emblem.
+   A rendered turntable sequence was ~390KB (WebM) to ~1.2MB (animated WebP);
+   on a radially symmetric mark the only visible difference is that the
+   highlights rotate with it rather than travelling across the facets, which
+   is not worth the payload. This costs nothing and composites on the GPU. */
+.emblem-spin {
+  animation: emblem-spin 32s linear infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@keyframes emblem-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emblem-spin { animation: none; }
+}

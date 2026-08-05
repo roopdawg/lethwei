@@ -50,6 +50,12 @@ export default function LearnPage() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#110000] to-[#0A0A0A]" />
+        <img
+          src="/ghost-learn.webp"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none select-none absolute right-[-8%] top-1/2 -translate-y-1/2 h-[130%] w-auto max-w-none opacity-60 hidden lg:block"
+        />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
           <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
             LETHWEI™ Martial Arts
@@ -148,7 +154,14 @@ export default function LearnPage() {
       </section>
 
       {/* Techniques */}
-      <section id="techniques" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 scroll-mt-20">
+      <section id="techniques" className="relative py-24 scroll-mt-20 overflow-hidden">
+        <img
+          src="/band-weapons.webp"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover opacity-45"
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
           The Arsenal
         </span>
@@ -179,6 +192,7 @@ export default function LearnPage() {
               </div>
             </div>
           ))}
+        </div>
         </div>
       </section>
 

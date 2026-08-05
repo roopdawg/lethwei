@@ -43,6 +43,12 @@ export default function TrademarkPage() {
       {/* Hero */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#110000] to-[#0A0A0A]" />
+        <img
+          src="/emblem.webp"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none select-none absolute right-[4%] top-1/2 -translate-y-1/2 h-[125%] w-auto max-w-none opacity-25 hidden lg:block"
+        />
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
           <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
             Legal

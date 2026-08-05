@@ -17,6 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://lethwei-web-production.up.railway.app"),
   title: "LETHWEI™ Bare Knuckle Martial Arts — The Art of 9 Limbs",
   description:
     "The fastest growing combat sport in the world. Bare-knuckle. No mercy. Pure warrior tradition. Explore LETHWEI™ martial arts, find gyms, and join the community.",
@@ -24,6 +25,20 @@ export const metadata: Metadata = {
     title: "LETHWEI™ Bare Knuckle Martial Arts — The Art of 9 Limbs",
     description: "The fastest growing combat sport in the world.",
     type: "website",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "LETHWEI™ — The Art of 9 Limbs",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LETHWEI™ Bare Knuckle Martial Arts — The Art of 9 Limbs",
+    description: "The fastest growing combat sport in the world.",
+    images: ["/og.jpg"],
   },
 };
 
