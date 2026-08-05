@@ -26,7 +26,7 @@ export default function NavbarClient({ user }: { user: User }) {
             L
           </div>
           <span className="font-[family-name:var(--font-oswald)] font-700 text-xl tracking-[0.12em] uppercase text-[var(--text)] group-hover:text-[var(--gold)] transition-colors">
-            Lethwei<sup className="text-[0.5em] tracking-normal">™</sup>
+            Lethwei<sup className="text-[0.5em] tracking-normal">®</sup>
           </span>
         </Link>
 

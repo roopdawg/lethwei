@@ -97,7 +97,7 @@ export default function Home() {
             <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
               <img
                 src="/skull-tee-front.jpg"
-                alt="LETHWEI™ Skull Tee — Drop 01"
+                alt="LETHWEI® Skull Tee — Drop 01"
                 className="absolute inset-0 w-full h-full object-contain"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 to-transparent" />
@@ -263,7 +263,7 @@ export default function Home() {
         <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
           {[
             {
-              name: "LETHWEI™ Skull Tee",
+              name: "LETHWEI® Skull Tee",
               colorway: "Acid Wash Black",
               views: [
                 { src: "/skull-tee-front.jpg", label: "Front" },
@@ -272,7 +272,7 @@ export default function Home() {
               tag: "Drop 01",
             },
             {
-              name: "LETHWEI™ Weapons Tee",
+              name: "LETHWEI® Weapons Tee",
               colorway: "Light Blue",
               views: [
                 { src: "/weapons-tee-blue-front.webp", label: "Front" },
@@ -282,7 +282,7 @@ export default function Home() {
             },
             {
               // Back only — no front photograph of the BLACK colourway yet.
-              name: "LETHWEI™ 9 Skull Hoodie",
+              name: "LETHWEI® 9 Skull Hoodie",
               colorway: "Acid Wash Black",
               views: [
                 { src: "/skull-hoodie-front.webp", label: "Front" },

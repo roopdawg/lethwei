@@ -12,7 +12,7 @@ export default function Footer() {
                 L
               </div>
               <span className="font-[family-name:var(--font-oswald)] font-bold text-xl tracking-[0.12em] uppercase">
-                Lethwei<sup className="text-[0.5em] tracking-normal">™</sup>
+                Lethwei<sup className="text-[0.5em] tracking-normal">®</sup>
               </span>
             </div>
             <p className="text-[var(--text-muted)] text-sm leading-relaxed max-w-xs">
@@ -77,7 +77,7 @@ export default function Footer() {
               © {new Date().getFullYear()} Lethwei. All rights reserved.
             </p>
             <p className="text-[var(--text-dim)] text-xs">
-              LETHWEI™ is a trademark.{" "}
+              LETHWEI® is a registered trademark of Dean Perry Rosenwald.{" "}
               <Link
                 href="/trademark"
                 className="underline underline-offset-2 hover:text-[var(--text-muted)] transition-colors"

@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Shop — LETHWEI™ Gear | T-Shirts, Hoodies & Hats",
-  description: "Shop official LETHWEI™ t-shirts, hoodies and hats.",
+  title: "Shop — LETHWEI® Apparel | T-Shirts, Hoodies & Hats",
+  description: "Shop official LETHWEI® t-shirts, hoodies and hats.",
 };
 
 // `views` is ordered: the first entry is what shows at rest, the second (if
@@ -15,7 +15,7 @@ export const metadata = {
 const products = [
   {
     id: "skull-tee",
-    name: "LETHWEI™ Skull Tee",
+    name: "LETHWEI® Skull Tee",
     subtitle: "The Art of Nine Limbs",
     description: "Acid wash heavyweight tee. Anatomical skull on the front, 'the art of nine limbs' in gothic script across the back. The flagship design.",
     colorway: "Acid Wash Black",
@@ -27,9 +27,9 @@ const products = [
   },
   {
     id: "weapons-tee-blue",
-    name: "LETHWEI™ Weapons Tee",
+    name: "LETHWEI® Weapons Tee",
     subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
-    description: "Myanmar flag and the LETHWEI™ oval on the chest, Burmese script across the front. Five weapons stacked in bold caps across the back. Sleeve print on the left arm.",
+    description: "Myanmar flag and the LETHWEI® oval on the chest, Burmese script across the front. Five weapons stacked in bold caps across the back. Sleeve print on the left arm.",
     colorway: "Light Blue",
     views: [
       { src: "/weapons-tee-blue-front.webp", label: "Front" },
@@ -42,16 +42,16 @@ const products = [
     // blue front above is presumed to be the same artwork, but that is not
     // confirmed, so it is not reused here.
     id: "weapons-tee-black",
-    name: "LETHWEI™ Weapons Tee",
+    name: "LETHWEI® Weapons Tee",
     subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
-    description: "Five weapons stacked in bold caps across the back of a clean black tee. LETHWEI™ label at the neck, sleeve print on the left arm.",
+    description: "Five weapons stacked in bold caps across the back of a clean black tee. LETHWEI® label at the neck, sleeve print on the left arm.",
     colorway: "Black",
     views: [{ src: "/weapons-tee-black-back.webp", label: "Back" }],
     tag: "Drop 01",
   },
   {
     id: "skull-hoodie",
-    name: "LETHWEI™ 9 Skull Hoodie",
+    name: "LETHWEI® 9 Skull Hoodie",
     subtitle: "Nine Limbs. One Skull.",
     description: "Acid wash heavyweight hoodie. Small gothic lethwei script at the chest, anatomical skull ringed with the number nine across the back.",
     colorway: "Acid Wash Black",
@@ -63,7 +63,7 @@ const products = [
   },
   {
     id: "tiger-tee-blue",
-    name: "LETHWEI™ Tiger Boxing Tee",
+    name: "LETHWEI® Tiger Boxing Tee",
     subtitle: "Golden Tiger Boxing Club",
     description: "Tribute tee to Kyat Ba Nyein, who revived the sport in the 1950s. Hand-drawn portrait under a heavy gothic wordmark, on a washed blue camo body.",
     colorway: "Blue Camo",
@@ -72,7 +72,7 @@ const products = [
   },
   {
     id: "tiger-tee-green",
-    name: "LETHWEI™ Tiger Boxing Tee",
+    name: "LETHWEI® Tiger Boxing Tee",
     subtitle: "Golden Tiger Boxing Club",
     description: "The same Kyat Ba Nyein portrait on a woodland camo body. Heavier, warmer, and built to take a beating.",
     colorway: "Green Camo",
@@ -116,7 +116,7 @@ export default function ShopPage() {
             Official Gear
           </span>
           <h2 className="font-[family-name:var(--font-oswald)] text-4xl md:text-5xl font-bold leading-none text-[#F5F0E8]">
-            LETHWEI<sup className="text-[0.4em] tracking-normal">™</sup> APPAREL
+            LETHWEI<sup className="text-[0.4em] tracking-normal">®</sup> APPAREL
           </h2>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mt-5" />
         </div>
