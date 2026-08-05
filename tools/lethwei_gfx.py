@@ -234,6 +234,26 @@ def main():
         build_emblem()
         three_point()
         camera((0, -14.2, 0.5), (0, 0, 0), lens=62)
+    elif VARIANT == "turntable":
+        # Frame sequence: geometry spins, lights stay put, so highlights travel
+        # across the facets instead of rotating with the mark. One Blender
+        # session for the whole sequence — startup dominates otherwise.
+        from mathutils import Matrix
+        build_emblem()
+        three_point()
+        camera((0, -14.2, 0.5), (0, 0, 0), lens=62)
+        meshes = [o for o in bpy.context.scene.objects if o.type == "MESH"]
+        base = [o.matrix_world.copy() for o in meshes]
+        n = int(arg("--frames", 48))
+        os.makedirs(OUT, exist_ok=True)
+        for i in range(n):
+            R = Matrix.Rotation(i * math.tau / n, 4, "Y")
+            for o, m in zip(meshes, base):
+                o.matrix_world = R @ m
+            bpy.context.scene.render.filepath = os.path.join(OUT, f"f{i:03d}.png")
+            bpy.ops.render.render(write_still=True)
+        print("WROTE SEQUENCE", n, OUT)
+        return
     elif VARIANT == "ghost":
         # Dim, cropped emblem. Same mark, pushed back so type stays dominant.
         build_emblem(dim=0.16)
