@@ -42,7 +42,35 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
       </Link>
 
       {threads.length === 0 ? (
-        <p style={{ color: "var(--text-muted)" }}>No threads yet. Be the first.</p>
+        <div
+          className="relative overflow-hidden border p-14 text-center"
+          style={{ borderColor: "var(--border)", background: "var(--surface)" }}
+        >
+          <img
+            src="/emblem.webp"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[190%] w-auto max-w-none opacity-[0.07]"
+          />
+          <div className="relative">
+            <p
+              className="font-[family-name:var(--font-oswald)] text-2xl uppercase tracking-wide mb-2"
+              style={{ color: "var(--text)" }}
+            >
+              No threads yet
+            </p>
+            <p className="text-sm mb-7" style={{ color: "var(--text-muted)" }}>
+              Be the first to start the conversation in {cat.name}.
+            </p>
+            <Link
+              href={`/forum/new-thread?category=${cat.slug}`}
+              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm px-6 py-3 inline-block transition-colors"
+              style={{ background: "var(--red)", color: "var(--text)" }}
+            >
+              Start a Thread
+            </Link>
+          </div>
+        </div>
       ) : (
         <div className="flex flex-col gap-px" style={{ background: "var(--border)" }}>
           {threads.map((t) => (
