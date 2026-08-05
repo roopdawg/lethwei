@@ -26,21 +26,57 @@ const products = [
     tag: "Drop 01",
   },
   {
-    id: "weapons-tee-black",
-    name: "LETHWEI™ Weapons Tee",
-    subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
-    description: "Five weapons stacked in bold caps across the back of a clean black tee. LETHWEI™ label at the neck, sleeve print on the left arm. No front graphic — just the list.",
-    colorway: "Black",
-    views: [{ src: "/weapons-tee-black.png", label: "Back" }],
-    tag: "Drop 01",
-  },
-  {
     id: "weapons-tee-blue",
     name: "LETHWEI™ Weapons Tee",
     subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
-    description: "Same clean weapons stack, washed-out white on powder blue. The contrast colorway for when you want to run it light.",
+    description: "Myanmar flag and the LETHWEI™ oval on the chest, Burmese script across the front. Five weapons stacked in bold caps across the back. Sleeve print on the left arm.",
     colorway: "Light Blue",
-    views: [{ src: "/weapons-tee-blue.png", label: "Back" }],
+    views: [
+      { src: "/weapons-tee-blue-front.webp", label: "Front" },
+      { src: "/weapons-tee-blue.png", label: "Back" },
+    ],
+    tag: "Drop 01",
+  },
+  {
+    // Back only — no front photograph of the BLACK colourway yet. The light
+    // blue front above is presumed to be the same artwork, but that is not
+    // confirmed, so it is not reused here.
+    id: "weapons-tee-black",
+    name: "LETHWEI™ Weapons Tee",
+    subtitle: "Knee. Elbow. Knuckle. Shin. Skull.",
+    description: "Five weapons stacked in bold caps across the back of a clean black tee. LETHWEI™ label at the neck, sleeve print on the left arm.",
+    colorway: "Black",
+    views: [{ src: "/weapons-tee-black-back.webp", label: "Back" }],
+    tag: "Drop 01",
+  },
+  {
+    id: "skull-hoodie",
+    name: "LETHWEI™ 9 Skull Hoodie",
+    subtitle: "Nine Limbs. One Skull.",
+    description: "Acid wash heavyweight hoodie. Small gothic lethwei script at the chest, anatomical skull ringed with the number nine across the back.",
+    colorway: "Acid Wash Black",
+    views: [
+      { src: "/skull-hoodie-front.webp", label: "Front" },
+      { src: "/skull-hoodie-back.webp", label: "Back" },
+    ],
+    tag: "Drop 01",
+  },
+  {
+    id: "tiger-tee-blue",
+    name: "LETHWEI™ Tiger Boxing Tee",
+    subtitle: "Golden Tiger Boxing Club",
+    description: "Tribute tee to Kyat Ba Nyein, who revived the sport in the 1950s. Hand-drawn portrait under a heavy gothic wordmark, on a washed blue camo body.",
+    colorway: "Blue Camo",
+    views: [{ src: "/tiger-tee-blue-front.webp", label: "Front" }],
+    tag: "Drop 01",
+  },
+  {
+    id: "tiger-tee-green",
+    name: "LETHWEI™ Tiger Boxing Tee",
+    subtitle: "Golden Tiger Boxing Club",
+    description: "The same Kyat Ba Nyein portrait on a woodland camo body. Heavier, warmer, and built to take a beating.",
+    colorway: "Green Camo",
+    views: [{ src: "/tiger-tee-green-front.webp", label: "Front" }],
     tag: "Drop 01",
   },
 ];
@@ -80,7 +116,7 @@ export default function ShopPage() {
             Official Gear
           </span>
           <h2 className="font-[family-name:var(--font-oswald)] text-4xl md:text-5xl font-bold leading-none text-[#F5F0E8]">
-            LETHWEI<sup className="text-[0.4em] tracking-normal">™</sup> T-SHIRTS
+            LETHWEI<sup className="text-[0.4em] tracking-normal">™</sup> APPAREL
           </h2>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mt-5" />
         </div>

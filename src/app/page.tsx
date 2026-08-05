@@ -272,16 +272,22 @@ export default function Home() {
               tag: "Drop 01",
             },
             {
-              // Back only — no front photograph of the Weapons Tee exists yet.
               name: "LETHWEI™ Weapons Tee",
-              colorway: "Black",
-              views: [{ src: "/weapons-tee-black.png", label: "Back" }],
+              colorway: "Light Blue",
+              views: [
+                { src: "/weapons-tee-blue-front.webp", label: "Front" },
+                { src: "/weapons-tee-blue.png", label: "Back" },
+              ],
               tag: "Drop 01",
             },
             {
-              name: "LETHWEI™ Weapons Tee",
-              colorway: "Light Blue",
-              views: [{ src: "/weapons-tee-blue.png", label: "Back" }],
+              // Back only — no front photograph of the BLACK colourway yet.
+              name: "LETHWEI™ 9 Skull Hoodie",
+              colorway: "Acid Wash Black",
+              views: [
+                { src: "/skull-hoodie-front.webp", label: "Front" },
+                { src: "/skull-hoodie-back.webp", label: "Back" },
+              ],
               tag: "Drop 01",
             },
           ].map((item, i) => (
