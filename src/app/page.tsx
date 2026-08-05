@@ -177,7 +177,7 @@ export default function Home() {
               <img
                 src="/emblem.webp"
                 alt="Nine weapons radiating from a single core — the art of 9 limbs"
-                className="absolute inset-0 w-full h-full object-contain p-5"
+                className="emblem-spin absolute inset-0 w-full h-full object-contain p-5"
               />
               <div className="absolute bottom-0 left-0 right-0 p-6 text-center bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/75 to-transparent">
                 <div className="font-[family-name:var(--font-oswald)] text-xl tracking-widest uppercase text-[#F5F0E8]">
