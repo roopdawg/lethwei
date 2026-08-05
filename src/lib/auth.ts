@@ -4,6 +4,12 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  // Auth.js only infers a trusted host automatically on Vercel. We deploy to
+  // Railway, where every /api/auth/* call otherwise fails with
+  // `UntrustedHost: Host must be trusted` and sign-in returns a 500.
+  // Kept in code rather than an AUTH_TRUST_HOST env var so it survives the
+  // service being recreated.
+  trustHost: true,
   session: { strategy: "jwt" },
   providers: [
     Credentials({
