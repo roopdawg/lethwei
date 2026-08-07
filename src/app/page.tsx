@@ -8,6 +8,16 @@ const nineWeapons = [
   { number: "05", name: "Headbutts", burmese: "Gowl Tite", description: "The weapon that sets the art of 9 limbs apart from every other striking discipline. The ninth limb — and the most feared." },
 ];
 
+// Shot at Santa Monica Striking. United States Lethwei Federation tees —
+// a separate line from the Drop 01 products in the shop.
+const heroSlides = [
+  "/wear-01.webp",
+  "/wear-02.webp",
+  "/wear-03.webp",
+  "/wear-04.webp",
+  "/wear-05.webp",
+];
+
 const stats = [
   { value: "2,000+", label: "Years of History" },
   { value: "9", label: "Weapons in the Arsenal" },
@@ -21,9 +31,32 @@ export default function Home() {
       {/* ── HERO ── */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-[#110000] to-[#0A0A0A]" />
+
+        {/* Slideshow of the gear on real people, behind the headline.
+            Decorative, so aria-hidden with empty alt. The scrim below is
+            deliberately heavy — the 9xl type has to stay the loudest thing
+            on the page. No ghost emblem here: this hero is centred, so
+            there is no empty half for one to occupy. */}
+        <div className="absolute inset-0 overflow-hidden">
+          {heroSlides.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              aria-hidden="true"
+              loading={i === 0 ? "eager" : "lazy"}
+              fetchPriority={i === 0 ? "high" : "low"}
+              className="hero-slide absolute inset-0 w-full h-full object-cover"
+              style={{ animationDelay: `${i * 6}s`, objectPosition: "center 34%" }}
+            />
+          ))}
+          {/* Two-layer scrim: a flat wash for overall contrast, plus a vertical
+              gradient that is heaviest exactly where the headline sits. */}
+          <div className="absolute inset-0 bg-[#0A0A0A]/58" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/85 via-[#0A0A0A]/45 to-[#0A0A0A]" />
+        </div>
+
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#C41E1E]/10 rounded-full blur-[120px] pointer-events-none" />
-        {/* No ghost backdrop here: unlike the other heroes this one is centred,
-            so there is no empty half for it to occupy without fighting the type. */}
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-3 mb-8">

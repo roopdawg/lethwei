@@ -106,3 +106,25 @@ h1, h2, h3, h4, h5, h6 {
 @media (prefers-reduced-motion: reduce) {
   .emblem-spin { animation: none; }
 }
+
+/* Hero slideshow — 5 slides × 6s = a 30s cycle.
+   Each slide is opaque for 16% of the cycle with a ~0.6s crossfade either
+   side, staggered by animation-delay. Sits behind a heavy scrim so the 9xl
+   headline stays dominant. */
+.hero-slide {
+  opacity: 0;
+  animation: hero-slide-fade 30s linear infinite;
+}
+
+@keyframes hero-slide-fade {
+  0%   { opacity: 0; }
+  2%   { opacity: 1; }
+  18%  { opacity: 1; }
+  20%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide { animation: none; }
+  .hero-slide:first-of-type { opacity: 1; }
+}
