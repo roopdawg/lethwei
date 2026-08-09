@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: lethwei_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/lethwei_test
+      AUTH_SECRET: ci-only-secret-not-used-anywhere-real
+      NEXTAUTH_SECRET: ci-only-secret-not-used-anywhere-real
+      NEXTAUTH_URL: http://localhost:3000
+      # NOT BASE_URL — that name is a reserved Vite built-in and Vitest
+      # overwrites it with "/", which breaks every request URL.
+      TEST_BASE_URL: http://localhost:3000
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npx prisma migrate deploy
+      - run: npm run seed
+      - run: npm run lint
+      - run: npm run build
+
+      - name: Start the app
+        run: |
+          npx next start -p 3000 &
+          npx wait-on http://localhost:3000 --timeout 90000
+
+      - run: npm test
