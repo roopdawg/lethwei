@@ -71,6 +71,42 @@ const products = [
     tag: "Drop 01",
   },
   {
+    // Headwear matters beyond the shop: "hats" is one of the four items in the
+    // Class 025 registration (Reg. 6667578) and needs use evidence by the
+    // March 2027 §8 Declaration.
+    id: "hat-script-pink",
+    name: "LETHWEI® Script Cap",
+    subtitle: "Gothic Script",
+    description: "Unstructured six-panel dad cap with a brass slide closure. Gothic lethwei script embroidered across the front in white. One size, fits most.",
+    colorway: "Dusty Pink",
+    views: [
+      { src: "/hat-script-pink-front.webp", label: "Front" },
+      { src: "/hat-script-pink-side.webp", label: "Side" },
+    ],
+    tag: "Drop 01",
+  },
+  {
+    id: "hat-skull-black",
+    name: "LETHWEI® 9 Skull Cap",
+    subtitle: "Nine Limbs. One Skull.",
+    description: "Blacked-out dad cap with the ringed nine-skull emblem embroidered tonal on the front. Reads as plain black until the light catches it.",
+    colorway: "Black",
+    views: [
+      { src: "/hat-skull-black-front.webp", label: "Front" },
+      { src: "/hat-skull-black-side.webp", label: "Side" },
+    ],
+    tag: "Drop 01",
+  },
+  {
+    id: "hat-surf-black",
+    name: "LETHWEI® Surf Cap",
+    subtitle: "Gothic Script",
+    description: "Five-panel surf cap with a flat brim and a soft crown. Gothic lethwei script embroidered in white. Lighter build than the dad cap.",
+    colorway: "Black",
+    views: [{ src: "/hat-surf-black-front.webp", label: "Front" }],
+    tag: "Drop 01",
+  },
+  {
     id: "tiger-tee-green",
     name: "LETHWEI® Tiger Boxing Tee",
     subtitle: "Golden Tiger Boxing Club",
