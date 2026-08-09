@@ -46,7 +46,7 @@ export default function SubmitGymPage() {
             Submission Received
           </h1>
           <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
-            We'll review and approve your gym listing. Thanks for growing the network.
+            We&apos;ll review and approve your gym listing. Thanks for growing the network.
           </p>
           <Link href="/gyms" style={{ color: "var(--gold)" }} className="text-sm">← Back to Gyms</Link>
         </div>
