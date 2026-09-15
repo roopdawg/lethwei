@@ -21,6 +21,22 @@ async function main() {
   }
   console.log("✅ Categories seeded");
 
+  // The public /gyms page used to hard-code this listing; it now reads the
+  // database, so the seed keeps it present and approved on every deploy.
+  const wyoming = {
+    name: "Wyoming Lethwei Association",
+    city: "Cheyenne",
+    state: "WY",
+    country: "USA",
+    website: "https://uslethwei.com",
+    description: "One of the few US states where bare knuckle is fully sanctioned. Home base for US competition.",
+    approved: true,
+  };
+  const existing = await prisma.gym.findFirst({ where: { name: wyoming.name } });
+  if (existing) await prisma.gym.update({ where: { id: existing.id }, data: wyoming });
+  else await prisma.gym.create({ data: wyoming });
+  console.log("✅ Gyms seeded");
+
   // Staff accounts are named in the environment, never in code. The account
   // must already exist (sign up normally first); the seed only promotes it.
   //   ADMIN_EMAILS=a@x.com,b@y.com  MODERATOR_EMAILS=c@z.com  npm run seed
