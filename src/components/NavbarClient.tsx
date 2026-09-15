@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { Menu, X } from "lucide-react";
+import type { Role } from "@prisma/client";
+import { canSeeAdminArea } from "@/lib/permissions";
 
 const links = [
   { href: "/learn", label: "The Art of 9 Limbs" },
@@ -12,10 +14,11 @@ const links = [
   { href: "/forum", label: "Forum" },
 ];
 
-type User = { name?: string | null; email?: string | null } | null;
+type User = { id: string; name?: string | null; email?: string | null; role: Role; banned: boolean } | null;
 
 export default function NavbarClient({ user }: { user: User }) {
   const [open, setOpen] = useState(false);
+  const isAdmin = canSeeAdminArea(user);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[var(--border)] bg-[var(--bg)]/95 backdrop-blur-sm">
@@ -41,6 +44,15 @@ export default function NavbarClient({ user }: { user: User }) {
               {link.label}
             </Link>
           ))}
+          {isAdmin && (
+            <Link
+              href="/admin"
+              data-testid="navbar-admin-link"
+              className="font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+            >
+              Admin
+            </Link>
+          )}
 
           {user ? (
             <div className="flex items-center gap-4">
@@ -87,6 +99,15 @@ export default function NavbarClient({ user }: { user: User }) {
               {link.label}
             </Link>
           ))}
+          {isAdmin && (
+            <Link
+              href="/admin"
+              onClick={() => setOpen(false)}
+              className="font-[family-name:var(--font-oswald)] text-base tracking-widest uppercase text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
+            >
+              Admin
+            </Link>
+          )}
           {user ? (
             <>
               <span className="font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[var(--gold)]">
