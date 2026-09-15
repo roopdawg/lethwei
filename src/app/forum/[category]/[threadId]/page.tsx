@@ -3,6 +3,16 @@ import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReplyForm from "./ReplyForm";
+import ThreadControls from "./ThreadControls";
+import ReplyControls from "./ReplyControls";
+import {
+  canDeletePost,
+  canEditPost,
+  canLockThread,
+  canPinThread,
+  canReply,
+  type Actor,
+} from "@/lib/permissions";
 
 export default async function ThreadPage({
   params,
@@ -26,6 +36,17 @@ export default async function ThreadPage({
 
   if (!thread || thread.category.slug !== category) notFound();
 
+  const actor: Actor | null = session?.user
+    ? { id: session.user.id, role: session.user.role, banned: session.user.banned }
+    : null;
+
+  const threadState = { locked: thread.locked };
+  const canEditThread = canEditPost(actor, { userId: thread.userId }, threadState);
+  const canDeleteThread = canDeletePost(actor, { userId: thread.userId });
+  const canPin = canPinThread(actor);
+  const canLock = canLockThread(actor);
+  const replyAllowed = actor ? canReply(actor, threadState) : false;
+
   return (
     <main className="max-w-3xl mx-auto px-4 sm:px-6 py-24">
       {/* Breadcrumb */}
@@ -37,15 +58,21 @@ export default async function ThreadPage({
 
       {/* Thread */}
       <article className="p-6 mb-8 rounded" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
-        <h1 className="font-[family-name:var(--font-oswald)] text-3xl mb-2" style={{ color: "var(--text)" }}>
-          {thread.title}
-        </h1>
-        <p className="text-xs mb-6" style={{ color: "var(--text-muted)" }}>
-          by {thread.user.username} · {new Date(thread.createdAt).toLocaleDateString()}
-        </p>
-        <div className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: "var(--text)" }}>
-          {thread.body}
-        </div>
+        <ThreadControls
+          threadId={thread.id}
+          categorySlug={category}
+          title={thread.title}
+          body={thread.body}
+          authorUsername={thread.user.username}
+          createdAtLabel={new Date(thread.createdAt).toLocaleDateString()}
+          locked={thread.locked}
+          pinned={thread.pinned}
+          edited={Boolean(thread.editedAt)}
+          canEdit={canEditThread}
+          canDelete={canDeleteThread}
+          canPin={canPin}
+          canLock={canLock}
+        />
       </article>
 
       {/* Replies */}
@@ -56,26 +83,36 @@ export default async function ThreadPage({
           </h2>
           <div className="flex flex-col gap-4">
             {thread.replies.map((r) => (
-              <div key={r.id} className="p-4 rounded" style={{ background: "var(--surface-2)", border: "1px solid var(--border)" }}>
-                <p className="text-xs mb-2" style={{ color: "var(--text-muted)" }}>
-                  {r.user.username} · {new Date(r.createdAt).toLocaleDateString()}
-                </p>
-                <p className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: "var(--text)" }}>
-                  {r.body}
-                </p>
-              </div>
+              <ReplyControls
+                key={r.id}
+                replyId={r.id}
+                authorUsername={r.user.username}
+                createdAtLabel={new Date(r.createdAt).toLocaleDateString()}
+                body={r.body}
+                edited={Boolean(r.editedAt)}
+                canEdit={canEditPost(actor, { userId: r.userId }, threadState)}
+                canDelete={canDeletePost(actor, { userId: r.userId })}
+              />
             ))}
           </div>
         </section>
       )}
 
       {/* Reply form */}
-      {session ? (
-        <ReplyForm threadId={thread.id} />
-      ) : (
+      {!session ? (
         <p className="text-sm" style={{ color: "var(--text-muted)" }}>
           <Link href="/auth/signin" style={{ color: "var(--gold)" }}>Sign in</Link> to reply.
         </p>
+      ) : actor!.banned ? (
+        <p data-testid="cant-post-notice" className="text-sm" style={{ color: "var(--text-muted)" }}>
+          Your account can&apos;t post.
+        </p>
+      ) : !replyAllowed ? (
+        <p data-testid="thread-locked-notice" className="text-sm" style={{ color: "var(--text-muted)" }}>
+          This thread is locked.
+        </p>
+      ) : (
+        <ReplyForm threadId={thread.id} />
       )}
     </main>
   );
