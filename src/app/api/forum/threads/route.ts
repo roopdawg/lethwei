@@ -1,11 +1,15 @@
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/current-user";
+import { canPost } from "@/lib/permissions";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getCurrentUser();
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!canPost(user)) {
+    return NextResponse.json({ error: "Banned" }, { status: 403 });
   }
 
   const { title, body, categorySlug } = await req.json();
@@ -23,7 +27,7 @@ export async function POST(req: Request) {
       title: title.trim(),
       body: body.trim(),
       categoryId: category.id,
-      userId: session.user.id,
+      userId: user.id,
     },
   });
 
