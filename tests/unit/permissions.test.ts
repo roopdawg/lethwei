@@ -163,10 +163,14 @@ describe("admin powers", () => {
     expect(canBanUser(mod, member)).toBe(false);
   });
 
-  it("admins change anyone's role but their own", () => {
+  it("admins change the role of members and moderators", () => {
     expect(canChangeRole(admin, member, "moderator")).toBe(true);
     expect(canChangeRole(admin, mod, "member")).toBe(true);
-    expect(canChangeRole(admin, admin2, "member")).toBe(true);
+    expect(canChangeRole(admin, member, "admin")).toBe(true);
+  });
+
+  it("admins cannot change another admin's role or their own", () => {
+    expect(canChangeRole(admin, admin2, "member")).toBe(false);
     expect(canChangeRole(admin, admin, "member")).toBe(false);
   });
 

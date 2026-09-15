@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/current-user";
 import { canManageCategories } from "@/lib/permissions";
 import { NextResponse } from "next/server";
+import { LIMITS, cleanSlug, cleanText } from "@/lib/limits";
 
 export async function PATCH(
   req: Request,
@@ -44,25 +45,19 @@ export async function PATCH(
   } = {};
 
   if (name !== undefined) {
-    if (typeof name !== "string" || !name.trim()) {
-      return NextResponse.json({ error: "name must be a non-empty string" }, { status: 400 });
-    }
-    data.name = name.trim();
+    const v = cleanText(name, LIMITS.categoryName);
+    if (!v) return NextResponse.json({ error: "Invalid name" }, { status: 400 });
+    data.name = v;
   }
   if (description !== undefined) {
-    if (typeof description !== "string" || !description.trim()) {
-      return NextResponse.json(
-        { error: "description must be a non-empty string" },
-        { status: 400 }
-      );
-    }
-    data.description = description.trim();
+    const v = cleanText(description, LIMITS.categoryDescription);
+    if (!v) return NextResponse.json({ error: "Invalid description" }, { status: 400 });
+    data.description = v;
   }
   if (icon !== undefined) {
-    if (typeof icon !== "string" || !icon.trim()) {
-      return NextResponse.json({ error: "icon must be a non-empty string" }, { status: 400 });
-    }
-    data.icon = icon.trim();
+    const v = cleanText(icon, LIMITS.categoryIcon);
+    if (!v) return NextResponse.json({ error: "Invalid icon" }, { status: 400 });
+    data.icon = v;
   }
   if (order !== undefined) {
     if (typeof order !== "number" || !Number.isFinite(order)) {
@@ -71,10 +66,10 @@ export async function PATCH(
     data.order = order;
   }
   if (slug !== undefined) {
-    if (typeof slug !== "string" || !slug.trim()) {
-      return NextResponse.json({ error: "slug must be a non-empty string" }, { status: 400 });
+    const trimmedSlug = cleanSlug(slug);
+    if (!trimmedSlug) {
+      return NextResponse.json({ error: "Invalid slug" }, { status: 400 });
     }
-    const trimmedSlug = slug.trim();
     if (trimmedSlug !== category.slug) {
       const existing = await prisma.category.findUnique({ where: { slug: trimmedSlug } });
       if (existing) {

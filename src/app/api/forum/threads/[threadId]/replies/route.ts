@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/current-user";
 import { canReply } from "@/lib/permissions";
+import { LIMITS, cleanText } from "@/lib/limits";
 import { NextResponse } from "next/server";
 
 export async function POST(
@@ -13,8 +14,9 @@ export async function POST(
   }
 
   const { threadId } = await params;
-  const { body } = await req.json();
-  if (!body?.trim()) {
+  const raw = await req.json().catch(() => ({}));
+  const body = cleanText(raw?.body, LIMITS.replyBody);
+  if (!body) {
     return NextResponse.json({ error: "Reply body required" }, { status: 400 });
   }
 
@@ -32,7 +34,7 @@ export async function POST(
 
   const reply = await prisma.reply.create({
     data: {
-      body: body.trim(),
+      body,
       threadId,
       userId: user.id,
     },

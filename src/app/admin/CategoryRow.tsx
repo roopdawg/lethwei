@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { secondaryButtonClass, secondaryButtonStyle } from "@/lib/button-styles";
 
 const inputStyle = {
   background: "var(--surface-2)",
@@ -54,6 +55,7 @@ export function CategoryRow({
   }
 
   async function remove() {
+    if (!window.confirm("Delete this category? This cannot be undone.")) return;
     setPending(true);
     setError("");
     const res = await fetch(`/api/admin/categories/${id}`, { method: "DELETE" });
@@ -103,8 +105,8 @@ export function CategoryRow({
             type="button"
             onClick={save}
             disabled={pending}
-            className="px-4 py-2 text-xs font-semibold rounded tracking-widest uppercase transition-colors border"
-            style={{ borderColor: "var(--gold)", color: "var(--gold)" }}
+            className={secondaryButtonClass}
+            style={secondaryButtonStyle}
           >
             {pending ? "Saving…" : "Save"}
           </button>
@@ -134,8 +136,8 @@ export function CategoryRow({
       <button
         type="button"
         onClick={() => setEditing(true)}
-        className="px-4 py-2 text-xs font-semibold rounded tracking-widest uppercase transition-colors border"
-        style={{ borderColor: "var(--gold)", color: "var(--gold)" }}
+        className={secondaryButtonClass}
+        style={secondaryButtonStyle}
       >
         Edit
       </button>

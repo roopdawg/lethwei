@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/current-user";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReplyForm from "./ReplyForm";
@@ -20,7 +20,8 @@ export default async function ThreadPage({
   params: Promise<{ category: string; threadId: string }>;
 }) {
   const { category, threadId } = await params;
-  const session = await auth();
+  // Live row, not the JWT: a ban or promotion shows on the next page load.
+  const user = await getCurrentUser();
 
   const thread = await prisma.thread.findUnique({
     where: { id: threadId },
@@ -36,9 +37,7 @@ export default async function ThreadPage({
 
   if (!thread || thread.category.slug !== category) notFound();
 
-  const actor: Actor | null = session?.user
-    ? { id: session.user.id, role: session.user.role, banned: session.user.banned }
-    : null;
+  const actor: Actor | null = user;
 
   const threadState = { locked: thread.locked };
   const canEditThread = canEditPost(actor, { userId: thread.userId }, threadState);
@@ -99,7 +98,7 @@ export default async function ThreadPage({
       )}
 
       {/* Reply form */}
-      {!session ? (
+      {!user ? (
         <p className="text-sm" style={{ color: "var(--text-muted)" }}>
           <Link href="/auth/signin" style={{ color: "var(--gold)" }}>Sign in</Link> to reply.
         </p>

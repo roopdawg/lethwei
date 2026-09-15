@@ -4,16 +4,9 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-const CATEGORIES = [
-  { slug: "training", name: "Training" },
-  { slug: "technique", name: "Technique" },
-  { slug: "events", name: "Events & Fights" },
-  { slug: "general", name: "General Discussion" },
-  { slug: "find-training", name: "Find Training Partners" },
-  { slug: "beginners", name: "New to the Art of 9 Limbs" },
-];
+type Category = { slug: string; name: string };
 
-export default function NewThreadForm() {
+export default function NewThreadForm({ categories }: { categories: Category[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const defaultCategory = searchParams.get("category") || "";
@@ -73,7 +66,7 @@ export default function NewThreadForm() {
             style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text)" }}
           >
             <option value="">Select a category…</option>
-            {CATEGORIES.map((c) => (
+            {categories.map((c) => (
               <option key={c.slug} value={c.slug}>{c.name}</option>
             ))}
           </select>

@@ -1,13 +1,16 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/current-user";
+import { canPost } from "@/lib/permissions";
 import NewThreadForm from "./NewThreadForm";
 
 export default async function NewThreadPage() {
-  const session = await auth();
-  const banned = session?.user?.banned === true;
+  const user = await getCurrentUser();
 
-  if (banned) {
+  // Signed-out visitors still get the form: submitting sends them to sign up
+  // with the draft preserved. Only a banned account is turned away here.
+  if (user && !canPost(user)) {
     return (
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-24">
         <Link href="/forum" className="text-sm mb-6 inline-block" style={{ color: "var(--text-muted)" }}>
@@ -23,9 +26,14 @@ export default async function NewThreadPage() {
     );
   }
 
+  const categories = await prisma.category.findMany({
+    orderBy: { order: "asc" },
+    select: { slug: true, name: true },
+  });
+
   return (
     <Suspense>
-      <NewThreadForm />
+      <NewThreadForm categories={categories} />
     </Suspense>
   );
 }

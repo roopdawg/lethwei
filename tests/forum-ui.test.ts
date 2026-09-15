@@ -97,7 +97,7 @@ describe("locked thread", () => {
     const memberHtml = await member.text(`/forum/${CATEGORY}/${threadId}`);
     expect(memberHtml).toContain('data-testid="thread-locked-notice"');
     expect(memberHtml).toContain("This thread is locked");
-    expect(memberHtml).not.toContain("Post a Reply"); // reply form absent
+    expect(memberHtml).not.toContain('data-testid="reply-form"');
 
     // A moderator can still reply on a locked thread.
     const mod = new Session();
@@ -106,7 +106,7 @@ describe("locked thread", () => {
     await refreshSession(mod, modUser.email, modUser.password);
     const modHtml = await mod.text(`/forum/${CATEGORY}/${threadId}`);
     expect(modHtml).not.toContain('data-testid="thread-locked-notice"');
-    expect(modHtml).toContain("Post a Reply");
+    expect(modHtml).toContain('data-testid="reply-form"');
   });
 });
 

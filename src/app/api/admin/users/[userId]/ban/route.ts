@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/current-user";
-import { canBanUser } from "@/lib/permissions";
+import { isAdmin, canBanUser } from "@/lib/permissions";
 import { NextResponse } from "next/server";
 
 export async function POST(
@@ -10,6 +10,10 @@ export async function POST(
   const actor = await getCurrentUser();
   if (!actor) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  // Gate before any lookup so non-admins learn nothing about which ids exist.
+  if (!isAdmin(actor)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   let body: unknown;

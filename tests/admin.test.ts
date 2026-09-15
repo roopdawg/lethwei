@@ -52,7 +52,7 @@ describe("admin authorization: anonymous", () => {
       s.fetch("/api/admin/gyms/no-such-gym", { method: "DELETE" }),
       s.json("/api/admin/categories", {
         name: "x",
-        slug: `anon-${Date.now()}`,
+        slug: `qa-anon-${Date.now()}`,
         description: "y",
       }),
       s.json(`/api/admin/categories/${catId}`, { name: "x" }, { method: "PATCH" }),
@@ -76,7 +76,7 @@ describe("admin authorization: member", () => {
     const s = new Session();
     const user = await s.signUpAndIn();
     const me = await userByEmail(user.email);
-    const gymId = await createGym(s, `Member Test Gym ${Date.now()}`);
+    const gymId = await createGym(s, `qa-gym member ${Date.now()}`);
     const catId = await categoryIdBySlug(CATEGORY_SLUG);
 
     expect((await s.json(`/api/admin/users/${me.id}/ban`, { banned: true })).status).toBe(403);
@@ -91,7 +91,7 @@ describe("admin authorization: member", () => {
       (
         await s.json("/api/admin/categories", {
           name: "x",
-          slug: `member-${Date.now()}`,
+          slug: `qa-member-${Date.now()}`,
           description: "y",
         })
       ).status
@@ -118,7 +118,7 @@ describe("admin authorization: moderator", () => {
     const user = await s.signUpAndIn();
     await setRole(user.email, "moderator");
 
-    const gymId = await createGym(s, `Mod Approve Gym ${Date.now()}`);
+    const gymId = await createGym(s, `qa-gym mod ${Date.now()}`);
 
     const approve = await s.json(`/api/admin/gyms/${gymId}/approve`, { approved: true });
     expect(approve.status).toBe(200);
@@ -142,7 +142,7 @@ describe("admin authorization: moderator", () => {
       (
         await s.json("/api/admin/categories", {
           name: "x",
-          slug: `mod-${Date.now()}`,
+          slug: `qa-mod-${Date.now()}`,
           description: "y",
         })
       ).status
@@ -286,8 +286,8 @@ describe("gym visibility", () => {
     const { s: admin } = await makeAdmin();
 
     const stamp = Date.now();
-    const approvedName = `Approved Gym ${stamp}`;
-    const pendingName = `Pending Gym ${stamp}`;
+    const approvedName = `qa-gym approved ${stamp}`;
+    const pendingName = `qa-gym pending ${stamp}`;
 
     const approvedId = await createGym(admin, approvedName);
     await createGym(admin, pendingName);

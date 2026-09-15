@@ -1,5 +1,8 @@
--- Roles become an enum. Existing rows all hold the string "member" (the
--- column default was never written to by any code path), so the cast is safe.
+-- Roles become an enum. No code path ever wrote the old string column, so
+-- every row should hold "member"; normalise anyway so a stray value cannot
+-- fail the cast and leave the migration half-applied.
+UPDATE "User" SET "role" = 'member' WHERE "role" NOT IN ('member', 'moderator', 'admin');
+
 CREATE TYPE "Role" AS ENUM ('member', 'moderator', 'admin');
 
 ALTER TABLE "User" ALTER COLUMN "role" DROP DEFAULT;

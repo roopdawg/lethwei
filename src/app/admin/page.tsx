@@ -23,7 +23,7 @@ export default async function AdminPage({
   if (!canSeeAdminArea(user)) notFound();
 
   const [pendingGyms, approvedGyms] = await Promise.all([
-    prisma.gym.findMany({ where: { approved: false }, orderBy: { createdAt: "asc" } }),
+    prisma.gym.findMany({ where: { approved: false }, orderBy: { createdAt: "asc" }, take: 50 }),
     prisma.gym.findMany({
       where: { approved: true },
       orderBy: { createdAt: "desc" },
@@ -47,6 +47,7 @@ export default async function AdminPage({
           : undefined,
         orderBy: { createdAt: "desc" },
         take: query ? 50 : 20,
+        select: { id: true, username: true, email: true, role: true, banned: true, createdAt: true },
       })
     : [];
 

@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/current-user";
 import { canDeletePost, canEditPost } from "@/lib/permissions";
 import { NextResponse } from "next/server";
+import { LIMITS, cleanText } from "@/lib/limits";
 
 export async function PATCH(
   req: Request,
@@ -25,14 +26,15 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { body } = await req.json();
-  if (typeof body !== "string" || !body.trim()) {
+  const raw = await req.json().catch(() => ({}));
+  const body = cleanText(raw?.body, LIMITS.replyBody);
+  if (!body) {
     return NextResponse.json({ error: "Reply body required" }, { status: 400 });
   }
 
   await prisma.reply.update({
     where: { id: replyId },
-    data: { body: body.trim(), editedAt: new Date() },
+    data: { body, editedAt: new Date() },
   });
   return NextResponse.json({ ok: true });
 }

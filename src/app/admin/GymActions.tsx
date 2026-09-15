@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const goldButton =
-  "px-4 py-2 text-xs font-semibold rounded tracking-widest uppercase transition-colors border";
+import { secondaryButtonClass, secondaryButtonStyle } from "@/lib/button-styles";
+
 const redButton = "px-4 py-2 text-xs font-semibold rounded transition-colors";
 
 async function post(url: string, body: unknown) {
@@ -35,6 +35,7 @@ export function PendingGymActions({ gymId }: { gymId: string }) {
   }
 
   async function remove() {
+    if (!window.confirm("Remove this gym listing? This cannot be undone.")) return;
     setLoading("remove");
     setError("");
     const res = await fetch(`/api/admin/gyms/${gymId}`, { method: "DELETE" });
@@ -54,8 +55,8 @@ export function PendingGymActions({ gymId }: { gymId: string }) {
           type="button"
           onClick={approve}
           disabled={loading !== null}
-          className={goldButton}
-          style={{ borderColor: "var(--gold)", color: "var(--gold)" }}
+          className={secondaryButtonClass}
+          style={secondaryButtonStyle}
         >
           {loading === "approve" ? "Approving…" : "Approve"}
         </button>

@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/current-user";
 import { canDeletePost, canEditPost } from "@/lib/permissions";
 import { NextResponse } from "next/server";
+import { LIMITS, cleanText } from "@/lib/limits";
 
 export async function PATCH(
   req: Request,
@@ -22,10 +23,18 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { title, body } = await req.json();
+  const raw = await req.json().catch(() => ({}));
   const data: { title?: string; body?: string; editedAt: Date } = { editedAt: new Date() };
-  if (typeof title === "string" && title.trim()) data.title = title.trim();
-  if (typeof body === "string" && body.trim()) data.body = body.trim();
+  if (raw?.title !== undefined) {
+    const title = cleanText(raw.title, LIMITS.threadTitle);
+    if (!title) return NextResponse.json({ error: "Invalid title" }, { status: 400 });
+    data.title = title;
+  }
+  if (raw?.body !== undefined) {
+    const body = cleanText(raw.body, LIMITS.threadBody);
+    if (!body) return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    data.body = body;
+  }
   if (!data.title && !data.body) {
     return NextResponse.json({ error: "Nothing to update" }, { status: 400 });
   }

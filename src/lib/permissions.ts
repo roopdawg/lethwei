@@ -91,7 +91,11 @@ export function canBanUser(actor: Actor | null | undefined, target: Actor): bool
   return target.role !== "admin";
 }
 
-/** Admins set any role on anyone but themselves. */
+/**
+ * Admins set any role on members and moderators. Like banning, this never
+ * reaches another admin and never the actor themselves, so one admin cannot
+ * strip the others. Admin-to-admin changes are a database operation.
+ */
 export function canChangeRole(
   actor: Actor | null | undefined,
   target: Actor,
@@ -99,6 +103,7 @@ export function canChangeRole(
 ): boolean {
   if (!isAdmin(actor)) return false;
   if (actor!.id === target.id) return false;
+  if (target.role === "admin") return false;
   return isRole(newRole);
 }
 
