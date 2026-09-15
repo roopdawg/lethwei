@@ -13,12 +13,19 @@ model User {
   username  String    @unique
   password  String?
   avatar    String?
-  role      String    @default("member")
+  role      Role      @default(member)
+  banned    Boolean   @default(false)
   createdAt DateTime  @default(now())
   threads   Thread[]
   replies   Reply[]
   accounts  Account[]
   sessions  Session[]
+}
+
+enum Role {
+  member
+  moderator
+  admin
 }
 
 model Account {
@@ -72,6 +79,8 @@ model Thread {
   categoryId String
   userId     String
   pinned     Boolean  @default(false)
+  locked     Boolean  @default(false)
+  editedAt   DateTime?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   category   Category @relation(fields: [categoryId], references: [id])
@@ -84,6 +93,7 @@ model Reply {
   body      String
   threadId  String
   userId    String
+  editedAt  DateTime?
   createdAt DateTime @default(now())
   thread    Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id])

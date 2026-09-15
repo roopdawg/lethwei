@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import type { Role } from "@prisma/client";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // Auth.js only infers a trusted host automatically on Vercel. We deploy to
@@ -37,6 +38,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.username,
+          role: user.role,
+          banned: user.banned,
         };
       },
     }),
@@ -46,6 +49,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.name = user.name;
+        token.role = user.role ?? "member";
+        token.banned = user.banned ?? false;
       }
       return token;
     },
@@ -53,6 +58,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token) {
         session.user.id = token.id as string;
         session.user.name = token.name as string;
+        // Snapshot from sign-in time. Routes that grant or deny anything
+        // re-read the user row via getCurrentUser(); this is for rendering.
+        session.user.role = (token.role as Role | undefined) ?? "member";
+        session.user.banned = (token.banned as boolean | undefined) ?? false;
       }
       return session;
     },

@@ -20,6 +20,18 @@ async function main() {
     });
   }
   console.log("✅ Categories seeded");
+
+  // Staff accounts are named in the environment, never in code. The account
+  // must already exist (sign up normally first); the seed only promotes it.
+  //   ADMIN_EMAILS=a@x.com,b@y.com  MODERATOR_EMAILS=c@z.com  npm run seed
+  const promote = async (list: string | undefined, role: "admin" | "moderator") => {
+    for (const email of (list ?? "").split(",").map((e) => e.trim()).filter(Boolean)) {
+      const r = await prisma.user.updateMany({ where: { email }, data: { role } });
+      console.log(r.count ? `✅ ${email} → ${role}` : `⚠️  ${email} not found, sign up first`);
+    }
+  };
+  await promote(process.env.ADMIN_EMAILS, "admin");
+  await promote(process.env.MODERATOR_EMAILS, "moderator");
 }
 
 main()
