@@ -9,6 +9,7 @@
     "lint": "eslint",
     "seed": "tsx prisma/seed.ts",
     "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
     "test:watch": "vitest",
     "test:smoke": "TEST_BASE_URL=https://lethwei-web-production.up.railway.app vitest run tests/pages.test.ts"
   },

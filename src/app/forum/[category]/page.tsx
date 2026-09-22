@@ -87,6 +87,15 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                       Pinned
                     </span>
                   )}
+                  {t.locked && (
+                    <span
+                      data-testid="thread-locked-badge"
+                      className="text-xs px-2 py-0.5 rounded font-semibold"
+                      style={{ background: "var(--red)", color: "var(--text)" }}
+                    >
+                      Locked
+                    </span>
+                  )}
                   <h2 className="font-semibold truncate group-hover:underline" style={{ color: "var(--text)" }}>
                     {t.title}
                   </h2>

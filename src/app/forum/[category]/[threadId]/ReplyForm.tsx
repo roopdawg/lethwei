@@ -31,7 +31,7 @@ export default function ReplyForm({ threadId }: { threadId: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+    <form onSubmit={handleSubmit} data-testid="reply-form" className="flex flex-col gap-3">
       <h3 className="font-[family-name:var(--font-oswald)] text-lg uppercase" style={{ color: "var(--text-muted)" }}>
         Post a Reply
       </h3>
