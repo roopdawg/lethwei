@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { getProducts } from "@/lib/shopify";
+import BuyButton from "./BuyButton";
 
 export const metadata = {
   title: "Shop — LETHWEI® Apparel | T-Shirts, Hoodies & Hats",
@@ -117,7 +119,12 @@ const products = [
   },
 ];
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  // Live products come from Shopify once the store is stocked. Until then the
+  // page shows the catalogue exactly as before, with Instagram ordering.
+  const live = await getProducts();
+  const shopLive = live.length > 0;
+
   return (
     <>
       {/* Hero */}
@@ -140,13 +147,17 @@ export default function ShopPage() {
           <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
           <p className="text-[#888888] text-lg max-w-xl leading-relaxed">
             Designed by Gabe Schnider. Acid wash, heavyweight, and built to last.
-            DM <a href="https://instagram.com/lethweiofficial" target="_blank" rel="noopener noreferrer" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a> to order while the online shop is being built.
+            {!shopLive && (
+              <>
+                {" "}DM <a href="https://instagram.com/lethweiofficial" target="_blank" rel="noopener noreferrer" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a> to order while the online shop is being built.
+              </>
+            )}
           </p>
         </div>
       </section>
 
       {/* Product Grid */}
-      <section className="pb-24 max-w-7xl mx-auto px-4 sm:px-6">
+      <section className="pb-24 max-w-7xl mx-auto px-4 sm:px-6" data-shop={shopLive ? "live" : "catalogue"}>
         <div className="mb-10">
           <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-3 block">
             Official Gear
@@ -157,6 +168,74 @@ export default function ShopPage() {
           <span className="block w-16 h-[3px] bg-[#C41E1E] mt-5" />
         </div>
 
+        {shopLive && (
+          <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
+            {live.map((product) => (
+              <div key={product.id} className="bg-[#111111] group" data-testid="live-product">
+                <div className="relative aspect-square overflow-hidden bg-[#0A0A0A]">
+                  {product.views[0] && (
+                    <img
+                      src={product.views[0].src}
+                      alt={`${product.name} — ${product.views[0].label.toLowerCase()}`}
+                      className={`w-full h-full object-contain absolute inset-0 transition-opacity duration-500 ${
+                        product.views.length > 1 ? "group-hover:opacity-0" : ""
+                      }`}
+                    />
+                  )}
+                  {product.views[1] && (
+                    <img
+                      src={product.views[1].src}
+                      alt={`${product.name} — ${product.views[1].label.toLowerCase()}`}
+                      className="w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100 absolute inset-0"
+                    />
+                  )}
+                  {product.views[0] && (
+                    <div className="absolute top-3 left-3 flex items-center gap-2">
+                      <span
+                        className={`font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 transition-opacity duration-500 ${
+                          product.views.length > 1 ? "group-hover:opacity-0" : ""
+                        }`}
+                      >
+                        {product.views[0].label}
+                      </span>
+                      {product.views[1] && (
+                        <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 absolute left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                          {product.views[1].label}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  {product.views.length > 1 && (
+                    <span className="absolute bottom-3 right-3 text-[#555555] text-[10px] tracking-widest uppercase group-hover:opacity-0 transition-opacity duration-500">
+                      Hover for back
+                    </span>
+                  )}
+                </div>
+                <div className="p-6 border-t border-[#2A2A2A]">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">
+                      Official Gear
+                    </span>
+                    <span className="font-[family-name:var(--font-oswald)] text-[#F5F0E8] text-sm tracking-widest" data-testid="live-price">
+                      {product.price}
+                    </span>
+                  </div>
+                  <h2 className="font-[family-name:var(--font-oswald)] text-2xl font-bold text-[#F5F0E8] mb-3">
+                    {product.name}
+                  </h2>
+                  {product.description && (
+                    <p className="text-[#888888] text-sm leading-relaxed mb-6">
+                      {product.description}
+                    </p>
+                  )}
+                  <BuyButton variants={product.variants} />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {!shopLive && (
         <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
           {products.map((product) => (
             <div key={product.id} className="bg-[#111111] group">
@@ -231,10 +310,12 @@ export default function ShopPage() {
             </div>
           ))}
         </div>
+        )}
 
+        {!shopLive && (
         <div className="border border-[#2A2A2A] bg-[#111111] mt-px p-8 text-center">
           <p className="text-[#555555] text-sm mb-2">
-            Online ordering via Printful coming soon.
+            Online ordering coming soon.
           </p>
           <p className="text-[#888888] text-sm">
             For now — DM{" "}
@@ -249,6 +330,7 @@ export default function ShopPage() {
             or pick up our tees at <span className="text-[#F5F0E8]">Santa Monica Striking</span>.
           </p>
         </div>
+        )}
       </section>
 
       {/* Bottom CTA */}
