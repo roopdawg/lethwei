@@ -1,19 +1,22 @@
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/current-user";
+import { canReply } from "@/lib/permissions";
+import { LIMITS, cleanText } from "@/lib/limits";
 import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ threadId: string }> }
 ) {
-  const session = await auth();
-  if (!session?.user?.id) {
+  const user = await getCurrentUser();
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { threadId } = await params;
-  const { body } = await req.json();
-  if (!body?.trim()) {
+  const raw = await req.json().catch(() => ({}));
+  const body = cleanText(raw?.body, LIMITS.replyBody);
+  if (!body) {
     return NextResponse.json({ error: "Reply body required" }, { status: 400 });
   }
 
@@ -22,11 +25,18 @@ export async function POST(
     return NextResponse.json({ error: "Thread not found" }, { status: 404 });
   }
 
+  if (user.banned) {
+    return NextResponse.json({ error: "Banned" }, { status: 403 });
+  }
+  if (!canReply(user, thread)) {
+    return NextResponse.json({ error: "Thread locked" }, { status: 403 });
+  }
+
   const reply = await prisma.reply.create({
     data: {
-      body: body.trim(),
+      body,
       threadId,
-      userId: session.user.id,
+      userId: user.id,
     },
   });
 

@@ -1,23 +1,17 @@
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Find a LETHWEI™ Gym Near You | Gym Directory",
   description: "Find LETHWEI™ gyms across the United States. Train bareknuckle. Learn the Art of 9 Limbs.",
 };
 
-// Static gym data to start — will be replaced with DB queries
-const gyms = [
-  {
-    id: "1",
-    name: "Wyoming Lethwei Association",
-    city: "Cheyenne",
-    state: "WY",
-    description: "One of the few US states where bare knuckle is fully sanctioned. Home base for US competition.",
-    website: "https://uslethwei.com",
-  },
-];
+export default async function GymsPage() {
+  const gyms = await prisma.gym.findMany({
+    where: { approved: true },
+    orderBy: { createdAt: "desc" },
+  });
 
-export default function GymsPage() {
   return (
     <>
       {/* Hero */}

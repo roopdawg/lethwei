@@ -3,6 +3,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     include: ["tests/**/*.test.ts"],
+    setupFiles: ["tests/setup.ts"],
     // Integration tests hit a real server and a real database; running them
     // in parallel makes ordering and cleanup unpredictable.
     fileParallelism: false,

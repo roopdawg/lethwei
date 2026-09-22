@@ -1,57 +1,18 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "The LETHWEI® Forum | Training, Technique & Events",
   description: "The LETHWEI® online forum. Discuss training, technique, events, and connect with warriors worldwide.",
 };
 
-const categories = [
-  {
-    slug: "training",
-    name: "Training",
-    icon: "🥊",
-    description: "Conditioning, sparring, drills, and training methodology.",
-    color: "#C41E1E",
-  },
-  {
-    slug: "technique",
-    name: "Technique",
-    icon: "🧠",
-    description: "Headbutt entries, elbow combos, clinch work, and the 9 limbs breakdown.",
-    color: "#D4A017",
-  },
-  {
-    slug: "events",
-    name: "Events & Fights",
-    icon: "🏆",
-    description: "WLC cards, local events, fight results, and fight analysis.",
-    color: "#C41E1E",
-  },
-  {
-    slug: "general",
-    name: "General Discussion",
-    icon: "💬",
-    description: "Culture, history, gear, and community — everything else.",
-    color: "#D4A017",
-  },
-  {
-    slug: "find-training",
-    name: "Find Training Partners",
-    icon: "🤝",
-    description: "Looking for sparring partners, coaches, or training camps near you.",
-    color: "#C41E1E",
-  },
-  {
-    slug: "beginners",
-    name: "New to the Art of 9 Limbs",
-    icon: "🌱",
-    description: "Just discovered the Art of 9 Limbs? Start here.",
-    color: "#D4A017",
-  },
-];
+// Category cards alternate red and gold down the grid, as the original
+// static list did.
+const CATEGORY_COLORS = ["#C41E1E", "#D4A017"];
 
 export default async function ForumPage() {
+  const categories = await prisma.category.findMany({ orderBy: { order: "asc" } });
   const session = await auth();
   const signedIn = Boolean(session?.user);
 
@@ -101,7 +62,7 @@ export default async function ForumPage() {
       {/* Categories */}
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid md:grid-cols-2 gap-px bg-[#2A2A2A] border border-[#2A2A2A]">
-          {categories.map((cat) => (
+          {categories.map((cat, i) => (
             <Link
               key={cat.slug}
               href={`/forum/${cat.slug}`}
@@ -112,7 +73,7 @@ export default async function ForumPage() {
                 <div className="flex items-center gap-3 mb-1">
                   <h3
                     className="font-[family-name:var(--font-oswald)] text-xl uppercase tracking-wide group-hover:text-[#F5F0E8] transition-colors"
-                    style={{ color: cat.color }}
+                    style={{ color: CATEGORY_COLORS[i % CATEGORY_COLORS.length] }}
                   >
                     {cat.name}
                   </h3>
