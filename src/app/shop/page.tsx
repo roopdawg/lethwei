@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getProducts } from "@/lib/shopify";
 import BuyButton from "./BuyButton";
+import { ProductAnimationToggle, ProductGallery } from "@/components/ProductGallery";
 
 export const metadata = {
   title: "Shop — LETHWEI® Apparel | T-Shirts, Hoodies & Hats",
@@ -166,50 +167,17 @@ export default async function ShopPage() {
             LETHWEI<sup className="text-[0.4em] tracking-normal">®</sup> APPAREL
           </h2>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mt-5" />
+          <div className="mt-6">
+            <ProductAnimationToggle />
+          </div>
         </div>
 
         {shopLive && (
-          <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-[#2A2A2A]">
             {live.map((product) => (
               <div key={product.id} className="bg-[#111111] group" data-testid="live-product">
-                <div className="relative aspect-square overflow-hidden bg-[#0A0A0A]">
-                  {product.views[0] && (
-                    <img
-                      src={product.views[0].src}
-                      alt={`${product.name} — ${product.views[0].label.toLowerCase()}`}
-                      className={`w-full h-full object-contain absolute inset-0 transition-opacity duration-500 ${
-                        product.views.length > 1 ? "group-hover:opacity-0" : ""
-                      }`}
-                    />
-                  )}
-                  {product.views[1] && (
-                    <img
-                      src={product.views[1].src}
-                      alt={`${product.name} — ${product.views[1].label.toLowerCase()}`}
-                      className="w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100 absolute inset-0"
-                    />
-                  )}
-                  {product.views[0] && (
-                    <div className="absolute top-3 left-3 flex items-center gap-2">
-                      <span
-                        className={`font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 transition-opacity duration-500 ${
-                          product.views.length > 1 ? "group-hover:opacity-0" : ""
-                        }`}
-                      >
-                        {product.views[0].label}
-                      </span>
-                      {product.views[1] && (
-                        <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 absolute left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          {product.views[1].label}
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  {product.views.length > 1 && (
-                    <span className="absolute bottom-3 right-3 text-[#555555] text-[10px] tracking-widest uppercase group-hover:opacity-0 transition-opacity duration-500">
-                      Hover for back
-                    </span>
-                  )}
+                <div className="relative aspect-[4/5] overflow-hidden bg-[#0A0A0A]">
+                  <ProductGallery views={product.views} name={product.name} />
                 </div>
                 <div className="p-6 border-t border-[#2A2A2A]">
                   <div className="flex items-center justify-between mb-2">
@@ -236,47 +204,12 @@ export default async function ShopPage() {
         )}
 
         {!shopLive && (
-        <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-[#2A2A2A]">
           {products.map((product) => (
             <div key={product.id} className="bg-[#111111] group">
-              {/* Image — first view at rest, second (if any) on hover */}
-              <div className="relative aspect-square overflow-hidden bg-[#0A0A0A]">
-                <img
-                  src={product.views[0].src}
-                  alt={`${product.name} — ${product.views[0].label.toLowerCase()}`}
-                  className={`w-full h-full object-contain absolute inset-0 transition-opacity duration-500 ${
-                    product.views.length > 1 ? "group-hover:opacity-0" : ""
-                  }`}
-                />
-                {product.views[1] && (
-                  <img
-                    src={product.views[1].src}
-                    alt={`${product.name} — ${product.views[1].label.toLowerCase()}`}
-                    className="w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100 absolute inset-0"
-                  />
-                )}
-
-                {/* Which side am I looking at? */}
-                <div className="absolute top-3 left-3 flex items-center gap-2">
-                  <span
-                    className={`font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 transition-opacity duration-500 ${
-                      product.views.length > 1 ? "group-hover:opacity-0" : ""
-                    }`}
-                  >
-                    {product.views[0].label}
-                  </span>
-                  {product.views[1] && (
-                    <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 absolute left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      {product.views[1].label}
-                    </span>
-                  )}
-                </div>
-
-                {product.views.length > 1 && (
-                  <span className="absolute bottom-3 right-3 text-[#555555] text-[10px] tracking-widest uppercase group-hover:opacity-0 transition-opacity duration-500">
-                    Hover for back
-                  </span>
-                )}
+              {/* Image — first view at rest, cycles with the rest (or hover-swaps) if there's a second */}
+              <div className="relative aspect-[4/5] overflow-hidden bg-[#0A0A0A]">
+                <ProductGallery views={product.views} name={product.name} />
               </div>
 
               {/* Details */}

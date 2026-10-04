@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ProductAnimationToggle, ProductGallery } from "@/components/ProductGallery";
 
 const nineWeapons = [
   { number: "01", name: "Punches", burmese: "Let Thee", description: "Jabs, crosses, hooks, uppercuts, spinning backfists — the fists are honed for maximum damage and blood." },
@@ -80,18 +81,20 @@ export default function Home() {
             LETHWEI™ bare knuckle — the most brutal and beautiful combat sport on earth.
           </p>
 
+          {/* Shop leads: primary red slot, first in order. Discover/Join
+              keep their existing styles, just demoted to secondary/tertiary. */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/learn"
+              href="/shop"
               className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors w-full sm:w-auto text-center"
             >
-              Discover the Art of 9 Limbs
+              Shop the Gear
             </Link>
             <Link
-              href="/shop"
+              href="/learn"
               className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base bg-[#D4A017] hover:bg-[#F0C040] text-black px-8 py-4 transition-colors w-full sm:w-auto text-center"
             >
-              Shop Now
+              Discover the Art of 9 Limbs
             </Link>
             <Link
               href="/forum"
@@ -105,27 +108,9 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
       </section>
 
-      {/* ── STATS ── */}
-      <section className="border-y border-[#2A2A2A] bg-[#111111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[#2A2A2A]">
-            {stats.map((s) => (
-              <div key={s.label} className="py-10 px-6 text-center">
-                <div className="font-[family-name:var(--font-oswald)] text-3xl md:text-4xl font-bold text-[#D4A017] mb-1">
-                  {s.value}
-                </div>
-                <div className="text-[#888888] text-xs tracking-widest uppercase">
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── FEATURED GEAR ── */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="grid md:grid-cols-[1.3fr_1fr] gap-16 items-center">
           <div className="relative order-2 md:order-1">
             <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
               <img
@@ -177,12 +162,112 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WHAT IS LETHWEI ── */}
+      {/* ── DESIGN DROPS ── */}
+      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 bg-[#111111] border-y border-[#2A2A2A]">
+        <div className="text-center mb-16">
+          <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
+            Now Available
+          </span>
+          <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none">
+            DROP <span className="text-[#C41E1E]">01</span>
+          </h2>
+          <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
+          <p className="text-[#888888] mt-6 max-w-xl mx-auto text-sm leading-relaxed">
+            Designed by Gabe Schnider. Browse full details in the{" "}
+            <Link href="/shop" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">shop</Link>
+            {" "}or DM{" "}
+            <a href="https://instagram.com/lethweiofficial" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a>
+            {" "}to order.
+          </p>
+          <div className="mt-6 flex justify-center">
+            <ProductAnimationToggle />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-[#2A2A2A]">
+          {[
+            {
+              name: "LETHWEI® Skull Tee",
+              colorway: "Acid Wash Black",
+              views: [
+                { src: "/skull-tee-front.jpg", label: "Front" },
+                { src: "/skull-tee-back.jpg", label: "Back" },
+              ],
+              tag: "Drop 01",
+            },
+            {
+              name: "LETHWEI® Weapons Tee",
+              colorway: "Light Blue",
+              views: [
+                { src: "/weapons-tee-blue-front.webp", label: "Front" },
+                { src: "/weapons-tee-blue.png", label: "Back" },
+              ],
+              tag: "Drop 01",
+            },
+            {
+              // Back only — no front photograph of the BLACK colourway yet.
+              name: "LETHWEI® 9 Skull Hoodie",
+              colorway: "Acid Wash Black",
+              views: [
+                { src: "/skull-hoodie-front.webp", label: "Front" },
+                { src: "/skull-hoodie-back.webp", label: "Back" },
+              ],
+              tag: "Drop 01",
+            },
+          ].map((item, i) => (
+            <div key={i} className="bg-[#111111] group relative overflow-hidden">
+              <div className="aspect-[4/5] relative bg-[#0A0A0A]">
+                <ProductGallery views={item.views} name={item.name} />
+              </div>
+              <div className="p-5 border-t border-[#2A2A2A]">
+                <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">
+                  {item.tag}
+                </span>
+                <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#F5F0E8] mt-1">
+                  {item.name}
+                </h3>
+                <p className="text-[#555555] text-xs tracking-widest uppercase mt-0.5">
+                  {item.colorway}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <Link
+            href="/shop"
+            className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-10 py-4 transition-colors inline-block"
+          >
+            Shop All Gear
+          </Link>
+        </div>
+      </section>
+
+      {/* ── STATS ── */}
+      <section className="border-b border-[#2A2A2A] bg-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[#2A2A2A]">
+            {stats.map((s) => (
+              <div key={s.label} className="py-10 px-6 text-center">
+                <div className="font-[family-name:var(--font-oswald)] text-3xl md:text-4xl font-bold text-[#D4A017] mb-1">
+                  {s.value}
+                </div>
+                <div className="text-[#888888] text-xs tracking-widest uppercase">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT IS LETHWEI — the story behind the gear ── */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div>
             <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-              The Origin
+              The Story Behind the Gear
             </span>
             <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none mb-6">
               FORGED IN<br />
@@ -193,15 +278,24 @@ export default function Home() {
               The art of 9 limbs traces its roots to the 12th-century Pagan Kingdom of Burma — over 2,000 years of warrior tradition. Ancient matches were held in sand pits, fought without protective gear, continuing until one man could not stand.
             </p>
             <p className="text-[#888888] leading-relaxed mb-8">
-              Unlike any other striking art, it permits headbutts, making it the most complete and devastating standing combat system ever developed. In traditional rules, only a knockout wins. A draw is a warrior&apos;s fate.
+              Unlike any other striking art, it permits headbutts, making it the most complete and devastating standing combat system ever developed. In traditional rules, only a knockout wins. A draw is a warrior&apos;s fate. It&apos;s this same history radiating from the emblem on this page — the one printed across the gear, not just the logo.
             </p>
-            <Link
-              href="/learn"
-              className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[#D4A017] hover:text-[#F0C040] transition-colors group"
-            >
-              Learn the full history
-              <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-6">
+              <Link
+                href="/learn"
+                className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[#D4A017] hover:text-[#F0C040] transition-colors group"
+              >
+                Learn the full history
+                <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
+              </Link>
+              <Link
+                href="/shop"
+                className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[#888888] hover:text-[#F5F0E8] transition-colors group"
+              >
+                Shop the gear
+                <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
+              </Link>
+            </div>
           </div>
 
           <div className="relative">
@@ -238,6 +332,9 @@ export default function Home() {
               THE <span className="text-[#C41E1E]">9 WEAPONS</span>
             </h2>
             <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
+            <p className="text-[#888888] mt-6 max-w-xl mx-auto text-sm leading-relaxed">
+              Five of the nine are stacked across the back of the Weapons Tee: KNEE / ELBOW / KNUCKLE / SHIN / SKULL.
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2A2A2A]">
@@ -265,7 +362,13 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="text-center mt-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+            <Link
+              href="/shop"
+              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors inline-block"
+            >
+              Shop the Weapons Tee
+            </Link>
             <Link
               href="/learn#techniques"
               className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#D4A017] hover:text-[#D4A017] text-[#888888] px-8 py-4 transition-colors inline-block"
@@ -273,110 +376,6 @@ export default function Home() {
               See All Techniques
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* ── DESIGN DROPS ── */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-16">
-          <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-            Now Available
-          </span>
-          <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none">
-            DROP <span className="text-[#C41E1E]">01</span>
-          </h2>
-          <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
-          <p className="text-[#888888] mt-6 max-w-xl mx-auto text-sm leading-relaxed">
-            Designed by Gabe Schnider. Hover to see the back. DM{" "}
-            <a href="https://instagram.com/lethweiofficial" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a>{" "}
-            to order — online shop coming soon.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
-          {[
-            {
-              name: "LETHWEI® Skull Tee",
-              colorway: "Acid Wash Black",
-              views: [
-                { src: "/skull-tee-front.jpg", label: "Front" },
-                { src: "/skull-tee-back.jpg", label: "Back" },
-              ],
-              tag: "Drop 01",
-            },
-            {
-              name: "LETHWEI® Weapons Tee",
-              colorway: "Light Blue",
-              views: [
-                { src: "/weapons-tee-blue-front.webp", label: "Front" },
-                { src: "/weapons-tee-blue.png", label: "Back" },
-              ],
-              tag: "Drop 01",
-            },
-            {
-              // Back only — no front photograph of the BLACK colourway yet.
-              name: "LETHWEI® 9 Skull Hoodie",
-              colorway: "Acid Wash Black",
-              views: [
-                { src: "/skull-hoodie-front.webp", label: "Front" },
-                { src: "/skull-hoodie-back.webp", label: "Back" },
-              ],
-              tag: "Drop 01",
-            },
-          ].map((item, i) => (
-            <div key={i} className="bg-[#111111] group relative overflow-hidden">
-              <div className="aspect-square relative bg-[#0A0A0A]">
-                <img
-                  src={item.views[0].src}
-                  alt={`${item.name} — ${item.views[0].label.toLowerCase()}`}
-                  className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ${
-                    item.views.length > 1 ? "group-hover:opacity-0" : ""
-                  }`}
-                />
-                {item.views[1] && (
-                  <img
-                    src={item.views[1].src}
-                    alt={`${item.name} — ${item.views[1].label.toLowerCase()}`}
-                    className="absolute inset-0 w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  />
-                )}
-                <div className="absolute top-3 left-3">
-                  <span
-                    className={`font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 block transition-opacity duration-500 ${
-                      item.views.length > 1 ? "group-hover:opacity-0" : ""
-                    }`}
-                  >
-                    {item.views[0].label}
-                  </span>
-                  {item.views[1] && (
-                    <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      {item.views[1].label}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="p-5 border-t border-[#2A2A2A]">
-                <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">
-                  {item.tag}
-                </span>
-                <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#F5F0E8] mt-1">
-                  {item.name}
-                </h3>
-                <p className="text-[#555555] text-xs tracking-widest uppercase mt-0.5">
-                  {item.colorway}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-10">
-          <Link
-            href="/shop"
-            className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-10 py-4 transition-colors inline-block"
-          >
-            Shop All Gear
-          </Link>
         </div>
       </section>
 
