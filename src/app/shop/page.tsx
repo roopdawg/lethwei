@@ -174,8 +174,14 @@ export default async function ShopPage() {
 
         {shopLive && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-[#2A2A2A]">
-            {live.map((product) => (
-              <div key={product.id} className="bg-[#111111] group" data-testid="live-product">
+            {live.map((product, i) => (
+              <div
+                key={product.id}
+                className={`bg-[#111111] group ${
+                  i === live.length - 1 && live.length % 2 !== 0 ? "sm:col-span-2" : ""
+                }`}
+                data-testid="live-product"
+              >
                 <div className="relative aspect-[4/5] overflow-hidden bg-[#0A0A0A]">
                   <ProductGallery views={product.views} name={product.name} />
                 </div>
@@ -205,8 +211,13 @@ export default async function ShopPage() {
 
         {!shopLive && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-[#2A2A2A]">
-          {products.map((product) => (
-            <div key={product.id} className="bg-[#111111] group">
+          {products.map((product, i) => (
+            <div
+              key={product.id}
+              className={`bg-[#111111] group ${
+                i === products.length - 1 && products.length % 2 !== 0 ? "sm:col-span-2" : ""
+              }`}
+            >
               {/* Image — first view at rest, cycles with the rest (or hover-swaps) if there's a second */}
               <div className="relative aspect-[4/5] overflow-hidden bg-[#0A0A0A]">
                 <ProductGallery views={product.views} name={product.name} />

@@ -26,6 +26,37 @@ const stats = [
   { value: "Bare Knuckle", label: "No Gloves. No Mercy." },
 ];
 
+const dropItems = [
+  {
+    name: "LETHWEI® Skull Tee",
+    colorway: "Acid Wash Black",
+    views: [
+      { src: "/skull-tee-front.jpg", label: "Front" },
+      { src: "/skull-tee-back.jpg", label: "Back" },
+    ],
+    tag: "Drop 01",
+  },
+  {
+    name: "LETHWEI® Weapons Tee",
+    colorway: "Light Blue",
+    views: [
+      { src: "/weapons-tee-blue-front.webp", label: "Front" },
+      { src: "/weapons-tee-blue.png", label: "Back" },
+    ],
+    tag: "Drop 01",
+  },
+  {
+    // Back only — no front photograph of the BLACK colourway yet.
+    name: "LETHWEI® 9 Skull Hoodie",
+    colorway: "Acid Wash Black",
+    views: [
+      { src: "/skull-hoodie-front.webp", label: "Front" },
+      { src: "/skull-hoodie-back.webp", label: "Back" },
+    ],
+    tag: "Drop 01",
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -185,37 +216,13 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-[#2A2A2A]">
-          {[
-            {
-              name: "LETHWEI® Skull Tee",
-              colorway: "Acid Wash Black",
-              views: [
-                { src: "/skull-tee-front.jpg", label: "Front" },
-                { src: "/skull-tee-back.jpg", label: "Back" },
-              ],
-              tag: "Drop 01",
-            },
-            {
-              name: "LETHWEI® Weapons Tee",
-              colorway: "Light Blue",
-              views: [
-                { src: "/weapons-tee-blue-front.webp", label: "Front" },
-                { src: "/weapons-tee-blue.png", label: "Back" },
-              ],
-              tag: "Drop 01",
-            },
-            {
-              // Back only — no front photograph of the BLACK colourway yet.
-              name: "LETHWEI® 9 Skull Hoodie",
-              colorway: "Acid Wash Black",
-              views: [
-                { src: "/skull-hoodie-front.webp", label: "Front" },
-                { src: "/skull-hoodie-back.webp", label: "Back" },
-              ],
-              tag: "Drop 01",
-            },
-          ].map((item, i) => (
-            <div key={i} className="bg-[#111111] group relative overflow-hidden">
+          {dropItems.map((item, i) => (
+            <div
+              key={i}
+              className={`bg-[#111111] group relative overflow-hidden ${
+                i === dropItems.length - 1 && dropItems.length % 2 !== 0 ? "sm:col-span-2" : ""
+              }`}
+            >
               <div className="aspect-[4/5] relative bg-[#0A0A0A]">
                 <ProductGallery views={item.views} name={item.name} />
               </div>
