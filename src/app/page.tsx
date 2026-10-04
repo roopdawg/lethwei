@@ -80,18 +80,20 @@ export default function Home() {
             LETHWEI™ bare knuckle — the most brutal and beautiful combat sport on earth.
           </p>
 
+          {/* Shop leads: primary red slot, first in order. Discover/Join
+              keep their existing styles, just demoted to secondary/tertiary. */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/learn"
+              href="/shop"
               className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors w-full sm:w-auto text-center"
             >
-              Discover the Art of 9 Limbs
+              Shop the Gear
             </Link>
             <Link
-              href="/shop"
+              href="/learn"
               className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base bg-[#D4A017] hover:bg-[#F0C040] text-black px-8 py-4 transition-colors w-full sm:w-auto text-center"
             >
-              Shop Now
+              Discover the Art of 9 Limbs
             </Link>
             <Link
               href="/forum"
@@ -103,24 +105,6 @@ export default function Home() {
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
-      </section>
-
-      {/* ── STATS ── */}
-      <section className="border-y border-[#2A2A2A] bg-[#111111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[#2A2A2A]">
-            {stats.map((s) => (
-              <div key={s.label} className="py-10 px-6 text-center">
-                <div className="font-[family-name:var(--font-oswald)] text-3xl md:text-4xl font-bold text-[#D4A017] mb-1">
-                  {s.value}
-                </div>
-                <div className="text-[#888888] text-xs tracking-widest uppercase">
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* ── FEATURED GEAR ── */}
@@ -177,107 +161,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WHAT IS LETHWEI ── */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div>
-            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-              The Origin
-            </span>
-            <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none mb-6">
-              FORGED IN<br />
-              <span className="text-[#C41E1E]">MYANMAR</span>
-            </h2>
-            <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
-            <p className="text-[#888888] leading-relaxed mb-4">
-              The art of 9 limbs traces its roots to the 12th-century Pagan Kingdom of Burma — over 2,000 years of warrior tradition. Ancient matches were held in sand pits, fought without protective gear, continuing until one man could not stand.
-            </p>
-            <p className="text-[#888888] leading-relaxed mb-8">
-              Unlike any other striking art, it permits headbutts, making it the most complete and devastating standing combat system ever developed. In traditional rules, only a knockout wins. A draw is a warrior&apos;s fate.
-            </p>
-            <Link
-              href="/learn"
-              className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[#D4A017] hover:text-[#F0C040] transition-colors group"
-            >
-              Learn the full history
-              <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-            </Link>
-          </div>
-
-          <div className="relative">
-            <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#C41E1E]/20 to-transparent" />
-              <img
-                src="/emblem.webp"
-                alt="Nine weapons radiating from a single core — the art of 9 limbs"
-                className="emblem-spin absolute inset-0 w-full h-full object-contain p-5"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-center bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/75 to-transparent">
-                <div className="font-[family-name:var(--font-oswald)] text-xl tracking-widest uppercase text-[#F5F0E8]">
-                  9 Weapons. <span className="text-[#C41E1E]">One Warrior.</span>
-                </div>
-                <div className="mt-1 text-sm text-[#D4A017]">
-                  Fists · Elbows · Knees · Kicks · <span className="text-[#F0C040]">Headbutts</span>
-                </div>
-              </div>
-            </div>
-            <div className="absolute -top-2 -right-2 w-12 h-12 border-t-2 border-r-2 border-[#D4A017]" />
-            <div className="absolute -bottom-2 -left-2 w-12 h-12 border-b-2 border-l-2 border-[#D4A017]" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── THE 9 LIMBS ── */}
-      <section className="py-24 bg-[#111111] border-y border-[#2A2A2A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-16">
-            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-              The Arsenal
-            </span>
-            <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none">
-              THE <span className="text-[#C41E1E]">9 WEAPONS</span>
-            </h2>
-            <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2A2A2A]">
-            {nineWeapons.map((w) => (
-              <div key={w.number} className="bg-[#111111] p-8 hover:bg-[#1A1A1A] transition-colors group">
-                <div className="font-[family-name:var(--font-oswald)] text-5xl font-bold text-[#C41E1E]/20 group-hover:text-[#C41E1E]/40 transition-colors mb-4">
-                  {w.number}
-                </div>
-                <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#F5F0E8] mb-1">
-                  {w.name}
-                </h3>
-                <p className="text-[#D4A017] text-xs tracking-widest uppercase mb-3">{w.burmese}</p>
-                <p className="text-[#888888] text-sm leading-relaxed">{w.description}</p>
-              </div>
-            ))}
-            <div className="bg-[#C41E1E]/10 border border-[#C41E1E]/30 p-8 hover:bg-[#C41E1E]/20 transition-colors">
-              <div className="font-[family-name:var(--font-oswald)] text-5xl font-bold text-[#C41E1E]/40 mb-4">☠</div>
-              <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#C41E1E] mb-1">
-                What Sets It Apart
-              </h3>
-              <p className="text-[#D4A017] text-xs tracking-widest uppercase mb-3">No other art allows this</p>
-              <p className="text-[#888888] text-sm leading-relaxed">
-                Every other striking art bans the headbutt. The art of 9 limbs doesn&apos;t. That single rule changes everything about how you fight, defend, and survive.
-              </p>
-            </div>
-          </div>
-
-          <div className="text-center mt-12">
-            <Link
-              href="/learn#techniques"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#D4A017] hover:text-[#D4A017] text-[#888888] px-8 py-4 transition-colors inline-block"
-            >
-              See All Techniques
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ── DESIGN DROPS ── */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
+      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 bg-[#111111] border-y border-[#2A2A2A]">
         <div className="text-center mb-16">
           <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
             Now Available
@@ -287,9 +172,11 @@ export default function Home() {
           </h2>
           <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
           <p className="text-[#888888] mt-6 max-w-xl mx-auto text-sm leading-relaxed">
-            Designed by Gabe Schnider. Hover to see the back. DM{" "}
-            <a href="https://instagram.com/lethweiofficial" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a>{" "}
-            to order — online shop coming soon.
+            Designed by Gabe Schnider. Hover to see the back. Browse full details in the{" "}
+            <Link href="/shop" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">shop</Link>
+            {" "}or DM{" "}
+            <a href="https://instagram.com/lethweiofficial" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a>
+            {" "}to order.
           </p>
         </div>
 
@@ -377,6 +264,141 @@ export default function Home() {
           >
             Shop All Gear
           </Link>
+        </div>
+      </section>
+
+      {/* ── STATS ── */}
+      <section className="border-b border-[#2A2A2A] bg-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[#2A2A2A]">
+            {stats.map((s) => (
+              <div key={s.label} className="py-10 px-6 text-center">
+                <div className="font-[family-name:var(--font-oswald)] text-3xl md:text-4xl font-bold text-[#D4A017] mb-1">
+                  {s.value}
+                </div>
+                <div className="text-[#888888] text-xs tracking-widest uppercase">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT IS LETHWEI — the story behind the gear ── */}
+      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div>
+            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
+              The Story Behind the Gear
+            </span>
+            <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none mb-6">
+              FORGED IN<br />
+              <span className="text-[#C41E1E]">MYANMAR</span>
+            </h2>
+            <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
+            <p className="text-[#888888] leading-relaxed mb-4">
+              The art of 9 limbs traces its roots to the 12th-century Pagan Kingdom of Burma — over 2,000 years of warrior tradition. Ancient matches were held in sand pits, fought without protective gear, continuing until one man could not stand.
+            </p>
+            <p className="text-[#888888] leading-relaxed mb-8">
+              Unlike any other striking art, it permits headbutts, making it the most complete and devastating standing combat system ever developed. In traditional rules, only a knockout wins. A draw is a warrior&apos;s fate. It&apos;s this same history radiating from the emblem on this page — the one printed across the gear, not just the logo.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6">
+              <Link
+                href="/learn"
+                className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[#D4A017] hover:text-[#F0C040] transition-colors group"
+              >
+                Learn the full history
+                <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
+              </Link>
+              <Link
+                href="/shop"
+                className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[#888888] hover:text-[#F5F0E8] transition-colors group"
+              >
+                Shop the gear
+                <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#C41E1E]/20 to-transparent" />
+              <img
+                src="/emblem.webp"
+                alt="Nine weapons radiating from a single core — the art of 9 limbs"
+                className="emblem-spin absolute inset-0 w-full h-full object-contain p-5"
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-center bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/75 to-transparent">
+                <div className="font-[family-name:var(--font-oswald)] text-xl tracking-widest uppercase text-[#F5F0E8]">
+                  9 Weapons. <span className="text-[#C41E1E]">One Warrior.</span>
+                </div>
+                <div className="mt-1 text-sm text-[#D4A017]">
+                  Fists · Elbows · Knees · Kicks · <span className="text-[#F0C040]">Headbutts</span>
+                </div>
+              </div>
+            </div>
+            <div className="absolute -top-2 -right-2 w-12 h-12 border-t-2 border-r-2 border-[#D4A017]" />
+            <div className="absolute -bottom-2 -left-2 w-12 h-12 border-b-2 border-l-2 border-[#D4A017]" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── THE 9 LIMBS ── */}
+      <section className="py-24 bg-[#111111] border-y border-[#2A2A2A]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-16">
+            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
+              The Arsenal
+            </span>
+            <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none">
+              THE <span className="text-[#C41E1E]">9 WEAPONS</span>
+            </h2>
+            <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
+            <p className="text-[#888888] mt-6 max-w-xl mx-auto text-sm leading-relaxed">
+              Five of the nine are stacked across the back of the Weapons Tee: KNEE / ELBOW / KNUCKLE / SHIN / SKULL.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2A2A2A]">
+            {nineWeapons.map((w) => (
+              <div key={w.number} className="bg-[#111111] p-8 hover:bg-[#1A1A1A] transition-colors group">
+                <div className="font-[family-name:var(--font-oswald)] text-5xl font-bold text-[#C41E1E]/20 group-hover:text-[#C41E1E]/40 transition-colors mb-4">
+                  {w.number}
+                </div>
+                <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#F5F0E8] mb-1">
+                  {w.name}
+                </h3>
+                <p className="text-[#D4A017] text-xs tracking-widest uppercase mb-3">{w.burmese}</p>
+                <p className="text-[#888888] text-sm leading-relaxed">{w.description}</p>
+              </div>
+            ))}
+            <div className="bg-[#C41E1E]/10 border border-[#C41E1E]/30 p-8 hover:bg-[#C41E1E]/20 transition-colors">
+              <div className="font-[family-name:var(--font-oswald)] text-5xl font-bold text-[#C41E1E]/40 mb-4">☠</div>
+              <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#C41E1E] mb-1">
+                What Sets It Apart
+              </h3>
+              <p className="text-[#D4A017] text-xs tracking-widest uppercase mb-3">No other art allows this</p>
+              <p className="text-[#888888] text-sm leading-relaxed">
+                Every other striking art bans the headbutt. The art of 9 limbs doesn&apos;t. That single rule changes everything about how you fight, defend, and survive.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+            <Link
+              href="/shop"
+              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors inline-block"
+            >
+              Shop the Weapons Tee
+            </Link>
+            <Link
+              href="/learn#techniques"
+              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#D4A017] hover:text-[#D4A017] text-[#888888] px-8 py-4 transition-colors inline-block"
+            >
+              See All Techniques
+            </Link>
+          </div>
         </div>
       </section>
 
