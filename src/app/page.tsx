@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ProductAnimationToggle, ProductGallery } from "@/components/ProductGallery";
 
 const nineWeapons = [
   { number: "01", name: "Punches", burmese: "Let Thee", description: "Jabs, crosses, hooks, uppercuts, spinning backfists — the fists are honed for maximum damage and blood." },
@@ -109,7 +110,7 @@ export default function Home() {
 
       {/* ── FEATURED GEAR ── */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="grid md:grid-cols-[1.3fr_1fr] gap-16 items-center">
           <div className="relative order-2 md:order-1">
             <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
               <img
@@ -172,15 +173,18 @@ export default function Home() {
           </h2>
           <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
           <p className="text-[#888888] mt-6 max-w-xl mx-auto text-sm leading-relaxed">
-            Designed by Gabe Schnider. Hover to see the back. Browse full details in the{" "}
+            Designed by Gabe Schnider. Browse full details in the{" "}
             <Link href="/shop" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">shop</Link>
             {" "}or DM{" "}
             <a href="https://instagram.com/lethweiofficial" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a>
             {" "}to order.
           </p>
+          <div className="mt-6 flex justify-center">
+            <ProductAnimationToggle />
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-px bg-[#2A2A2A]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-[#2A2A2A]">
           {[
             {
               name: "LETHWEI® Skull Tee",
@@ -212,35 +216,8 @@ export default function Home() {
             },
           ].map((item, i) => (
             <div key={i} className="bg-[#111111] group relative overflow-hidden">
-              <div className="aspect-square relative bg-[#0A0A0A]">
-                <img
-                  src={item.views[0].src}
-                  alt={`${item.name} — ${item.views[0].label.toLowerCase()}`}
-                  className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ${
-                    item.views.length > 1 ? "group-hover:opacity-0" : ""
-                  }`}
-                />
-                {item.views[1] && (
-                  <img
-                    src={item.views[1].src}
-                    alt={`${item.name} — ${item.views[1].label.toLowerCase()}`}
-                    className="absolute inset-0 w-full h-full object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  />
-                )}
-                <div className="absolute top-3 left-3">
-                  <span
-                    className={`font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 block transition-opacity duration-500 ${
-                      item.views.length > 1 ? "group-hover:opacity-0" : ""
-                    }`}
-                  >
-                    {item.views[0].label}
-                  </span>
-                  {item.views[1] && (
-                    <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      {item.views[1].label}
-                    </span>
-                  )}
-                </div>
+              <div className="aspect-[4/5] relative bg-[#0A0A0A]">
+                <ProductGallery views={item.views} name={item.name} />
               </div>
               <div className="p-5 border-t border-[#2A2A2A]">
                 <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">
