@@ -8,18 +8,26 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  username  String    @unique
-  password  String?
-  avatar    String?
-  role      Role      @default(member)
-  banned    Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  threads   Thread[]
-  replies   Reply[]
-  accounts  Account[]
-  sessions  Session[]
+  id              String    @id @default(cuid())
+  email           String    @unique
+  username        String    @unique
+  password        String?
+  avatar          String?
+  role            Role      @default(member)
+  banned          Boolean   @default(false)
+  // Weekly moderator activity quota (see src/lib/mod-quota.ts). Computed
+  // on-the-fly from Thread/Reply rows by the weekly cron job; these two
+  // fields just persist the outcome. modDiscountId is the Shopify discount
+  // node id behind modDiscountCode, needed to deactivate/reactivate it
+  // without re-querying Shopify by code.
+  modProbation    Boolean   @default(false)
+  modDiscountCode String?
+  modDiscountId   String?
+  createdAt       DateTime  @default(now())
+  threads         Thread[]
+  replies         Reply[]
+  accounts        Account[]
+  sessions        Session[]
 }
 
 enum Role {

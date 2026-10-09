@@ -10,12 +10,14 @@ export function UserRow({
   email,
   role,
   banned,
+  modProbation,
 }: {
   id: string;
   username: string;
   email: string;
   role: Role;
   banned: boolean;
+  modProbation: boolean;
 }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
@@ -61,8 +63,19 @@ export function UserRow({
       style={{ background: "var(--surface)" }}
     >
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold truncate" style={{ color: "var(--text)" }}>
-          {username} {banned && <span style={{ color: "var(--red)" }}>· banned</span>}
+        <p className="text-sm font-semibold truncate flex items-center gap-2" style={{ color: "var(--text)" }}>
+          <span className="truncate">
+            {username} {banned && <span style={{ color: "var(--red)" }}>· banned</span>}
+          </span>
+          {role === "moderator" && modProbation && (
+            <span
+              data-testid="mod-probation-badge"
+              className="text-xs px-2 py-0.5 rounded font-semibold shrink-0"
+              style={{ background: "var(--red)", color: "var(--text)" }}
+            >
+              Probation
+            </span>
+          )}
         </p>
         <p className="text-xs truncate" style={{ color: "var(--text-muted)" }}>{email}</p>
         {error && <p className="text-xs mt-1" style={{ color: "var(--red)" }}>{error}</p>}
