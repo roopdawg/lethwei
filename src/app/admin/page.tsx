@@ -64,6 +64,9 @@ export default async function AdminPage({
         <p className="text-sm" style={{ color: "var(--text-muted)" }}>
           Signed in as {user!.username} ({user!.role})
         </p>
+        <a href="/admin/designs" className="inline-block mt-4 text-sm underline" style={{ color: "var(--gold)" }}>
+          Review AI-generated designs →
+        </a>
       </div>
 
       {/* Gym submissions */}

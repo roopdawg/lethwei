@@ -10,6 +10,7 @@ export const LIMITS = {
   categorySlug: 60,
   categoryDescription: 300,
   categoryIcon: 8,
+  designCommentBody: 20_000,
 } as const;
 
 /**

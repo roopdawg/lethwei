@@ -80,6 +80,11 @@ export function canApproveGym(actor: Actor | null | undefined): boolean {
   return isModerator(actor);
 }
 
+/** Approve, reject, or comment on an AI-generated design candidate. */
+export function canApproveDesign(actor: Actor | null | undefined): boolean {
+  return isModerator(actor);
+}
+
 export function canManageCategories(actor: Actor | null | undefined): boolean {
   return isAdmin(actor);
 }

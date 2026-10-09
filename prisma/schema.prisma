@@ -8,18 +8,19 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  username  String    @unique
-  password  String?
-  avatar    String?
-  role      Role      @default(member)
-  banned    Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  threads   Thread[]
-  replies   Reply[]
-  accounts  Account[]
-  sessions  Session[]
+  id             String          @id @default(cuid())
+  email          String          @unique
+  username       String          @unique
+  password       String?
+  avatar         String?
+  role           Role            @default(member)
+  banned         Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+  threads        Thread[]
+  replies        Reply[]
+  accounts       Account[]
+  sessions       Session[]
+  designComments DesignComment[]
 }
 
 enum Role {
@@ -73,30 +74,30 @@ model Category {
 }
 
 model Thread {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   title      String
   body       String
   categoryId String
   userId     String
-  pinned     Boolean  @default(false)
-  locked     Boolean  @default(false)
+  pinned     Boolean   @default(false)
+  locked     Boolean   @default(false)
   editedAt   DateTime?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  category   Category @relation(fields: [categoryId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  category   Category  @relation(fields: [categoryId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
   replies    Reply[]
 }
 
 model Reply {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   body      String
   threadId  String
   userId    String
   editedAt  DateTime?
-  createdAt DateTime @default(now())
-  thread    Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  thread    Thread    @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
 }
 
 model Gym {
@@ -110,4 +111,53 @@ model Gym {
   description String?
   approved    Boolean  @default(false)
   createdAt   DateTime @default(now())
+}
+
+enum DesignStatus {
+  pending
+  approved
+  rejected
+  publishing
+  published
+  failed
+}
+
+/**
+ * One AI-generated artwork candidate ("Design A", "Design B", ... within a
+ * batch — `label` holds that letter). A single design can be produced on
+ * several garments at once (e.g. the same art on both men's and women's
+ * shorts) — `productTypes` holds the keys selected for publishing, matching
+ * the keys in the PRINTIFY_PRODUCT_CONFIG env var (e.g. "mens-shorts").
+ * `status` drives the pipeline: pending → (admin approves) → publishing →
+ * published, or → failed. `publishResults` is a map of productType →
+ * { printifyProductId, shopifyProductId, instagramPostId, error } — a JSON
+ * field rather than a child table, since this is admin-only internal
+ * tooling and a handful of garment types per design doesn't need a fully
+ * normalized join; revisit if that stops being true.
+ */
+model Design {
+  id             String          @id @default(cuid())
+  batchLabel     String
+  label          String
+  imageUrl       String
+  svgMarkup      String?
+  prompt         String
+  productTypes   String[]
+  status         DesignStatus    @default(pending)
+  publishResults Json?
+  publishError   String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  comments       DesignComment[]
+}
+
+model DesignComment {
+  id        String    @id @default(cuid())
+  body      String
+  designId  String
+  userId    String
+  editedAt  DateTime?
+  createdAt DateTime  @default(now())
+  design    Design    @relation(fields: [designId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id])
 }
