@@ -47,7 +47,15 @@ export default async function AdminPage({
           : undefined,
         orderBy: { createdAt: "desc" },
         take: query ? 50 : 20,
-        select: { id: true, username: true, email: true, role: true, banned: true, createdAt: true },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          role: true,
+          banned: true,
+          createdAt: true,
+          modProbation: true,
+        },
       })
     : [];
 
@@ -142,13 +150,32 @@ export default async function AdminPage({
                 u.id === user!.id ? (
                   <div key={u.id} className="flex items-center gap-4 p-4" style={{ background: "var(--surface)" }}>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold" style={{ color: "var(--text)" }}>{u.username} (you)</p>
+                      <p className="text-sm font-semibold flex items-center gap-2" style={{ color: "var(--text)" }}>
+                        {u.username} (you)
+                        {u.role === "moderator" && u.modProbation && (
+                          <span
+                            data-testid="mod-probation-badge"
+                            className="text-xs px-2 py-0.5 rounded font-semibold"
+                            style={{ background: "var(--red)", color: "var(--text)" }}
+                          >
+                            Probation
+                          </span>
+                        )}
+                      </p>
                       <p className="text-xs" style={{ color: "var(--text-muted)" }}>{u.email}</p>
                     </div>
                     <span className="text-xs" style={{ color: "var(--text-dim)" }}>{u.role}</span>
                   </div>
                 ) : (
-                  <UserRow key={u.id} id={u.id} username={u.username} email={u.email} role={u.role} banned={u.banned} />
+                  <UserRow
+                    key={u.id}
+                    id={u.id}
+                    username={u.username}
+                    email={u.email}
+                    role={u.role}
+                    banned={u.banned}
+                    modProbation={u.modProbation}
+                  />
                 )
               )}
             </div>
