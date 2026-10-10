@@ -65,13 +65,13 @@ describe("sign in", () => {
     const s = new Session();
     const user = uniqueUser();
     await s.json("/api/auth/register", user);
-    await s.signIn(user.email, "definitely-not-it");
+    await s.signIn(user.username, "definitely-not-it");
     expect(await s.currentUser()).toBeNull();
   });
 
   it("creates no session for an unknown account", async () => {
     const s = new Session();
-    await s.signIn(`ghost+${Date.now()}@lethwei.test`, "TestPass123!");
+    await s.signIn(`ghost${Date.now()}`, "TestPass123!");
     expect(await s.currentUser()).toBeNull();
   });
 

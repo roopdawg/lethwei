@@ -14,8 +14,8 @@ async function postThread(s: Session, title: string) {
 }
 
 /** Sign back in so the session JWT picks up a role/banned change made directly in the DB. */
-async function refreshSession(s: Session, email: string, password: string) {
-  await s.signIn(email, password);
+async function refreshSession(s: Session, username: string, password: string) {
+  await s.signIn(username, password);
 }
 
 describe("thread edit/delete controls", () => {
@@ -52,7 +52,7 @@ describe("moderator controls", () => {
     const mod = new Session();
     const modUser = await mod.signUpAndIn();
     await setRole(modUser.email, "moderator");
-    await refreshSession(mod, modUser.email, modUser.password);
+    await refreshSession(mod, modUser.username, modUser.password);
 
     const html = await mod.text(`/forum/${CATEGORY}/${threadId}`);
     expect(html).toContain('data-testid="thread-pin-button"');
@@ -103,7 +103,7 @@ describe("locked thread", () => {
     const mod = new Session();
     const modUser = await mod.signUpAndIn();
     await setRole(modUser.email, "moderator");
-    await refreshSession(mod, modUser.email, modUser.password);
+    await refreshSession(mod, modUser.username, modUser.password);
     const modHtml = await mod.text(`/forum/${CATEGORY}/${threadId}`);
     expect(modHtml).not.toContain('data-testid="thread-locked-notice"');
     expect(modHtml).toContain('data-testid="reply-form"');
@@ -115,7 +115,7 @@ describe("banned users", () => {
     const s = new Session();
     const user = await s.signUpAndIn();
     await setBanned(user.email, true);
-    await refreshSession(s, user.email, user.password);
+    await refreshSession(s, user.username, user.password);
 
     const html = await s.text("/forum/new-thread");
     expect(html).toContain('data-testid="cant-post-notice"');
@@ -129,7 +129,7 @@ describe("banned users", () => {
     const banned = new Session();
     const bannedUser = await banned.signUpAndIn();
     await setBanned(bannedUser.email, true);
-    await refreshSession(banned, bannedUser.email, bannedUser.password);
+    await refreshSession(banned, bannedUser.username, bannedUser.password);
 
     const html = await banned.text(`/forum/${CATEGORY}/${threadId}`);
     expect(html).toContain('data-testid="cant-post-notice"');
@@ -141,7 +141,7 @@ describe("navbar admin link", () => {
     const mod = new Session();
     const modUser = await mod.signUpAndIn();
     await setRole(modUser.email, "moderator");
-    await refreshSession(mod, modUser.email, modUser.password);
+    await refreshSession(mod, modUser.username, modUser.password);
 
     const html = await mod.text("/forum");
     expect(html).toContain('data-testid="navbar-admin-link"');
