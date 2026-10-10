@@ -80,9 +80,13 @@ export function canApproveGym(actor: Actor | null | undefined): boolean {
   return isModerator(actor);
 }
 
-/** Approve, reject, or comment on an AI-generated design candidate. */
+/**
+ * View, comment on, approve or reject an AI-generated design candidate.
+ * Admin-only by design — unlike the rest of /admin, this isn't open to
+ * moderators generally.
+ */
 export function canApproveDesign(actor: Actor | null | undefined): boolean {
-  return isModerator(actor);
+  return isAdmin(actor);
 }
 
 export function canManageCategories(actor: Actor | null | undefined): boolean {

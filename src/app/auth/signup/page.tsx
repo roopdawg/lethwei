@@ -36,7 +36,7 @@ function SignUpForm() {
       return;
     }
 
-    await signIn("credentials", { email, password, redirect: false });
+    await signIn("credentials", { username, password, redirect: false });
     router.push(callbackUrl);
   }
 

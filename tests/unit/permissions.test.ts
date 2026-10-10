@@ -4,6 +4,7 @@
  */
 import { describe, expect, it } from "vitest";
 import {
+  canApproveDesign,
   canApproveGym,
   canBanUser,
   canChangeRole,
@@ -147,6 +148,12 @@ describe("admin powers", () => {
     expect(canManageCategories(member)).toBe(false);
     expect(canManageCategories(mod)).toBe(false);
     expect(canManageCategories(admin)).toBe(true);
+  });
+
+  it("design review is admin-only, unlike the rest of /admin", () => {
+    expect(canApproveDesign(member)).toBe(false);
+    expect(canApproveDesign(mod)).toBe(false);
+    expect(canApproveDesign(admin)).toBe(true);
   });
 
   it("admins ban members and moderators", () => {

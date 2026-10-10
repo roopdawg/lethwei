@@ -82,16 +82,16 @@ export class Session {
     const user = uniqueUser();
     const reg = await this.json("/api/auth/register", user);
     if (reg.status !== 201) throw new Error(`register failed: ${reg.status}`);
-    await this.signIn(user.email, user.password);
+    await this.signIn(user.username, user.password);
     return user;
   }
 
-  async signIn(email: string, password: string) {
+  async signIn(username: string, password: string) {
     const csrfToken = await this.csrfToken();
     return this.fetch("/api/auth/callback/credentials", {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ csrfToken, email, password, redirect: "false" }).toString(),
+      body: new URLSearchParams({ csrfToken, username, password, redirect: "false" }).toString(),
     });
   }
 
