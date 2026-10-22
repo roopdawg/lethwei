@@ -9,11 +9,10 @@ function isAuthorized(req: Request): boolean {
   return req.headers.get("x-cron-secret") === secret;
 }
 
+/** One batch = one calendar month = one monthly judge-panel voting round. */
 function currentBatchLabel(): string {
   const d = new Date();
-  const onejan = new Date(d.getUTCFullYear(), 0, 1);
-  const week = Math.ceil(((d.getTime() - onejan.getTime()) / 86400000 + onejan.getUTCDay() + 1) / 7);
-  return `${d.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
 }
 
 /**

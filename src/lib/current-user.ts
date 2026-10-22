@@ -20,7 +20,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
   const user = await prisma.user.findUnique({
     where: { id },
-    select: { id: true, username: true, email: true, role: true, banned: true },
+    select: { id: true, username: true, email: true, role: true, banned: true, isDesignJudge: true },
   });
   return user;
 }
