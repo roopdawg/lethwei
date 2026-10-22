@@ -23,12 +23,17 @@ model User {
   modProbation    Boolean         @default(false)
   modDiscountCode String?
   modDiscountId   String?
+  // Scoped voting-only access to the monthly design panel — distinct from
+  // Role, since a guest judge (e.g. "Aiden") votes but has none of the
+  // rest of /admin (no gym/user/category management, no approve/reject).
+  isDesignJudge   Boolean         @default(false)
   createdAt       DateTime        @default(now())
   threads         Thread[]
   replies         Reply[]
   accounts        Account[]
   sessions        Session[]
   designComments  DesignComment[]
+  designVotes     DesignVote[]
 }
 
 enum Role {
@@ -132,31 +137,57 @@ enum DesignStatus {
 
 /**
  * One AI-generated artwork candidate ("Design A", "Design B", ... within a
- * batch — `label` holds that letter). A single design can be produced on
- * several garments at once (e.g. the same art on both men's and women's
- * shorts) — `productTypes` holds the keys selected for publishing, matching
- * the keys in the PRINTIFY_PRODUCT_CONFIG env var (e.g. "mens-shorts").
- * `status` drives the pipeline: pending → (admin approves) → publishing →
- * published, or → failed. `publishResults` is a map of productType →
- * { printifyProductId, shopifyProductId, instagramPostId, error } — a JSON
- * field rather than a child table, since this is admin-only internal
- * tooling and a handful of garment types per design doesn't need a fully
- * normalized join; revisit if that stops being true.
+ * batch — `label` holds that letter). `batchLabel` is a calendar month
+ * ("2026-10") — one batch is one month's voting round, matching the
+ * monthly judge panel in src/lib/design-votes.ts. A single design can be
+ * produced on several garments at once (e.g. the same art on both men's
+ * and women's shorts) — `productTypes` holds the keys selected for
+ * publishing, matching the keys in the PRINTIFY_PRODUCT_CONFIG env var
+ * (e.g. "mens-shorts"). `status` drives the pipeline: pending → (admin
+ * approves — the vote surfaces a favorite but never auto-publishes) →
+ * publishing → published, or → failed. `publishResults` is a map of
+ * productType → { printifyProductId, shopifyProductId, instagramPostId,
+ * error } — a JSON field rather than a child table, since this is
+ * admin-only internal tooling and a handful of garment types per design
+ * doesn't need a fully normalized join; revisit if that stops being true.
+ * `aiTiebreakReason` is set only when this design won its batch via the AI
+ * tiebreaker (judge votes tied) rather than a clean majority.
  */
 model Design {
-  id             String          @id @default(cuid())
-  batchLabel     String
-  label          String
-  imageUrl       String
-  svgMarkup      String?
-  prompt         String
-  productTypes   String[]
-  status         DesignStatus    @default(pending)
-  publishResults Json?
-  publishError   String?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  comments       DesignComment[]
+  id               String          @id @default(cuid())
+  batchLabel       String
+  label            String
+  imageUrl         String
+  svgMarkup        String?
+  prompt           String
+  productTypes     String[]
+  status           DesignStatus    @default(pending)
+  publishResults   Json?
+  publishError     String?
+  aiTiebreakReason String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  comments         DesignComment[]
+  votes            DesignVote[]
+}
+
+/**
+ * One judge's single pick of their favorite design within a batch (month).
+ * The unique constraint enforces "one favorite per judge per month," not
+ * independent per-design yes/no votes. Voting is advisory — it surfaces a
+ * leader on the admin page, but an admin still has to click Approve to
+ * actually publish anything (see src/app/api/admin/designs/[id]/approve).
+ */
+model DesignVote {
+  id         String   @id @default(cuid())
+  batchLabel String
+  designId   String
+  voterId    String
+  createdAt  DateTime @default(now())
+  design     Design   @relation(fields: [designId], references: [id], onDelete: Cascade)
+  voter      User     @relation(fields: [voterId], references: [id])
+
+  @@unique([batchLabel, voterId])
 }
 
 model DesignComment {

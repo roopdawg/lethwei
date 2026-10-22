@@ -15,7 +15,7 @@ import type { Role } from "@prisma/client";
 
 export type { Role };
 
-export type Actor = { id: string; role: Role; banned: boolean };
+export type Actor = { id: string; role: Role; banned: boolean; isDesignJudge?: boolean };
 export type Post = { userId: string };
 export type ThreadState = { locked: boolean };
 
@@ -87,6 +87,16 @@ export function canApproveGym(actor: Actor | null | undefined): boolean {
  */
 export function canApproveDesign(actor: Actor | null | undefined): boolean {
   return isAdmin(actor);
+}
+
+/**
+ * The monthly design judge panel: every admin, plus anyone explicitly
+ * flagged as a guest judge (isDesignJudge) — e.g. a one-off guest like
+ * "Aiden" who votes but has none of the rest of /admin.
+ */
+export function canVoteOnDesigns(actor: Actor | null | undefined): boolean {
+  if (!actor || actor.banned) return false;
+  return isAdmin(actor) || !!actor.isDesignJudge;
 }
 
 export function canManageCategories(actor: Actor | null | undefined): boolean {

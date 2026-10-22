@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/current-user";
-import { canApproveDesign } from "@/lib/permissions";
+import { canApproveDesign, canVoteOnDesigns } from "@/lib/permissions";
 import { listConfiguredProductTypes, getProductConfig } from "@/lib/printify";
+import { leaders } from "@/lib/design-votes";
 import { DesignActions } from "./DesignActions";
 
 export const metadata = {
@@ -20,7 +21,8 @@ function statusColor(status: string): string {
 
 export default async function DesignsAdminPage() {
   const user = await getCurrentUser();
-  if (!canApproveDesign(user)) notFound();
+  if (!canVoteOnDesigns(user)) notFound();
+  const canApprove = canApproveDesign(user);
 
   const designs = await prisma.design.findMany({
     orderBy: [{ batchLabel: "desc" }, { label: "asc" }],
@@ -29,6 +31,7 @@ export default async function DesignsAdminPage() {
         orderBy: { createdAt: "asc" },
         include: { user: { select: { username: true } } },
       },
+      votes: { include: { voter: { select: { username: true } } } },
     },
   });
 
@@ -48,8 +51,9 @@ export default async function DesignsAdminPage() {
           Design Review
         </h1>
         <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-          AI-generated design candidates, grouped by batch. Approve to publish to Printify/Shopify
-          (and Instagram, once configured) on the garments selected below each one.
+          AI-generated design candidates, grouped by monthly batch. Each judge picks one favorite
+          per batch — the vote surfaces a leader here, but {canApprove ? "you still" : "an admin still"}{" "}
+          has to click Approve to actually publish anything.
         </p>
       </div>
 
@@ -58,64 +62,106 @@ export default async function DesignsAdminPage() {
           No designs generated yet.
         </p>
       ) : (
-        Array.from(batches.entries()).map(([batchLabel, batchDesigns]) => (
-          <section key={batchLabel}>
-            <h2 className={sectionHeading} style={{ color: "var(--text)" }}>
-              Batch {batchLabel}
-            </h2>
+        Array.from(batches.entries()).map(([batchLabel, batchDesigns]) => {
+          const tally = tallyFromIncluded(batchDesigns);
+          const lead = leaders(tally);
+          const isTie = lead.length > 1;
+          const leaderIds = new Set(lead.map((l) => l.designId));
 
-            <div className="flex flex-col gap-px" style={{ background: "var(--border)" }}>
-              {batchDesigns.map((design) => (
-                <div key={design.id} className="flex flex-col gap-4 p-4" style={{ background: "var(--surface)" }}>
-                  <div className="flex items-start gap-4">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={design.imageUrl}
-                      alt={design.label}
-                      className="w-32 h-32 object-contain shrink-0"
-                      style={{ background: "var(--bg)", border: "1px solid var(--border)" }}
-                    />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <p className="text-sm font-semibold" style={{ color: "var(--text)" }}>
-                          {design.label}
-                        </p>
-                        <span className="text-xs uppercase tracking-widest" style={{ color: statusColor(design.status) }}>
-                          {design.status}
-                        </span>
+          return (
+            <section key={batchLabel}>
+              <h2 className={sectionHeading} style={{ color: "var(--text)" }}>
+                Batch {batchLabel}
+              </h2>
+              {isTie && (
+                <p className="text-xs mb-4" style={{ color: "var(--gold)" }}>
+                  Tied at the top — {canApprove ? "use the AI tiebreak button below." : "ask an admin to run the AI tiebreak."}
+                </p>
+              )}
+
+              <div className="flex flex-col gap-px" style={{ background: "var(--border)" }}>
+                {batchDesigns.map((design) => {
+                  const myVote = design.votes.find((v) => v.voterId === user!.id);
+                  const isLeading = leaderIds.has(design.id) && !isTie;
+                  return (
+                    <div key={design.id} className="flex flex-col gap-4 p-4" style={{ background: "var(--surface)" }}>
+                      <div className="flex items-start gap-4">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={design.imageUrl}
+                          alt={design.label}
+                          className="w-32 h-32 object-contain shrink-0"
+                          style={{ background: "var(--bg)", border: isLeading ? "2px solid var(--gold)" : "1px solid var(--border)" }}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-3 mb-1 flex-wrap">
+                            <p className="text-sm font-semibold" style={{ color: "var(--text)" }}>
+                              {design.label}
+                            </p>
+                            <span className="text-xs uppercase tracking-widest" style={{ color: statusColor(design.status) }}>
+                              {design.status}
+                            </span>
+                            {isLeading && (
+                              <span className="text-xs uppercase tracking-widest" style={{ color: "var(--gold)" }}>
+                                ★ Leading
+                              </span>
+                            )}
+                            <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+                              {design.votes.length} vote{design.votes.length === 1 ? "" : "s"}
+                              {design.votes.length > 0 && ` (${design.votes.map((v) => v.voter.username).join(", ")})`}
+                            </span>
+                          </div>
+                          <p className="text-xs" style={{ color: "var(--text-muted)" }}>{design.prompt}</p>
+                          {design.aiTiebreakReason && (
+                            <p className="text-xs mt-1" style={{ color: "var(--gold)" }}>
+                              AI tiebreak pick: {design.aiTiebreakReason}
+                            </p>
+                          )}
+                          {design.publishError && (
+                            <p className="text-xs mt-1" style={{ color: "var(--red)" }}>{design.publishError}</p>
+                          )}
+                        </div>
                       </div>
-                      <p className="text-xs" style={{ color: "var(--text-muted)" }}>{design.prompt}</p>
-                      {design.publishError && (
-                        <p className="text-xs mt-1" style={{ color: "var(--red)" }}>{design.publishError}</p>
+
+                      {design.comments.length > 0 && (
+                        <div className="flex flex-col gap-2 pl-4 border-l" style={{ borderColor: "var(--border)" }}>
+                          {design.comments.map((c) => (
+                            <p key={c.id} className="text-xs" style={{ color: "var(--text-muted)" }}>
+                              <span style={{ color: "var(--text)" }}>{c.user.username}:</span> {c.body}
+                            </p>
+                          ))}
+                        </div>
                       )}
-                    </div>
-                  </div>
 
-                  {design.comments.length > 0 && (
-                    <div className="flex flex-col gap-2 pl-4 border-l" style={{ borderColor: "var(--border)" }}>
-                      {design.comments.map((c) => (
-                        <p key={c.id} className="text-xs" style={{ color: "var(--text-muted)" }}>
-                          <span style={{ color: "var(--text)" }}>{c.user.username}:</span> {c.body}
-                        </p>
-                      ))}
+                      <DesignActions
+                        designId={design.id}
+                        batchLabel={design.batchLabel}
+                        status={design.status}
+                        productTypes={design.productTypes}
+                        canApprove={canApprove}
+                        hasMyVote={!!myVote}
+                        isTied={isTie}
+                        availableProductTypes={availableProductTypes.map((key) => ({
+                          key,
+                          label: getProductConfig(key)?.label ?? key,
+                        }))}
+                      />
                     </div>
-                  )}
-
-                  <DesignActions
-                    designId={design.id}
-                    status={design.status}
-                    productTypes={design.productTypes}
-                    availableProductTypes={availableProductTypes.map((key) => ({
-                      key,
-                      label: getProductConfig(key)?.label ?? key,
-                    }))}
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
-        ))
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })
       )}
     </main>
   );
+}
+
+function tallyFromIncluded(
+  batchDesigns: { id: string; label: string; votes: unknown[] }[]
+): { designId: string; label: string; count: number }[] {
+  return batchDesigns
+    .map((d) => ({ designId: d.id, label: d.label, count: d.votes.length }))
+    .sort((a, b) => b.count - a.count);
 }

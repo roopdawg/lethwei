@@ -17,23 +17,57 @@ async function post(url: string, body: unknown) {
 
 export function DesignActions({
   designId,
+  batchLabel,
   status,
   productTypes,
+  canApprove,
+  hasMyVote,
+  isTied,
   availableProductTypes,
 }: {
   designId: string;
+  batchLabel: string;
   status: string;
   productTypes: string[];
+  canApprove: boolean;
+  hasMyVote: boolean;
+  isTied: boolean;
   availableProductTypes: { key: string; label: string }[];
 }) {
   const router = useRouter();
   const [selected, setSelected] = useState<string[]>(productTypes);
   const [comment, setComment] = useState("");
-  const [loading, setLoading] = useState<"approve" | "reject" | "comment" | null>(null);
+  const [loading, setLoading] = useState<"approve" | "reject" | "comment" | "vote" | "tiebreak" | null>(null);
   const [error, setError] = useState("");
 
   function toggleType(key: string) {
     setSelected((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  }
+
+  async function vote() {
+    setLoading("vote");
+    setError("");
+    const res = await post(`/api/admin/designs/${designId}/vote`, {});
+    setLoading(null);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error || "Failed to vote.");
+      return;
+    }
+    router.refresh();
+  }
+
+  async function runTiebreak() {
+    setLoading("tiebreak");
+    setError("");
+    const res = await post(`/api/admin/designs/tiebreak`, { batchLabel });
+    setLoading(null);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error || "Tiebreak failed.");
+      return;
+    }
+    router.refresh();
   }
 
   async function approve() {
@@ -80,6 +114,25 @@ export function DesignActions({
   return (
     <div className="flex flex-col gap-3">
       {status === "pending" && (
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={vote}
+            disabled={loading !== null || hasMyVote}
+            className={secondaryButtonClass}
+            style={hasMyVote ? { ...secondaryButtonStyle, borderColor: "var(--gold)", color: "var(--gold)" } : secondaryButtonStyle}
+          >
+            {loading === "vote" ? "Voting…" : hasMyVote ? "✓ Your Pick" : "Vote for This One"}
+          </button>
+          {isTied && canApprove && (
+            <button type="button" onClick={runTiebreak} disabled={loading !== null} className={secondaryButtonClass} style={secondaryButtonStyle}>
+              {loading === "tiebreak" ? "Asking AI…" : "Run AI Tiebreak"}
+            </button>
+          )}
+        </div>
+      )}
+
+      {status === "pending" && canApprove && (
         <div className="flex flex-wrap gap-2">
           {availableProductTypes.map((t) => (
             <label
@@ -107,7 +160,7 @@ export function DesignActions({
         </button>
       </div>
 
-      {status === "pending" && (
+      {status === "pending" && canApprove && (
         <div className="flex gap-2">
           <button
             type="button"
