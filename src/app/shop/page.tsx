@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getProducts } from "@/lib/shopify";
 import BuyButton from "./BuyButton";
-import { ProductAnimationToggle, ProductGallery } from "@/components/ProductGallery";
+import { ProductGallery } from "@/components/ProductGallery";
 
 export const metadata = {
   title: "Shop — LETHWEI® Apparel | T-Shirts, Hoodies & Hats",
@@ -167,9 +167,6 @@ export default async function ShopPage() {
             LETHWEI<sup className="text-[0.4em] tracking-normal">®</sup> APPAREL
           </h2>
           <span className="block w-16 h-[3px] bg-[#C41E1E] mt-5" />
-          <div className="mt-6">
-            <ProductAnimationToggle />
-          </div>
         </div>
 
         {shopLive && (

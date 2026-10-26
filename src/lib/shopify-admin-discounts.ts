@@ -14,6 +14,8 @@
  * breaks the check for every other moderator.
  */
 
+import crypto from "node:crypto";
+
 const API_VERSION = "2025-07";
 
 export function isShopifyAdminConfigured(): boolean {
@@ -117,6 +119,52 @@ export async function createModDiscountCode(moderatorId: string): Promise<ModDis
   } catch (err) {
     console.error(
       "[shopify-admin-discounts] createModDiscountCode failed:",
+      err instanceof Error ? err.message : err
+    );
+    return null;
+  }
+}
+
+/**
+ * Creates a 10%-off, store-wide, single-use-per-customer discount code for
+ * the email-popup signup flow. Code is randomized (not deterministic like
+ * the moderator perk above) since many different emails need distinct,
+ * collision-free codes. Returns null — never throws — when the Admin API
+ * isn't configured or the request fails.
+ */
+export async function createSignupDiscountCode(): Promise<ModDiscount | null> {
+  if (!isShopifyAdminConfigured()) return null;
+  const code = `WELCOME10-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+  try {
+    const data = await adminGraphQL<{
+      discountCodeBasicCreate: {
+        codeDiscountNode: {
+          id: string;
+          codeDiscount: { codes: { nodes: { code: string }[] } };
+        } | null;
+        userErrors: UserError[];
+      };
+    }>(DISCOUNT_CREATE, {
+      input: {
+        title: `First-order signup — ${code}`,
+        code,
+        startsAt: new Date().toISOString(),
+        customerSelection: { all: true },
+        customerGets: {
+          value: { percentage: 0.1 },
+          items: { all: true },
+        },
+        appliesOncePerCustomer: true,
+      },
+    });
+    const { codeDiscountNode, userErrors } = data.discountCodeBasicCreate;
+    throwOnUserErrors(userErrors);
+    const createdCode = codeDiscountNode?.codeDiscount.codes.nodes[0]?.code;
+    if (!codeDiscountNode || !createdCode) throw new Error("Shopify returned no discount code");
+    return { id: codeDiscountNode.id, code: createdCode };
+  } catch (err) {
+    console.error(
+      "[shopify-admin-discounts] createSignupDiscountCode failed:",
       err instanceof Error ? err.message : err
     );
     return null;

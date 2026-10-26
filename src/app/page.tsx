@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ProductAnimationToggle, ProductGallery } from "@/components/ProductGallery";
+import { ProductGallery } from "@/components/ProductGallery";
 
 const nineWeapons = [
   { number: "01", name: "Punches", burmese: "Let Thee", description: "Jabs, crosses, hooks, uppercuts, spinning backfists — the fists are honed for maximum damage and blood." },
@@ -210,9 +210,6 @@ export default function Home() {
             <a href="https://instagram.com/lethweiofficial" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a>
             {" "}to order.
           </p>
-          <div className="mt-6 flex justify-center">
-            <ProductAnimationToggle />
-          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-[#2A2A2A]">
