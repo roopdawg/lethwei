@@ -7,19 +7,92 @@
  * a "use client" file.
  *
  * Configured by SHOPIFY_STORE_DOMAIN (the same domain the Storefront client
- * uses) and SHOPIFY_ADMIN_TOKEN (new, Admin API access token with the
- * write_discounts scope). When either is missing, every function here
- * returns null/false instead of throwing, so a missing or bad Admin token
- * degrades the weekly mod-quota job gracefully — one Shopify failure never
- * breaks the check for every other moderator.
+ * uses), SHOPIFY_CLIENT_ID, and SHOPIFY_ADMIN_PRIVATE_KEY (the PEM private
+ * key matching the EC public key registered on the app's Dev Dashboard,
+ * under Settings → Credentials → Public keys, kid "lethwei-backend-2026-10").
+ * No static Admin API token is stored anywhere — this file self-mints a
+ * fresh app-only access token via Shopify's JWT client-assertion flow
+ * (client_credentials grant) on demand and caches it in memory until it's
+ * close to its ~24h expiry, so there's nothing to manually rotate. When any
+ * of the three env vars is missing, every function here returns null/false
+ * instead of throwing, so a misconfigured or failing Admin API degrades the
+ * weekly mod-quota job gracefully — one Shopify failure never breaks the
+ * check for every other moderator.
  */
 
 import crypto from "node:crypto";
 
 const API_VERSION = "2025-07";
+const KEY_ID = "lethwei-backend-2026-10";
 
 export function isShopifyAdminConfigured(): boolean {
-  return !!(process.env.SHOPIFY_STORE_DOMAIN && process.env.SHOPIFY_ADMIN_TOKEN);
+  return !!(
+    process.env.SHOPIFY_STORE_DOMAIN &&
+    process.env.SHOPIFY_CLIENT_ID &&
+    process.env.SHOPIFY_ADMIN_PRIVATE_KEY
+  );
+}
+
+function b64url(input: Buffer): string {
+  return input.toString("base64url");
+}
+
+/** Signs a fresh client-assertion JWT with the app's EC private key. */
+function buildClientAssertion(clientId: string, privateKeyPem: string, shopDomain: string): string {
+  const now = Math.floor(Date.now() / 1000);
+  const header = { alg: "ES256", kid: KEY_ID };
+  const payload = {
+    iss: clientId,
+    sub: clientId,
+    aud: `https://${shopDomain}/admin/oauth/access_token`,
+    iat: now,
+    exp: now + 60,
+    jti: crypto.randomUUID(),
+  };
+  const signingInput =
+    b64url(Buffer.from(JSON.stringify(header))) + "." + b64url(Buffer.from(JSON.stringify(payload)));
+  const signature = crypto.sign("sha256", Buffer.from(signingInput), {
+    key: privateKeyPem,
+    dsaEncoding: "ieee-p1363", // raw R||S, as JWS ES256 requires — not OpenSSL's default DER
+  });
+  return signingInput + "." + b64url(signature);
+}
+
+let cachedToken: { token: string; expiresAt: number } | null = null;
+
+/** Mints (or reuses a cached) app-only Admin API access token. Never throws. */
+async function getAccessToken(): Promise<string | null> {
+  const domain = process.env.SHOPIFY_STORE_DOMAIN;
+  const clientId = process.env.SHOPIFY_CLIENT_ID;
+  const privateKey = process.env.SHOPIFY_ADMIN_PRIVATE_KEY;
+  if (!domain || !clientId || !privateKey) return null;
+
+  const SAFETY_BUFFER_MS = 5 * 60 * 1000;
+  if (cachedToken && cachedToken.expiresAt - SAFETY_BUFFER_MS > Date.now()) {
+    return cachedToken.token;
+  }
+
+  try {
+    const assertion = buildClientAssertion(clientId, privateKey, domain);
+    const res = await fetch(`https://${domain}/admin/oauth/access_token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" },
+      body: new URLSearchParams({
+        grant_type: "client_credentials",
+        client_id: clientId,
+        client_assertion_type: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+        client_assertion: assertion,
+      }),
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error(`token exchange responded ${res.status}: ${await res.text()}`);
+    const json = (await res.json()) as { access_token: string; expires_in: number };
+    cachedToken = { token: json.access_token, expiresAt: Date.now() + json.expires_in * 1000 };
+    return cachedToken.token;
+  } catch (err) {
+    console.error("[shopify-admin-discounts] getAccessToken failed:", err instanceof Error ? err.message : err);
+    return null;
+  }
 }
 
 type GraphQLResponse<T> = { data?: T; errors?: { message: string }[] };
@@ -30,7 +103,7 @@ async function adminGraphQL<T>(
   variables: Record<string, unknown> = {}
 ): Promise<T> {
   const domain = process.env.SHOPIFY_STORE_DOMAIN;
-  const token = process.env.SHOPIFY_ADMIN_TOKEN;
+  const token = await getAccessToken();
   if (!domain || !token) throw new Error("Shopify Admin API is not configured");
 
   const res = await fetch(`https://${domain}/admin/api/${API_VERSION}/graphql.json`, {
