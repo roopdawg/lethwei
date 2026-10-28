@@ -190,6 +190,22 @@ model DesignVote {
   @@unique([batchLabel, voterId])
 }
 
+/**
+ * One visitor's "10% off first order" email-popup signup. Email is unique so
+ * repeating the popup never issues a second code to the same address — the
+ * API route checks for an existing row and, if found, skips creating a new
+ * Shopify discount or sending another email, returning the same generic
+ * success response either way (same privacy convention as forgot-password:
+ * never leak whether an email has already signed up).
+ */
+model DiscountSignup {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  code       String?
+  discountId String?
+  createdAt  DateTime @default(now())
+}
+
 model DesignComment {
   id        String    @id @default(cuid())
   body      String

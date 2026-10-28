@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Providers from "@/components/Providers";
+import DiscountSignupPopup from "@/components/DiscountSignupPopup";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -54,6 +55,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <DiscountSignupPopup />
         </Providers>
       </body>
     </html>
