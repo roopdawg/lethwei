@@ -1,459 +1,304 @@
 import Link from "next/link";
 import { ProductGallery } from "@/components/ProductGallery";
+import EmailSignupSection from "@/components/EmailSignupSection";
+import { getProducts } from "@/lib/shopify";
 
-const nineWeapons = [
-  { number: "01", name: "Punches", burmese: "Let Thee", description: "Jabs, crosses, hooks, uppercuts, spinning backfists — the fists are honed for maximum damage and blood." },
-  { number: "02", name: "Elbows", burmese: "Tel Daung", description: "Horizontal, upward, flying, and spinning elbows. Devastating at close range — bones break." },
-  { number: "03", name: "Knees", burmese: "Doo", description: "Straight, spear, jumping, and double flying knees. The engine of the brutal clinch game." },
-  { number: "04", name: "Kicks", burmese: "Kan", description: "Roundhouses, hook kicks, axe kicks, spinning back kicks. Full-power leg strikes with no mercy." },
-  { number: "05", name: "Headbutts", burmese: "Gowl Tite", description: "The weapon that sets the art of 9 limbs apart from every other striking discipline. The ninth limb — and the most feared." },
-];
-
-// Shot at Santa Monica Striking. United States Lethwei Federation tees —
-// a separate line from the Drop 01 products in the shop.
-const heroSlides = [
-  "/wear-01.webp",
-  "/wear-02.webp",
-  "/wear-03.webp",
-  "/wear-04.webp",
-  "/wear-05.webp",
-];
-
-const stats = [
-  { value: "2,000+", label: "Years of History" },
-  { value: "9", label: "Weapons in the Arsenal" },
-  { value: "KO Only", label: "Traditional Victory" },
-  { value: "Bare Knuckle", label: "No Gloves. No Mercy." },
-];
-
-const dropItems = [
+/**
+ * Shown until products are published to the Headless channel. Only items we
+ * have real photography for — the live Shopify catalogue takes over the
+ * moment it returns anything, so this never needs to stay in sync with it.
+ */
+const fallbackPieces = [
   {
-    name: "LETHWEI® Skull Tee",
-    colorway: "Acid Wash Black",
+    name: "Skull Tee",
+    descriptor: "Acid wash / Skull artwork",
     views: [
       { src: "/skull-tee-front.jpg", label: "Front" },
       { src: "/skull-tee-back.jpg", label: "Back" },
     ],
-    tag: "Drop 01",
   },
   {
-    name: "LETHWEI® Weapons Tee",
-    colorway: "Light Blue",
-    views: [
-      { src: "/weapons-tee-blue-front.webp", label: "Front" },
-      { src: "/weapons-tee-blue.png", label: "Back" },
-    ],
-    tag: "Drop 01",
-  },
-  {
-    // Back only — no front photograph of the BLACK colourway yet.
-    name: "LETHWEI® 9 Skull Hoodie",
-    colorway: "Acid Wash Black",
+    name: "9 Skull Hoodie",
+    descriptor: "Acid wash / Nine skull artwork",
     views: [
       { src: "/skull-hoodie-front.webp", label: "Front" },
       { src: "/skull-hoodie-back.webp", label: "Back" },
     ],
-    tag: "Drop 01",
+  },
+  {
+    name: "Weapons Tee",
+    descriptor: "Light blue / Sleeve print",
+    views: [
+      { src: "/weapons-tee-blue-front.webp", label: "Front" },
+      { src: "/weapons-tee-blue.png", label: "Back" },
+    ],
+  },
+  {
+    name: "9 Skull Cap",
+    descriptor: "Tonal skull emblem / Black",
+    views: [
+      { src: "/hat-skull-black-front.webp", label: "Front" },
+      { src: "/hat-skull-black-side.webp", label: "Side" },
+    ],
+  },
+  {
+    name: "Script Cap",
+    descriptor: "Embroidered script / Pink",
+    views: [
+      { src: "/hat-script-pink-front.webp", label: "Front" },
+      { src: "/hat-script-pink-side.webp", label: "Side" },
+    ],
   },
 ];
 
-export default function Home() {
+const limbs = ["2 Fists", "2 Elbows", "2 Knees", "2 Shins", "1 Head"];
+
+const EYEBROW =
+  "font-[family-name:var(--font-oswald)] text-[var(--gold)] text-sm tracking-[0.3em] uppercase";
+
+export default async function Home() {
+  const live = await getProducts();
+  const pieces = live.length
+    ? live.map((p) => ({
+        name: p.name,
+        // First sentence of the Shopify description, capped — these can run
+        // to several paragraphs of blank-garment spec copy.
+        descriptor: (p.description.split(".")[0] || "").slice(0, 60),
+        views: p.views,
+        price: p.price,
+      }))
+    : fallbackPieces.map((p) => ({ ...p, price: undefined as string | undefined }));
+
   return (
     <>
-      {/* ── HERO ── */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-[#110000] to-[#0A0A0A]" />
-
-        {/* Slideshow of the gear on real people, behind the headline.
-            Decorative, so aria-hidden with empty alt. The scrim below is
-            deliberately heavy — the 9xl type has to stay the loudest thing
-            on the page. No ghost emblem here: this hero is centred, so
-            there is no empty half for one to occupy. */}
-        <div className="absolute inset-0 overflow-hidden">
-          {heroSlides.map((src, i) => (
-            <img
-              key={src}
-              src={src}
-              alt=""
-              aria-hidden="true"
-              loading={i === 0 ? "eager" : "lazy"}
-              fetchPriority={i === 0 ? "high" : "low"}
-              className="hero-slide absolute inset-0 w-full h-full object-cover"
-              style={{ animationDelay: `${i * 6}s`, objectPosition: "center 34%" }}
-            />
-          ))}
-          {/* Two-layer scrim: a flat wash for overall contrast, plus a vertical
-              gradient that is heaviest exactly where the headline sits. */}
-          <div className="absolute inset-0 bg-[#0A0A0A]/58" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/85 via-[#0A0A0A]/45 to-[#0A0A0A]" />
-        </div>
-
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#C41E1E]/10 rounded-full blur-[120px] pointer-events-none" />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-3 mb-8">
-            <span className="w-8 h-px bg-[#D4A017]" />
-            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase">
-              The Fastest Growing Martial Art in History
-            </span>
-            <span className="w-8 h-px bg-[#D4A017]" />
-          </div>
-
-          <h1 className="font-[family-name:var(--font-oswald)] font-bold text-7xl sm:text-8xl md:text-9xl tracking-tight leading-none mb-6">
-            <span className="text-[#F5F0E8]">THE</span>
-            <br />
-            <span className="text-[#C41E1E]">ART OF</span>
-            <br />
-            <span className="text-[#D4A017]">9 LIMBS</span>
-          </h1>
-
-          <p className="text-[#888888] text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            Myanmar&apos;s ancient bareknuckle art. Two warriors. No gloves. One falls.
-            LETHWEI™ bare knuckle — the most brutal and beautiful combat sport on earth.
-          </p>
-
-          {/* Shop leads: primary red slot, first in order. Discover/Join
-              keep their existing styles, just demoted to secondary/tertiary. */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/shop"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors w-full sm:w-auto text-center"
-            >
-              Shop the Gear
-            </Link>
-            <Link
-              href="/learn"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base bg-[#D4A017] hover:bg-[#F0C040] text-black px-8 py-4 transition-colors w-full sm:w-auto text-center"
-            >
-              Discover the Art of 9 Limbs
-            </Link>
-            <Link
-              href="/forum"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base border border-[#2A2A2A] hover:border-[#D4A017] hover:text-[#D4A017] text-[#888888] px-8 py-4 transition-colors w-full sm:w-auto text-center"
-            >
-              Join the Community
-            </Link>
-          </div>
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
-      </section>
-
-      {/* ── FEATURED GEAR ── */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-[1.3fr_1fr] gap-16 items-center">
-          <div className="relative order-2 md:order-1">
-            <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
-              <img
-                src="/skull-tee-front.jpg"
-                alt="LETHWEI® Skull Tee — Drop 01"
-                className="absolute inset-0 w-full h-full object-contain"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">
-                  Available Now
-                </span>
-              </div>
-            </div>
-            <div className="absolute -top-2 -right-2 w-12 h-12 border-t-2 border-r-2 border-[#C41E1E]" />
-            <div className="absolute -bottom-2 -left-2 w-12 h-12 border-b-2 border-l-2 border-[#C41E1E]" />
-          </div>
-
-          <div className="order-1 md:order-2">
-            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-              Official Gear
-            </span>
-            <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none mb-6">
-              WEAR THE<br />
-              <span className="text-[#C41E1E]">FEDERATION</span>
-            </h2>
-            <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
-            <p className="text-[#888888] leading-relaxed mb-4">
-              Acid wash heavyweight tee. Anatomical skull on the front, &ldquo;the art of nine limbs&rdquo; in gothic script across the back. Designed by Gabe Schnider — simple, dark, and built for people who know the art of 9 limbs.
-            </p>
-            <p className="text-[#888888] leading-relaxed mb-8">
-              Also available: the Weapons Tee — KNEE / ELBOW / KNUCKLE / SHIN / SKULL stacked across the back in black and light blue. Three colorways, one drop.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/shop"
-                className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors text-center"
-              >
-                Shop Now
-              </Link>
-              <Link
-                href="/shop"
-                className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#D4A017] hover:text-[#D4A017] text-[#888888] px-8 py-4 transition-colors text-center"
-              >
-                View All Gear
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── DESIGN DROPS ── */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 bg-[#111111] border-y border-[#2A2A2A]">
-        <div className="text-center mb-16">
-          <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-            Now Available
+      {/* ── ANNOUNCEMENT BAR ──
+          mt-16 clears the fixed h-16 navbar in the root layout. */}
+      <div className="bg-[var(--gold)] text-black mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-center">
+          <span className="font-[family-name:var(--font-oswald)] text-xs sm:text-sm tracking-[0.25em] uppercase">
+            ● Drop 01 / Coming Soon
           </span>
-          <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none">
-            DROP <span className="text-[#C41E1E]">01</span>
-          </h2>
-          <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
-          <p className="text-[#888888] mt-6 max-w-xl mx-auto text-sm leading-relaxed">
-            Designed by Gabe Schnider. Browse full details in the{" "}
-            <Link href="/shop" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">shop</Link>
-            {" "}or DM{" "}
-            <a href="https://instagram.com/lethweiofficial" className="text-[#D4A017] hover:text-[#F0C040] transition-colors">@lethweiofficial</a>
-            {" "}to order.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-[#2A2A2A]">
-          {dropItems.map((item, i) => (
-            <div
-              key={i}
-              className={`bg-[#111111] group relative overflow-hidden ${
-                i === dropItems.length - 1 && dropItems.length % 2 !== 0 ? "sm:col-span-2" : ""
-              }`}
-            >
-              <div className="aspect-[4/5] relative bg-[#0A0A0A]">
-                <ProductGallery views={item.views} name={item.name} />
-              </div>
-              <div className="p-5 border-t border-[#2A2A2A]">
-                <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase">
-                  {item.tag}
-                </span>
-                <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#F5F0E8] mt-1">
-                  {item.name}
-                </h3>
-                <p className="text-[#555555] text-xs tracking-widest uppercase mt-0.5">
-                  {item.colorway}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-10">
           <Link
             href="/shop"
-            className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-10 py-4 transition-colors inline-block"
+            className="font-[family-name:var(--font-oswald)] text-xs sm:text-sm tracking-[0.15em] uppercase underline underline-offset-4 hover:opacity-70 transition-opacity"
           >
-            Shop All Gear
+            Explore the collection ↗
+          </Link>
+        </div>
+      </div>
+
+      {/* ── HERO ── */}
+      <section className="grid md:grid-cols-2 border-b border-[var(--border)]">
+        <div className="bg-[var(--bg)] px-6 sm:px-12 lg:px-16 py-20 md:py-28 flex flex-col justify-center">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="w-10 h-px bg-[var(--gold)]" />
+            <span className={EYEBROW}>LETHWEI® / The First Collection</span>
+          </div>
+
+          <h1 className="font-[family-name:var(--font-oswald)] font-bold text-7xl sm:text-8xl lg:text-9xl leading-[0.85] tracking-tight text-[var(--text)]">
+            Drop 01<span className="text-[var(--red)]">.</span>
+          </h1>
+
+          <p className="font-[family-name:var(--font-oswald)] text-xl sm:text-2xl tracking-[0.15em] uppercase text-[var(--text)] mt-8">
+            Nine limbs. First drop.
+          </p>
+
+          <p className="text-[var(--text-muted)] leading-relaxed mt-6 max-w-md">
+            A first collection inspired by Myanmar&apos;s national martial art. Tees, a hoodie and
+            caps. Every design by Gabe Schnider.
+          </p>
+
+          <div className="mt-10">
+            <Link
+              href="/shop"
+              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-base bg-[var(--red)] hover:bg-[var(--red-hover)] text-white px-10 py-4 transition-colors inline-flex items-center gap-3"
+            >
+              Explore Drop 01 <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+
+          <p className="text-[var(--text-dim)] text-xs tracking-[0.2em] uppercase mt-8">
+            Designed by{" "}
+            <span className="text-[var(--text-muted)]">Gabe Schnider</span>
+          </p>
+        </div>
+
+        <div className="relative bg-white min-h-[480px] md:min-h-0 flex items-center justify-center p-10">
+          <span className="absolute top-6 left-6 font-[family-name:var(--font-oswald)] text-xs tracking-[0.25em] uppercase text-black/50">
+            01 / The Skull Tee
+          </span>
+          <img
+            src="/skull-tee-front.jpg"
+            alt="LETHWEI® Skull Tee — Drop 01"
+            className="max-h-[560px] w-auto object-contain"
+          />
+          <span className="absolute bottom-6 left-6 font-[family-name:var(--font-oswald)] text-xs tracking-[0.25em] uppercase text-black/70">
+            Skull Tee
+          </span>
+        </div>
+      </section>
+
+      {/* ── MARQUEE STRIP ── */}
+      <div className="bg-[var(--surface)] border-b border-[var(--border)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-wrap items-center justify-center md:justify-between gap-x-8 gap-y-2 text-center">
+          <span className="font-[family-name:var(--font-oswald)] text-xs tracking-[0.25em] uppercase text-[var(--text-muted)]">
+            Rooted in Myanmar
+          </span>
+          <span className="text-[var(--gold)]" aria-hidden="true">✳</span>
+          <span className="font-[family-name:var(--font-oswald)] text-xs tracking-[0.25em] uppercase text-[var(--text-muted)]">
+            Designed by Gabe Schnider
+          </span>
+          <span className="text-[var(--gold)]" aria-hidden="true">✳</span>
+          <span className="font-[family-name:var(--font-oswald)] text-xs tracking-[0.25em] uppercase text-[var(--text-muted)]">
+            LETHWEI® / Drop 01
+          </span>
+        </div>
+      </div>
+
+      {/* ── THE COLLECTION ── */}
+      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="md:flex md:items-end md:justify-between gap-12 mb-12">
+          <div>
+            <span className={`${EYEBROW} mb-4 block`}>The Collection / Drop 01</span>
+            <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none text-[var(--text)]">
+              Choose your piece<span className="text-[var(--red)]">.</span>
+            </h2>
+          </div>
+          <p className="text-[var(--text-muted)] text-sm leading-relaxed max-w-sm mt-6 md:mt-0">
+            {pieces.length} designs. One first collection. Explore the artwork and find your piece.
+          </p>
+        </div>
+
+        <div className="border-t border-[var(--border)] pt-10">
+          {/* Hairlines come from each cell's own border rather than a parent
+              background showing through gaps — otherwise a half-filled last
+              row renders as a solid grey block. */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {pieces.map((piece, i) => {
+              return (
+              <div
+                key={piece.name}
+                className="bg-[var(--bg)] group border-b border-[var(--border)] sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(3n)]:border-r-0"
+              >
+                <div className="relative aspect-[4/5] bg-white overflow-hidden">
+                  <span className="absolute top-4 left-4 z-10 font-[family-name:var(--font-oswald)] text-xs tracking-[0.2em] text-black/40">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <ProductGallery views={piece.views} name={piece.name} showLabels={false} />
+                </div>
+                <div className="py-5 flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="font-[family-name:var(--font-oswald)] text-lg tracking-[0.1em] uppercase text-[var(--text)]">
+                      {piece.name}
+                    </h3>
+                    <p className="text-[var(--text-muted)] text-sm mt-1">{piece.descriptor}</p>
+                  </div>
+                  {piece.price && (
+                    <span className="font-[family-name:var(--font-oswald)] text-sm tracking-widest text-[var(--gold)] whitespace-nowrap mt-1">
+                      {piece.price}
+                    </span>
+                  )}
+                </div>
+              </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mt-12">
+          <Link
+            href="/shop"
+            className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[var(--red)] hover:bg-[var(--red-hover)] text-white px-10 py-4 transition-colors inline-flex items-center gap-3"
+          >
+            Shop the Drop <span aria-hidden="true">↗</span>
           </Link>
         </div>
       </section>
 
-      {/* ── STATS ── */}
-      <section className="border-b border-[#2A2A2A] bg-[#0A0A0A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[#2A2A2A]">
-            {stats.map((s) => (
-              <div key={s.label} className="py-10 px-6 text-center">
-                <div className="font-[family-name:var(--font-oswald)] text-3xl md:text-4xl font-bold text-[#D4A017] mb-1">
-                  {s.value}
-                </div>
-                <div className="text-[#888888] text-xs tracking-widest uppercase">
-                  {s.label}
-                </div>
-              </div>
-            ))}
+      {/* ── THE ART BEHIND THE COLLECTION ── */}
+      <section className="py-24 bg-[var(--surface)] border-y border-[var(--border)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-16 items-center">
+          <div className="text-center">
+            <div className="font-[family-name:var(--font-oswald)] font-bold text-[var(--red)] text-[14rem] md:text-[18rem] leading-none select-none">
+              9
+            </div>
+            <span className={`${EYEBROW} tracking-[0.5em]`}>LETHWEI</span>
           </div>
-        </div>
-      </section>
 
-      {/* ── WHAT IS LETHWEI — the story behind the gear ── */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-              The Story Behind the Gear
-            </span>
-            <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none mb-6">
-              FORGED IN<br />
-              <span className="text-[#C41E1E]">MYANMAR</span>
-            </h2>
-            <span className="block w-16 h-[3px] bg-[#C41E1E] mb-6" />
-            <p className="text-[#888888] leading-relaxed mb-4">
-              The art of 9 limbs traces its roots to the 12th-century Pagan Kingdom of Burma — over 2,000 years of warrior tradition. Ancient matches were held in sand pits, fought without protective gear, continuing until one man could not stand.
-            </p>
-            <p className="text-[#888888] leading-relaxed mb-8">
-              Unlike any other striking art, it permits headbutts, making it the most complete and devastating standing combat system ever developed. In traditional rules, only a knockout wins. A draw is a warrior&apos;s fate. It&apos;s this same history radiating from the emblem on this page — the one printed across the gear, not just the logo.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6">
-              <Link
-                href="/learn"
-                className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[#D4A017] hover:text-[#F0C040] transition-colors group"
-              >
-                Learn the full history
-                <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-              </Link>
-              <Link
-                href="/shop"
-                className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[#888888] hover:text-[#F5F0E8] transition-colors group"
-              >
-                Shop the gear
-                <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-              </Link>
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="aspect-[4/5] bg-[#111111] border border-[#2A2A2A] relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#C41E1E]/20 to-transparent" />
-              <img
-                src="/emblem.webp"
-                alt="Nine weapons radiating from a single core — the art of 9 limbs"
-                className="emblem-spin absolute inset-0 w-full h-full object-contain p-5"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-center bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/75 to-transparent">
-                <div className="font-[family-name:var(--font-oswald)] text-xl tracking-widest uppercase text-[#F5F0E8]">
-                  9 Weapons. <span className="text-[#C41E1E]">One Warrior.</span>
-                </div>
-                <div className="mt-1 text-sm text-[#D4A017]">
-                  Fists · Elbows · Knees · Kicks · <span className="text-[#F0C040]">Headbutts</span>
-                </div>
-              </div>
-            </div>
-            <div className="absolute -top-2 -right-2 w-12 h-12 border-t-2 border-r-2 border-[#D4A017]" />
-            <div className="absolute -bottom-2 -left-2 w-12 h-12 border-b-2 border-l-2 border-[#D4A017]" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── THE 9 LIMBS ── */}
-      <section className="py-24 bg-[#111111] border-y border-[#2A2A2A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-16">
-            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-sm tracking-[0.3em] uppercase mb-4 block">
-              The Arsenal
-            </span>
+            <span className={`${EYEBROW} mb-4 block`}>The Art Behind the Collection</span>
             <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none">
-              THE <span className="text-[#C41E1E]">9 WEAPONS</span>
+              <span className="text-[var(--text)]">Myanmar&apos;s art.</span>
+              <br />
+              <span className="text-[var(--text-muted)]">Nine limbs.</span>
             </h2>
-            <span className="block w-16 h-[3px] bg-[#D4A017] mt-4 mx-auto" />
-            <p className="text-[#888888] mt-6 max-w-xl mx-auto text-sm leading-relaxed">
-              Five of the nine are stacked across the back of the Weapons Tee: KNEE / ELBOW / KNUCKLE / SHIN / SKULL.
+            <p className="text-[var(--text-muted)] leading-relaxed mt-6 max-w-lg">
+              LETHWEI® bare knuckle is Myanmar&apos;s national martial art. The art of nine limbs
+              brings fists, elbows, knees, shins and the head into one striking tradition. That
+              heritage inspires this first collection.
             </p>
+
+            <div className="flex flex-wrap gap-2 mt-8">
+              {limbs.map((l) => (
+                <span
+                  key={l}
+                  className="font-[family-name:var(--font-oswald)] text-xs tracking-[0.2em] uppercase text-[var(--text-muted)] border border-[var(--border)] px-4 py-2"
+                >
+                  {l}
+                </span>
+              ))}
+            </div>
+
+            <Link
+              href="/learn"
+              className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[var(--text)] border-b border-[var(--gold)] pb-1 mt-10 hover:text-[var(--gold)] transition-colors group"
+            >
+              Learn about LETHWEI®
+              <span className="group-hover:translate-x-1 transition-transform inline-block" aria-hidden="true">↗</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── THE PEOPLE BEHIND THE DROP ── */}
+      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16">
+          <div>
+            <span className={`${EYEBROW} mb-4 block`}>The People Behind the Drop</span>
+            <h2 className="font-[family-name:var(--font-oswald)] text-5xl md:text-6xl font-bold leading-none text-[var(--text)]">
+              Real people.
+              <br />
+              Shared respect.
+            </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#2A2A2A]">
-            {nineWeapons.map((w) => (
-              <div key={w.number} className="bg-[#111111] p-8 hover:bg-[#1A1A1A] transition-colors group">
-                <div className="font-[family-name:var(--font-oswald)] text-5xl font-bold text-[#C41E1E]/20 group-hover:text-[#C41E1E]/40 transition-colors mb-4">
-                  {w.number}
-                </div>
-                <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#F5F0E8] mb-1">
-                  {w.name}
-                </h3>
-                <p className="text-[#D4A017] text-xs tracking-widest uppercase mb-3">{w.burmese}</p>
-                <p className="text-[#888888] text-sm leading-relaxed">{w.description}</p>
-              </div>
-            ))}
-            <div className="bg-[#C41E1E]/10 border border-[#C41E1E]/30 p-8 hover:bg-[#C41E1E]/20 transition-colors">
-              <div className="font-[family-name:var(--font-oswald)] text-5xl font-bold text-[#C41E1E]/40 mb-4">☠</div>
-              <h3 className="font-[family-name:var(--font-oswald)] text-xl tracking-wide uppercase text-[#C41E1E] mb-1">
-                What Sets It Apart
-              </h3>
-              <p className="text-[#D4A017] text-xs tracking-widest uppercase mb-3">No other art allows this</p>
-              <p className="text-[#888888] text-sm leading-relaxed">
-                Every other striking art bans the headbutt. The art of 9 limbs doesn&apos;t. That single rule changes everything about how you fight, defend, and survive.
-              </p>
+          <div className="flex flex-col justify-center">
+            <p className="text-[var(--text-muted)] leading-relaxed">
+              Dean Perry Rosenwald is the coach and creator behind this brand. Gabe Schnider designed
+              every piece in Drop 01. Discover the people, the training and the art behind the
+              collection.
+            </p>
+            <div className="flex flex-wrap gap-x-8 gap-y-4 mt-8">
+              {[
+                { href: "/learn", label: "Meet Dean" },
+                { href: "/gyms", label: "Find a place to train" },
+                { href: "/forum", label: "Join the community" },
+              ].map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="inline-flex items-center gap-2 font-[family-name:var(--font-oswald)] text-sm tracking-widest uppercase text-[var(--text)] border-b border-[var(--border)] pb-1 hover:border-[var(--gold)] hover:text-[var(--gold)] transition-colors group"
+                >
+                  {l.label}
+                  <span className="group-hover:translate-x-1 transition-transform inline-block" aria-hidden="true">↗</span>
+                </Link>
+              ))}
             </div>
           </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
-            <Link
-              href="/shop"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors inline-block"
-            >
-              Shop the Weapons Tee
-            </Link>
-            <Link
-              href="/learn#techniques"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#D4A017] hover:text-[#D4A017] text-[#888888] px-8 py-4 transition-colors inline-block"
-            >
-              See All Techniques
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* ── COMMUNITY + SHOP CTA ── */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="border border-[#2A2A2A] bg-[#111111] p-10 relative overflow-hidden group hover:border-[#D4A017] transition-colors">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4A017]/5 rounded-full blur-2xl group-hover:bg-[#D4A017]/10 transition-colors" />
-            <span className="font-[family-name:var(--font-oswald)] text-[#D4A017] text-xs tracking-[0.3em] uppercase mb-4 block">
-              Community
-            </span>
-            <h3 className="font-[family-name:var(--font-oswald)] text-4xl font-bold mb-4">
-              JOIN THE<br />WARRIORS
-            </h3>
-            <p className="text-[#888888] text-sm leading-relaxed mb-8">
-              Train talk. Technique breakdowns. Event discussions. Find training partners.
-              The LETHWEI™ community is here.
-            </p>
-            <Link
-              href="/forum"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#D4A017] hover:bg-[#F0C040] text-black px-8 py-3 transition-colors inline-block"
-            >
-              Enter the Forum
-            </Link>
-          </div>
-
-          <div className="border border-[#2A2A2A] bg-[#111111] p-10 relative overflow-hidden group hover:border-[#C41E1E] transition-colors">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#C41E1E]/5 rounded-full blur-2xl group-hover:bg-[#C41E1E]/10 transition-colors" />
-            <span className="font-[family-name:var(--font-oswald)] text-[#C41E1E] text-xs tracking-[0.3em] uppercase mb-4 block">
-              Represent
-            </span>
-            <h3 className="font-[family-name:var(--font-oswald)] text-4xl font-bold mb-4">
-              WEAR THE<br />TRADITION
-            </h3>
-            <p className="text-[#888888] text-sm leading-relaxed mb-8">
-              T-shirts, hoodies, and hats. Carry the warrior spirit wherever you go.
-              LETHWEI™ gear built for those who know.
-            </p>
-            <Link
-              href="/shop"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-3 transition-colors inline-block"
-            >
-              Shop Now
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── GYM CTA ── */}
-      <section className="py-16 bg-[#111111] border-t border-[#2A2A2A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="font-[family-name:var(--font-oswald)] text-4xl md:text-5xl font-bold mb-4">
-            FIND A GYM.<br />
-            <span className="text-[#C41E1E]">START TRAINING.</span>
-          </h2>
-          <p className="text-[#888888] max-w-xl mx-auto mb-8">
-            Bare knuckle is growing across the United States. Find a gym near you or list your own.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/gyms"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm bg-[#C41E1E] hover:bg-[#E02020] text-white px-8 py-4 transition-colors w-full sm:w-auto text-center"
-            >
-              Find a Gym
-            </Link>
-            <Link
-              href="/gyms/submit"
-              className="font-[family-name:var(--font-oswald)] tracking-widest uppercase text-sm border border-[#2A2A2A] hover:border-[#888888] text-[#888888] hover:text-[#F5F0E8] px-8 py-4 transition-colors w-full sm:w-auto text-center"
-            >
-              List Your Gym
-            </Link>
-          </div>
-        </div>
-      </section>
+      <EmailSignupSection />
     </>
   );
 }

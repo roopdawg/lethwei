@@ -36,10 +36,13 @@ export function ProductGallery({
   views,
   name,
   rotateMs = 2800,
+  showLabels = true,
 }: {
   views: { src: string; label: string }[];
   name: string;
   rotateMs?: number;
+  /** Off on the homepage collection grid, where the cards carry their own captions. */
+  showLabels?: boolean;
 }) {
   const { animate } = useProductAnimation();
   const [index, setIndex] = useState(0);
@@ -80,11 +83,13 @@ export function ProductGallery({
             style={{ opacity: i === index ? 1 : 0 }}
           />
         ))}
-        <div className="absolute top-3 left-3">
-          <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1">
-            {views[index].label}
-          </span>
-        </div>
+        {showLabels && (
+          <div className="absolute top-3 left-3">
+            <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1">
+              {views[index].label}
+            </span>
+          </div>
+        )}
       </>
     );
   }
@@ -101,17 +106,21 @@ export function ProductGallery({
         alt={`${name} — ${second.label.toLowerCase()}`}
         className="w-full h-full object-contain absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
       />
-      <div className="absolute top-3 left-3">
-        <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 transition-opacity duration-500 group-hover:opacity-0">
-          {first.label}
-        </span>
-        <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 absolute left-0 top-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          {second.label}
-        </span>
-      </div>
-      <span className="absolute bottom-3 right-3 text-[#555555] text-[10px] tracking-widest uppercase group-hover:opacity-0 transition-opacity duration-500">
-        Hover for back
-      </span>
+      {showLabels && (
+        <>
+          <div className="absolute top-3 left-3">
+            <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 transition-opacity duration-500 group-hover:opacity-0">
+              {first.label}
+            </span>
+            <span className="font-[family-name:var(--font-oswald)] text-xs tracking-widest uppercase bg-[#C41E1E]/20 text-[#C41E1E] px-2 py-1 absolute left-0 top-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+              {second.label}
+            </span>
+          </div>
+          <span className="absolute bottom-3 right-3 text-[#555555] text-[10px] tracking-widest uppercase group-hover:opacity-0 transition-opacity duration-500">
+            Hover for back
+          </span>
+        </>
+      )}
     </>
   );
 }
