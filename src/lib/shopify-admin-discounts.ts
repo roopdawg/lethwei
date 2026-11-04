@@ -126,6 +126,20 @@ function throwOnUserErrors(userErrors: UserError[]) {
   if (userErrors.length) throw new Error(userErrors.map((e) => e.message).join("; "));
 }
 
+/**
+ * Codes get typed in by hand at checkout, so they're kept short and drawn
+ * from an alphabet with no characters that can be misread — no O/0, I/1/L.
+ * 5 characters over 31 symbols is ~28M combinations, and Shopify rejects a
+ * duplicate code outright, so a collision fails loudly rather than silently
+ * handing two people the same discount.
+ */
+const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+
+function randomSuffix(length: number): string {
+  const bytes = crypto.randomBytes(length);
+  return Array.from(bytes, (b) => CODE_ALPHABET[b % CODE_ALPHABET.length]).join("");
+}
+
 const DISCOUNT_CREATE = /* GraphQL */ `
   mutation CreateModDiscount($input: DiscountCodeBasicInput!) {
     discountCodeBasicCreate(basicCodeDiscount: $input) {
@@ -207,7 +221,7 @@ export async function createModDiscountCode(moderatorId: string): Promise<ModDis
  */
 export async function createSignupDiscountCode(): Promise<ModDiscount | null> {
   if (!isShopifyAdminConfigured()) return null;
-  const code = `WELCOME10-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+  const code = `LW${randomSuffix(5)}`;
   try {
     const data = await adminGraphQL<{
       discountCodeBasicCreate: {
