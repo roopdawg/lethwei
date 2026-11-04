@@ -176,19 +176,25 @@ export default async function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {pieces.map((piece, i) => {
               return (
-              <div
+              <Link
                 key={piece.name}
-                className="bg-[var(--bg)] group border-b border-[var(--border)] sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(3n)]:border-r-0"
+                href="/shop"
+                aria-label={`${piece.name} — shop the drop`}
+                className="bg-[var(--bg)] group block border-b border-[var(--border)] sm:border-r sm:[&:nth-child(2n)]:border-r-0 lg:[&:nth-child(2n)]:border-r lg:[&:nth-child(3n)]:border-r-0"
               >
                 <div className="relative aspect-[4/5] bg-white overflow-hidden">
                   <span className="absolute top-4 left-4 z-10 font-[family-name:var(--font-oswald)] text-xs tracking-[0.2em] text-black/40">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <ProductGallery views={piece.views} name={piece.name} showLabels={false} />
+                  {/* Always shown on touch, where there is no hover to reveal it. */}
+                  <span className="absolute bottom-0 inset-x-0 bg-black/70 text-white font-[family-name:var(--font-oswald)] text-xs tracking-[0.2em] uppercase px-4 py-3 flex items-center justify-between opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-visible:opacity-100 transition-opacity">
+                    Explore design <span aria-hidden="true">↗</span>
+                  </span>
                 </div>
                 <div className="py-5 flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="font-[family-name:var(--font-oswald)] text-lg tracking-[0.1em] uppercase text-[var(--text)]">
+                    <h3 className="font-[family-name:var(--font-oswald)] text-lg tracking-[0.1em] uppercase text-[var(--text)] group-hover:text-[var(--gold)] transition-colors">
                       {piece.name}
                     </h3>
                     <p className="text-[var(--text-muted)] text-sm mt-1">{piece.descriptor}</p>
@@ -199,7 +205,7 @@ export default async function Home() {
                     </span>
                   )}
                 </div>
-              </div>
+              </Link>
               );
             })}
           </div>
